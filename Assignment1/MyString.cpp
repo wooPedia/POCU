@@ -14,7 +14,7 @@ namespace assignment1
     {
         if (s == nullptr)
         {
-            throw __EXCEPTIONS;
+            s = "";
         }
 
         size_t size = myStrlen(s) + 1;
