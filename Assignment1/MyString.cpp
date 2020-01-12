@@ -76,13 +76,11 @@ namespace assignment1
         size_t thisSize = GetLength();
         size_t newSize = thisSize + sSize + 1;
 
-        char* temp = createString(thisSize + 1);
-        myMemcpy(temp, mString, thisSize + 1);
-        
+        MyString temp(mString);
         deleteString(*this);
         
         mString = createString(newSize);
-        myMemcpy(mString, temp, thisSize);
+        myMemcpy(mString, temp.mString, thisSize);
         myMemcpy(mString + thisSize, s, sSize+1);
     }
 
@@ -268,14 +266,14 @@ namespace assignment1
         // 나머지 문자열을 추가합니다.
         if (thisSize > sSize)
         {
-            for (size_t i = smallerSize*2; i <= newSize; ++i)
+            for (size_t i = smallerSize*2; i < newSize; ++i)
             {
                 mString[i] = temp.mString[x++];
             }
         }
         else if (thisSize < sSize)
         {
-            for (size_t i = smallerSize*2; i <= newSize; ++i)
+            for (size_t i = smallerSize*2; i < newSize; ++i)
             {
                 mString[i] = s[y++];
             }
