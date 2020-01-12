@@ -109,7 +109,7 @@ namespace assignment1
 		/*
 		   해당 객체의 문자열이 s를 포함한다면 첫 인덱스를 반환합니다.
 		   여러번 등장한다면 처음으로 등장한 곳의 첫 인덱스를 반환합니다.
-	   */
+		*/
 
 		int thisSize = myStrlen(mString);
 		int sSize = myStrlen(s);
@@ -125,7 +125,7 @@ namespace assignment1
 			return 0;
 		}
 
-		int i_tmp = 0;
+		int iTemp = 0;
 		int     j = 0;
 
 		for (int i = 0; i != thisSize; ++i)
@@ -149,12 +149,12 @@ namespace assignment1
 			// 위 조건문에서 일부만 일치했을 경우 적절한 위치부터 비교 시작
 			if (j > 0)
 			{
-				i = i_tmp + 1;
+				i = iTemp + 1;
 				j = 0;
 			}
 
 			// 일부만 일치했을 경우 적절한 시작 위치로 돌아오기 위한 변수
-			i_tmp = i;
+			iTemp = i;
 		}
 
 		return ret;
@@ -182,7 +182,7 @@ namespace assignment1
 		}
 
 		// 탐색 시작 위치
-		int i_tmp = thisSize - 1;
+		int iTemp = thisSize - 1;
 		int     j = sSize - 1;
 
 		// 역순으로 탐색
@@ -207,12 +207,12 @@ namespace assignment1
 			// 위 조건문에서 일부만 일치했을 경우 적절한 위치부터 비교 시작
 			if (j != sSize - 1)
 			{
-				i = i_tmp - 1;
+				i = iTemp - 1;
 				j = sSize - 1;
 			}
 
 			// 일부만 일치했을 경우 적절한 시작 위치로 돌아오기 위한 변수
-			i_tmp = i;
+			iTemp = i;
 		}
 
 		return ret;
@@ -506,7 +506,7 @@ namespace assignment1
 			// 'A'~'Z'일 경우
 			if (mString[i] >= 65 && mString[i] <= 90)
 			{
-				mString[i] = (char)(mString[i] + 32);
+				mString[i] = static_cast<char>(mString[i] + 32);
 			}
 		}
 	}
@@ -521,7 +521,7 @@ namespace assignment1
 			// 'a'~'z'일 경우
 			if (mString[i] >= 97 && mString[i] <= 122)
 			{
-				mString[i] = (char)(mString[i] - 32);
+				mString[i] = static_cast<char>(mString[i] - 32);
 			}
 		}
 	}
