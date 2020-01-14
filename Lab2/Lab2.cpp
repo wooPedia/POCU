@@ -26,13 +26,13 @@ namespace lab2
 		const size_t DEC_LENGTH = 11;
 		const size_t HEX_LENGTH = 9;
 
-		stringstream buffer;
-		buffer << setw(OCT_LENGTH) << myOCT << setw(DEC_LENGTH) << myDEC << setw(HEX_LENGTH) << myHEX << endl;
-		buffer << setfill('-') << setw(OCT_LENGTH) << "" << left << setw(DEC_LENGTH) << " " << setw(HEX_LENGTH) << " " << endl;
-		buffer << right << setfill(' ') << setw(0) << scientific << uppercase;
+		//stringstream buffer;
+		//buffer << setw(OCT_LENGTH) << myOCT << setw(DEC_LENGTH) << myDEC << setw(HEX_LENGTH) << myHEX << endl;
+		//buffer << setfill('-') << setw(OCT_LENGTH) << "" << left << setw(DEC_LENGTH) << " " << setw(HEX_LENGTH) << " " << endl;
+		//buffer << right << setfill(' ') << setw(0) << scientific << uppercase;
 
 		int temp = 0;
-		//bool isFirst = true;
+		bool isFirst = true;
 		while (true)
 		{
 			in >> temp;
@@ -65,23 +65,23 @@ namespace lab2
 				continue;
 			}
 
-			//if (isFirst)
-			//{
-			//	// 첫째, 둘째 줄 출력
-			//	cout << setw(OCT_LENGTH) << myOCT << setw(DEC_LENGTH) << myDEC << setw(HEX_LENGTH) << myHEX << endl;
-			//	cout << setfill('-') << setw(OCT_LENGTH) << "" << left << setw(DEC_LENGTH) << " " << setw(HEX_LENGTH) << " " << endl;
+			if (isFirst)
+			{
+				// 첫째, 둘째 줄 출력
+				cout << setw(OCT_LENGTH) << myOCT << setw(DEC_LENGTH) << myDEC << setw(HEX_LENGTH) << myHEX << endl;
+				cout << setfill('-') << setw(OCT_LENGTH) << "" << left << setw(DEC_LENGTH) << " " << setw(HEX_LENGTH) << " " << endl;
 
-			//	// 다음 출력에 알맞게 옵션 설정
-			//	cout << right << setfill(' ') << setw(0) << scientific << uppercase;
-			//	isFirst = false;
-			//}
+				// 다음 출력에 알맞게 옵션 설정
+				cout << right << setfill(' ') << setw(0) << scientific << uppercase;
+				isFirst = false;
+			}
 
-			buffer << oct << setw(OCT_LENGTH) << temp
-				<< dec << setw(DEC_LENGTH) << temp
-				<< hex << setw(HEX_LENGTH) << temp << endl;
-			//cout << oct << setw(OCT_LENGTH) << temp
+			//buffer << oct << setw(OCT_LENGTH) << temp
 			//	<< dec << setw(DEC_LENGTH) << temp
 			//	<< hex << setw(HEX_LENGTH) << temp << endl;
+			cout << oct << setw(OCT_LENGTH) << temp
+				<< dec << setw(DEC_LENGTH) << temp
+				<< hex << setw(HEX_LENGTH) << temp << endl;
 
 			//number[i] = temp;
 			/*++i;
@@ -89,7 +89,7 @@ namespace lab2
 		} // while
 		in.clear();
 
-		std::cout << buffer.str();
+		//std::cout << buffer.str();
 
 		//for (int i = 0; i != currentSize; ++i)
 		//{
@@ -99,7 +99,7 @@ namespace lab2
 		//}
 
 		// 옵션 리셋
-		//cout << setw(0) << fixed << nouppercase;
+		cout << setw(0) << fixed << nouppercase;
 	}
 
 	void PrintMaxFloat(std::istream& in, std::ostream& out)
