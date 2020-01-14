@@ -1,6 +1,5 @@
 #include <string>
 #include <iomanip>
-#include <sstream>
 
 #include "Lab2.h"
 
@@ -14,14 +13,10 @@ namespace lab2
 		// 입력은 최소한 하나의 정수가 존재할 것
 		// 문자열은 무시해야함
 
-		int number[1000];
-		size_t currentSize = 0;
-		size_t i = 0;
-
 		// 12 11 9
-		const string myOCT("oct");
-		const string myDEC("dec");
-		const string myHEX("hex");
+		const string MY_OCT("oct");
+		const string MY_DEC("dec");
+		const string MY_HEX("hex");
 		const size_t OCT_LENGTH = 12;
 		const size_t DEC_LENGTH = 11;
 		const size_t HEX_LENGTH = 9;
@@ -32,7 +27,7 @@ namespace lab2
 		//buffer << right << setfill(' ') << setw(0) << scientific << uppercase;
 
 		int temp = 0;
-		//bool isFirst = true;
+		bool bIsFirst = true;
 		while (true)
 		{
 			in >> temp;
@@ -65,43 +60,43 @@ namespace lab2
 				continue;
 			}
 
-			//if (isFirst)
-			//{
-			//	// 첫째, 둘째 줄 출력
-			//	out << setw(OCT_LENGTH) << myOCT << setw(DEC_LENGTH) << myDEC << setw(HEX_LENGTH) << myHEX << endl;
-			//	out << setfill('-') << setw(OCT_LENGTH) << "" << left << setw(DEC_LENGTH) << " " << setw(HEX_LENGTH) << " " << endl;
+			if (bIsFirst)
+			{
+				// 첫째, 둘째 줄 출력
+				out << setw(OCT_LENGTH) << MY_OCT << setw(DEC_LENGTH) << MY_DEC << setw(HEX_LENGTH) << MY_HEX << endl;
+				out << setfill('-') << setw(OCT_LENGTH) << "" << left << setw(DEC_LENGTH) << " " << setw(HEX_LENGTH) << " " << endl;
 
-			//	// 다음 출력에 알맞게 옵션 설정
-			//	out << right << setfill(' ') << setw(0) << scientific << uppercase;
-			//	isFirst = false;
-			//}
+				// 다음 출력에 알맞게 옵션 설정
+				out << right << setfill(' ') << setw(0) << scientific << uppercase;
+				bIsFirst = false;
+			}
 
 			//buffer << oct << setw(OCT_LENGTH) << temp
 			//	<< dec << setw(DEC_LENGTH) << temp
 			//	<< hex << setw(HEX_LENGTH) << temp << endl;
-			//out << oct << setw(OCT_LENGTH) << temp
-			//	<< dec << setw(DEC_LENGTH) << temp
-			//	<< hex << setw(HEX_LENGTH) << temp << endl;
+			out << oct << setw(OCT_LENGTH) << temp
+				<< dec << setw(DEC_LENGTH) << temp
+				<< hex << setw(HEX_LENGTH) << temp << endl;
 
-			number[i] = temp;
-			++i;
-			++currentSize;
+			//number[i] = temp;
+			//++i;
+			//++currentSize;
 		} // while
 		in.clear();
 
 		//std::cout << buffer.str();
 		// 첫째, 둘째 줄 출력
-		out << setw(OCT_LENGTH) << myOCT << setw(DEC_LENGTH) << myDEC << setw(HEX_LENGTH) << myHEX << endl;
-		out << setfill('-') << setw(OCT_LENGTH) << "" << left << setw(DEC_LENGTH) << " " << setw(HEX_LENGTH) << " " << endl;
+		//out << setw(OCT_LENGTH) << myOCT << setw(DEC_LENGTH) << myDEC << setw(HEX_LENGTH) << myHEX << endl;
+		//out << setfill('-') << setw(OCT_LENGTH) << "" << left << setw(DEC_LENGTH) << " " << setw(HEX_LENGTH) << " " << endl;
 
 		// 다음 출력에 알맞게 옵션 설정
-		out << right << setfill(' ') << setw(0) << scientific << uppercase;
-		for (int i = 0; i != currentSize; ++i)
+		//out << right << setfill(' ') << setw(0) << scientific << uppercase;
+		/*for (int i = 0; i != currentSize; ++i)
 		{
 			out << oct << setw(OCT_LENGTH) << number[i]
 				<< dec << setw(DEC_LENGTH) << number[i]
 				<< hex << setw(HEX_LENGTH) << number[i] << endl;
-		}
+		}*/
 
 		// 옵션 리셋
 		out << setw(0) << fixed << nouppercase;
@@ -116,12 +111,13 @@ namespace lab2
 		//size_t currentSize = 0;
 		//size_t i = 0;
 
-		stringstream buffer;
-		buffer << showpos << showpoint << fixed << setprecision(3) << internal;
+		//stringstream buffer;
+		out << showpos << showpoint << fixed << setprecision(3) << internal;
 
 
 		float temp = 0.0f;
 		float max = 0.0f;
+		bool bIsFirst = true;
 		while (true)
 		{
 			in >> temp;
@@ -138,8 +134,21 @@ namespace lab2
 				continue;
 			}
 
-			buffer << setw(FRONT_SPACES) << " " << setw(SECOND_SPACES) << temp << endl;
-			max = ((max > temp) ? max : temp);
+			if (bIsFirst)
+			{
+				max = temp;
+				bIsFirst = false;
+			}
+			/*buffer << setw(FRONT_SPACES) << " " << setw(SECOND_SPACES) << temp << endl;
+			max = ((max > temp) ? max : temp);*/
+
+			if (!bIsFirst)
+			{
+				max = ((max > temp) ? max : temp);
+			}
+
+			out << setw(FRONT_SPACES) << " " << setw(SECOND_SPACES) << temp << endl;
+
 			/*myDecimal[i] = temp;
 			++i;
 			++currentSize;*/
@@ -156,9 +165,10 @@ namespace lab2
 			max = ((max > myDecimal[i]) ? max : myDecimal[i]);
 		}*/
 
+		out << left << setw(FRONT_SPACES) << "max:" << internal << setw(SECOND_SPACES) << max << endl;
 		// max 출력
-		buffer << left << setw(FRONT_SPACES) << "max:" << internal << setw(SECOND_SPACES) << max << endl;
-		out << buffer.str();
+		//buffer << left << setw(FRONT_SPACES) << "max:" << internal << setw(SECOND_SPACES) << max << endl;
+		//out << buffer.str();
 
 		// 출력 옵션 리셋
 		out << noshowpos << noshowpoint << setprecision(0) << right;
