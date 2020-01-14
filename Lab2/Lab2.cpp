@@ -14,9 +14,9 @@ namespace lab2
 		// 입력은 최소한 하나의 정수가 존재할 것
 		// 문자열은 무시해야함
 
-		//int number[1000];
-		//size_t currentSize = 0;
-		//size_t i = 0;
+		int number[1000];
+		size_t currentSize = 0;
+		size_t i = 0;
 
 		// 12 11 9
 		const string myOCT("oct");
@@ -32,7 +32,7 @@ namespace lab2
 		//buffer << right << setfill(' ') << setw(0) << scientific << uppercase;
 
 		int temp = 0;
-		bool isFirst = true;
+		//bool isFirst = true;
 		while (true)
 		{
 			in >> temp;
@@ -65,38 +65,43 @@ namespace lab2
 				continue;
 			}
 
-			if (isFirst)
-			{
-				// 첫째, 둘째 줄 출력
-				out << setw(OCT_LENGTH) << myOCT << setw(DEC_LENGTH) << myDEC << setw(HEX_LENGTH) << myHEX << endl;
-				out << setfill('-') << setw(OCT_LENGTH) << "" << left << setw(DEC_LENGTH) << " " << setw(HEX_LENGTH) << " " << endl;
+			//if (isFirst)
+			//{
+			//	// 첫째, 둘째 줄 출력
+			//	out << setw(OCT_LENGTH) << myOCT << setw(DEC_LENGTH) << myDEC << setw(HEX_LENGTH) << myHEX << endl;
+			//	out << setfill('-') << setw(OCT_LENGTH) << "" << left << setw(DEC_LENGTH) << " " << setw(HEX_LENGTH) << " " << endl;
 
-				// 다음 출력에 알맞게 옵션 설정
-				out << right << setfill(' ') << setw(0) << scientific << uppercase;
-				isFirst = false;
-			}
+			//	// 다음 출력에 알맞게 옵션 설정
+			//	out << right << setfill(' ') << setw(0) << scientific << uppercase;
+			//	isFirst = false;
+			//}
 
 			//buffer << oct << setw(OCT_LENGTH) << temp
 			//	<< dec << setw(DEC_LENGTH) << temp
 			//	<< hex << setw(HEX_LENGTH) << temp << endl;
-			out << oct << setw(OCT_LENGTH) << temp
-				<< dec << setw(DEC_LENGTH) << temp
-				<< hex << setw(HEX_LENGTH) << temp << endl;
+			//out << oct << setw(OCT_LENGTH) << temp
+			//	<< dec << setw(DEC_LENGTH) << temp
+			//	<< hex << setw(HEX_LENGTH) << temp << endl;
 
-			//number[i] = temp;
-			/*++i;
-			++currentSize;*/
+			number[i] = temp;
+			++i;
+			++currentSize;
 		} // while
 		in.clear();
 
 		//std::cout << buffer.str();
+		// 첫째, 둘째 줄 출력
+		out << setw(OCT_LENGTH) << myOCT << setw(DEC_LENGTH) << myDEC << setw(HEX_LENGTH) << myHEX << endl;
+		out << setfill('-') << setw(OCT_LENGTH) << "" << left << setw(DEC_LENGTH) << " " << setw(HEX_LENGTH) << " " << endl;
 
-		//for (int i = 0; i != currentSize; ++i)
-		//{
-		//	cout << oct << setw(OCT_LENGTH) << number[i]
-		//		<< dec << setw(DEC_LENGTH) << number[i]
-		//		<< hex << setw(HEX_LENGTH) << number[i] << endl;
-		//}
+		// 다음 출력에 알맞게 옵션 설정
+		out << right << setfill(' ') << setw(0) << scientific << uppercase;
+		for (int i = 0; i != currentSize; ++i)
+		{
+			out << oct << setw(OCT_LENGTH) << number[i]
+				<< dec << setw(DEC_LENGTH) << number[i]
+				<< hex << setw(HEX_LENGTH) << number[i] << endl;
+		}
 
 		// 옵션 리셋
 		out << setw(0) << fixed << nouppercase;
