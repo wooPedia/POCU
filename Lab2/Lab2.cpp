@@ -68,18 +68,18 @@ namespace lab2
 			if (isFirst)
 			{
 				// 첫째, 둘째 줄 출력
-				cout << setw(OCT_LENGTH) << myOCT << setw(DEC_LENGTH) << myDEC << setw(HEX_LENGTH) << myHEX << endl;
-				cout << setfill('-') << setw(OCT_LENGTH) << "" << left << setw(DEC_LENGTH) << " " << setw(HEX_LENGTH) << " " << endl;
+				out << setw(OCT_LENGTH) << myOCT << setw(DEC_LENGTH) << myDEC << setw(HEX_LENGTH) << myHEX << endl;
+				out << setfill('-') << setw(OCT_LENGTH) << "" << left << setw(DEC_LENGTH) << " " << setw(HEX_LENGTH) << " " << endl;
 
 				// 다음 출력에 알맞게 옵션 설정
-				cout << right << setfill(' ') << setw(0) << scientific << uppercase;
+				out << right << setfill(' ') << setw(0) << scientific << uppercase;
 				isFirst = false;
 			}
 
 			//buffer << oct << setw(OCT_LENGTH) << temp
 			//	<< dec << setw(DEC_LENGTH) << temp
 			//	<< hex << setw(HEX_LENGTH) << temp << endl;
-			cout << oct << setw(OCT_LENGTH) << temp
+			out << oct << setw(OCT_LENGTH) << temp
 				<< dec << setw(DEC_LENGTH) << temp
 				<< hex << setw(HEX_LENGTH) << temp << endl;
 
@@ -99,7 +99,7 @@ namespace lab2
 		//}
 
 		// 옵션 리셋
-		cout << setw(0) << fixed << nouppercase;
+		out << setw(0) << fixed << nouppercase;
 	}
 
 	void PrintMaxFloat(std::istream& in, std::ostream& out)
@@ -153,9 +153,9 @@ namespace lab2
 
 		// max 출력
 		buffer << left << setw(FRONT_SPACES) << "max:" << internal << setw(SECOND_SPACES) << max << endl;
-		cout << buffer.str();
+		out << buffer.str();
 
 		// 출력 옵션 리셋
-		cout << noshowpos << noshowpoint << setprecision(0) << right;
+		out << noshowpos << noshowpoint << setprecision(0) << right;
 	}
 }
