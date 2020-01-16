@@ -26,21 +26,53 @@ namespace lab2
 		//buffer << setfill('-') << setw(OCT_LENGTH) << "" << left << setw(DEC_LENGTH) << " " << setw(HEX_LENGTH) << " " << endl;
 		//buffer << right << setfill(' ') << setw(0) << scientific << uppercase;
 
+		// 456abc은 456만 읽어야 됨(eofbit: unset, failbit: unset)
+		// 456은 읽어야 됨   (eofbit: un(set), failbit: unset)
+		// abc는 버려야 됨   (eofbit: unset, failbit: set)
 		int temp = 0;
 		bool bIsFirst = true;
 		while (true)
 		{
 			in >> temp;
 
-			// eof 입력 시 입력 종료
+			// eof 입력 시
 			if (in.eof())
 			{
-				break;
+				// fail일 경우 eof이므로 종료 
+				if (in.fail())
+				{
+					break;
+				}
+				// fail이 아닐 경우 뉴라인 없는 입력
+				else
+				{
+					if (temp < 0)
+					{
+						continue;
+					}
+					if (bIsFirst)
+					{
+						// 첫째, 둘째 줄 출력
+						out << setw(OCT_LENGTH) << MY_OCT << setw(DEC_LENGTH) << MY_DEC << setw(HEX_LENGTH) << MY_HEX << endl;
+						out << setfill('-') << setw(OCT_LENGTH) << "" << left << setw(DEC_LENGTH) << " " << setw(HEX_LENGTH) << " " << endl;
+
+						// 다음 출력에 알맞게 옵션 설정
+						out << right << setfill(' ') << setw(0) << scientific << uppercase;
+						bIsFirst = false;
+					}
+
+					out << oct << setw(OCT_LENGTH) << temp
+						<< dec << setw(DEC_LENGTH) << temp
+						<< hex << setw(HEX_LENGTH) << temp << endl;
+
+					continue;
+				}
 			}
 
 			// 알맞지 않는 형식 입력 시 
 			if (in.fail())
 			{
+
 				// 입력 스트림을 비웁니다.
 				in.clear();
 
@@ -49,8 +81,8 @@ namespace lab2
 				continue;
 			}
 
-			// 양의 정수가 아닐 경우 무시합니다.
-			if (temp < 1)
+			// 0미만일 경우 무시합니다.
+			if (temp < 0)
 			{
 				//// 개행없이 EOF가 입력될 경우 멈춥니다.
 				//if (temp == 0)
