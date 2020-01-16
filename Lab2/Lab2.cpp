@@ -21,14 +21,6 @@ namespace lab2
 		const size_t DEC_LENGTH = 11;
 		const size_t HEX_LENGTH = 9;
 
-		//stringstream buffer;
-		//buffer << setw(OCT_LENGTH) << myOCT << setw(DEC_LENGTH) << myDEC << setw(HEX_LENGTH) << myHEX << endl;
-		//buffer << setfill('-') << setw(OCT_LENGTH) << "" << left << setw(DEC_LENGTH) << " " << setw(HEX_LENGTH) << " " << endl;
-		//buffer << right << setfill(' ') << setw(0) << scientific << uppercase;
-
-		// 456abc은 456만 읽어야 됨(eofbit: unset, failbit: unset)
-		// 456은 읽어야 됨   (eofbit: un(set), failbit: unset)
-		// abc는 버려야 됨   (eofbit: unset, failbit: set)
 		int temp = 0;
 		bool bIsFirst = true;
 		while (true)
@@ -72,7 +64,6 @@ namespace lab2
 			// 알맞지 않는 형식 입력 시 
 			if (in.fail())
 			{
-
 				// 입력 스트림을 비웁니다.
 				in.clear();
 
@@ -84,11 +75,6 @@ namespace lab2
 			// 0미만일 경우 무시합니다.
 			if (temp < 0)
 			{
-				//// 개행없이 EOF가 입력될 경우 멈춥니다.
-				//if (temp == 0)
-				//{
-				//	break;
-				//}
 				continue;
 			}
 
@@ -103,32 +89,11 @@ namespace lab2
 				bIsFirst = false;
 			}
 
-			//buffer << oct << setw(OCT_LENGTH) << temp
-			//	<< dec << setw(DEC_LENGTH) << temp
-			//	<< hex << setw(HEX_LENGTH) << temp << endl;
 			out << oct << setw(OCT_LENGTH) << temp
 				<< dec << setw(DEC_LENGTH) << temp
 				<< hex << setw(HEX_LENGTH) << temp << endl;
-
-			//number[i] = temp;
-			//++i;
-			//++currentSize;
 		} // while
 		in.clear();
-
-		//std::cout << buffer.str();
-		// 첫째, 둘째 줄 출력
-		//out << setw(OCT_LENGTH) << myOCT << setw(DEC_LENGTH) << myDEC << setw(HEX_LENGTH) << myHEX << endl;
-		//out << setfill('-') << setw(OCT_LENGTH) << "" << left << setw(DEC_LENGTH) << " " << setw(HEX_LENGTH) << " " << endl;
-
-		// 다음 출력에 알맞게 옵션 설정
-		//out << right << setfill(' ') << setw(0) << scientific << uppercase;
-		/*for (int i = 0; i != currentSize; ++i)
-		{
-			out << oct << setw(OCT_LENGTH) << number[i]
-				<< dec << setw(DEC_LENGTH) << number[i]
-				<< hex << setw(HEX_LENGTH) << number[i] << endl;
-		}*/
 
 		// 옵션 리셋
 		out << setw(0) << fixed << nouppercase;
@@ -139,13 +104,7 @@ namespace lab2
 		const size_t FRONT_SPACES = 5;
 		const size_t SECOND_SPACES = 15;
 
-		//float myDecimal[1000];
-		//size_t currentSize = 0;
-		//size_t i = 0;
-
-		//stringstream buffer;
 		out << showpos << showpoint << fixed << setprecision(3) << internal;
-
 
 		float temp = 0.0f;
 		float max = 0.0f;
@@ -156,7 +115,25 @@ namespace lab2
 
 			if (in.eof())
 			{
-				break;
+				if (in.fail())
+				{
+					break;
+				}
+				else
+				{
+					if (bIsFirst)
+					{
+						max = temp;
+						bIsFirst = false;
+					}
+					else
+					{
+						max = ((max > temp) ? max : temp);
+					}
+
+					out << setw(FRONT_SPACES) << " " << setw(SECOND_SPACES) << temp << endl;
+					continue;
+				}
 			}
 
 			if (in.fail())
@@ -171,36 +148,17 @@ namespace lab2
 				max = temp;
 				bIsFirst = false;
 			}
-			/*buffer << setw(FRONT_SPACES) << " " << setw(SECOND_SPACES) << temp << endl;
-			max = ((max > temp) ? max : temp);*/
-
-			if (!bIsFirst)
+			else
 			{
 				max = ((max > temp) ? max : temp);
 			}
 
 			out << setw(FRONT_SPACES) << " " << setw(SECOND_SPACES) << temp << endl;
-
-			/*myDecimal[i] = temp;
-			++i;
-			++currentSize;*/
 		}
 		in.clear();
 
-		// 출력 옵션 설정
-		//cout << showpos << showpoint << fixed << setprecision(3) << internal;
-
-		// max 제외 출력 부분
-		/*for (int i = 0; i != currentSize; ++i)
-		{
-			cout << setw(FRONT_SPACES) << " " << setw(SECOND_SPACES) << myDecimal[i] << endl;
-			max = ((max > myDecimal[i]) ? max : myDecimal[i]);
-		}*/
-
-		out << left << setw(FRONT_SPACES) << "max:" << internal << setw(SECOND_SPACES) << max << endl;
 		// max 출력
-		//buffer << left << setw(FRONT_SPACES) << "max:" << internal << setw(SECOND_SPACES) << max << endl;
-		//out << buffer.str();
+		out << left << setw(FRONT_SPACES) << "max:" << internal << setw(SECOND_SPACES) << max << endl;
 
 		// 출력 옵션 리셋
 		out << noshowpos << noshowpoint << setprecision(0) << right;
