@@ -21,19 +21,19 @@ namespace lab4
 		float GetY() const;
 
 	private:
-		inline void SetX(float x);
-		inline void SetY(float y);
+		inline void setX(float x);
+		inline void setY(float y);
 
 		float mX;
 		float mY;
 	};
 
-	void Point::SetX(float x)
+	void Point::setX(float x)
 	{
 		mX = x;
 	}
 
-	void Point::SetY(float y)
+	void Point::setY(float y)
 	{
 		mY = y;
 	}

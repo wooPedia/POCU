@@ -128,10 +128,10 @@ namespace lab4
 			return false;
 		}
 
-		outMin->SetX(minX);
-		outMin->SetY(minY);
-		outMax->SetX(maxX);
-		outMax->SetY(maxY);
+		outMin->setX(minX);
+		outMin->setY(minY);
+		outMax->setX(maxX);
+		outMax->setY(maxY);
 
 		return true;
 	}
