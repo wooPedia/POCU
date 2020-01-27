@@ -88,7 +88,6 @@ namespace lab4
 
 		// i+1 °´Ã¼ºÎÅÍ ÇÑÄ­¾¿ ´ç±è
 		// ±×¸®°í ¸¶Áö¸· °´Ã¼¿¡ nullptr ÀúÀå
-		// 0 1
 		for (; i != mPointSize; ++i)
 		{
 			mPointList[i] = mPointList[i + 1];
@@ -124,7 +123,7 @@ namespace lab4
 			maxY = fmax(maxY, mPointList[i]->GetY());
 		}
 
-		if (minX == 0 && minY == 0 && maxX == 0 && maxY == 0)
+		if (minX == 0.0f && minY == 0.0f && maxX == 0.0f && maxY == 0.0f)
 		{
 			outMin->setX(0.0f);
 			outMin->setY(0.0f);
