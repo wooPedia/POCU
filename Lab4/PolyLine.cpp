@@ -104,7 +104,7 @@ namespace lab4
 		// mPointList의 점들 중 가장 작은 x와 y => outMin
 		// mPointList의 점들 중 가장 큰   x와 y => outMax
 
-		// 점이 1개 이하면 만들 수 없음
+		// 점이 1개 이하면 만들 수 없음.
 		if (mPointSize < 2)
 		{
 			return false;

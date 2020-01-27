@@ -4,7 +4,7 @@ namespace lab4
 {
 	class Point
 	{
-		friend class PolyLine;
+		friend class PolyLine; // setX, setY
 		friend Point operator*(float operand, const Point& rhs);
 	public:
 		Point(float x, float y);
