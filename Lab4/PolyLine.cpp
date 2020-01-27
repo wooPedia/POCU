@@ -88,11 +88,11 @@ namespace lab4
 
 		// i+1 객체부터 한칸씩 당김
 		// 그리고 마지막 객체에 nullptr 저장
-		// 0 1 2 3 4 5
 		for (; i != mPointSize; ++i)
 		{
 			mPointList[i] = mPointList[i + 1];
 		}
+		
 		// 마지막 객체를 삭제하면 옮긴 객체도 삭제되기 때문에 단순히 nullptr로 만듦
 		mPointList[mPointSize] = nullptr;
 
@@ -121,6 +121,16 @@ namespace lab4
 			minY = fmin(minY, mPointList[i]->GetY());
 			maxX = fmax(maxX, mPointList[i]->GetX());
 			maxY = fmax(maxY, mPointList[i]->GetY());
+		}
+
+		if (minX == 0.0f && minY == 0.0f && maxX == 0.0f && maxY == 0.0f)
+		{
+			outMin->setX(0.0f);
+			outMin->setY(0.0f);
+			outMax->setX(0.0f);
+			outMax->setY(0.0f);
+
+			return true;
 		}
 
 		if (minX == maxX || minY == maxY)
