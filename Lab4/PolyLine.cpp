@@ -124,7 +124,7 @@ namespace lab4
 		}
 
 		// 모든 점이 동일하고 너비가 0인 최소 경계 사각형을 만들 경우
-		if ((minX == minY) && (minY == maxX) && (maxX == maxY))
+		/*if ((minX == minY) && (minY == maxX) && (maxX == maxY))
 		{
 			outMin->setX(minX);
 			outMin->setY(minX);
@@ -132,12 +132,12 @@ namespace lab4
 			outMax->setY(minX);
 
 			return true;
-		}
+		}*/
 
-		if (minX == maxX || minY == maxY)
-		{
-			return false;
-		}
+		//if (minX == maxX || minY == maxY)
+		//{
+		//	return false;
+		//}
 
 		outMin->setX(minX);
 		outMin->setY(minY);
