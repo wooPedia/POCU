@@ -92,7 +92,7 @@ namespace lab4
 		{
 			mPointList[i] = mPointList[i + 1];
 		}
-		
+
 		// 마지막 객체를 삭제하면 옮긴 객체도 삭제되기 때문에 단순히 nullptr로 만듦
 		mPointList[mPointSize] = nullptr;
 
@@ -104,8 +104,8 @@ namespace lab4
 		// mPointList의 점들 중 가장 작은 x와 y => outMin
 		// mPointList의 점들 중 가장 큰   x와 y => outMax
 
-		// 점이 1개 이하면 만들 수 없음.
-		if (mPointSize < 2)
+		// 점이 0개면 만들 수 없음
+		if (mPointSize == 0)
 		{
 			return false;
 		}
@@ -123,12 +123,13 @@ namespace lab4
 			maxY = fmax(maxY, mPointList[i]->GetY());
 		}
 
-		if (minX == 0.0f && minY == 0.0f && maxX == 0.0f && maxY == 0.0f)
+		// 모든 점이 동일하고 너비가 0인 최소 경계 사각형을 만들 경우
+		if ((minX == minY) && (minY == maxX) && (maxX == maxY))
 		{
-			outMin->setX(0.0f);
-			outMin->setY(0.0f);
-			outMax->setX(0.0f);
-			outMax->setY(0.0f);
+			outMin->setX(minX);
+			outMin->setY(minX);
+			outMax->setX(minX);
+			outMax->setY(minX);
 
 			return true;
 		}
