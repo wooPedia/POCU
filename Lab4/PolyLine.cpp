@@ -87,7 +87,6 @@ namespace lab4
 		--mPointSize;
 
 		// i+1 객체부터 한칸씩 당김
-		// 그리고 마지막 객체에 nullptr 저장
 		for (; i != mPointSize; ++i)
 		{
 			mPointList[i] = mPointList[i + 1];
@@ -101,10 +100,7 @@ namespace lab4
 
 	bool PolyLine::TryGetMinBoundingRectangle(Point* outMin, Point* outMax) const
 	{
-		// mPointList의 점들 중 가장 작은 x와 y => outMin
-		// mPointList의 점들 중 가장 큰   x와 y => outMax
-
-		// 점이 0개면 만들 수 없음
+		// 점이 0개면 최소 경계 사각형을 추출할 수 없습니다.
 		if (mPointSize == 0)
 		{
 			return false;
@@ -115,6 +111,7 @@ namespace lab4
 		float maxX = minX;
 		float maxY = minY;
 
+		// 최소 경계 '사각형'이지만 기하학적이 아닌 프로그래밍 및 데이터 관점에서 너비가 0이더라도 정상적으로 추출 합니다.
 		for (size_t i = 1; i != mPointSize; ++i)
 		{
 			minX = fmin(minX, mPointList[i]->GetX());
@@ -122,22 +119,6 @@ namespace lab4
 			maxX = fmax(maxX, mPointList[i]->GetX());
 			maxY = fmax(maxY, mPointList[i]->GetY());
 		}
-
-		// 모든 점이 동일하고 너비가 0인 최소 경계 사각형을 만들 경우
-		/*if ((minX == minY) && (minY == maxX) && (maxX == maxY))
-		{
-			outMin->setX(minX);
-			outMin->setY(minX);
-			outMax->setX(minX);
-			outMax->setY(minX);
-
-			return true;
-		}*/
-
-		//if (minX == maxX || minY == maxY)
-		//{
-		//	return false;
-		//}
 
 		outMin->setX(minX);
 		outMin->setY(minY);
@@ -149,8 +130,6 @@ namespace lab4
 
 	PolyLine& PolyLine::operator=(const PolyLine& rhs)
 	{
-		// PolyLine pl1;
-		// pl1 = pl2;
 		if (this == &rhs)
 		{
 			return *this;
