@@ -1,11 +1,11 @@
 #pragma once
 
-#include "SquareLawn.h"
+#include "IFenceable.h"
+#include "Lawn.h"
 
 namespace lab5
 {
-	// 정사각형으로 부터 상속을 받습니다.
-	class RectangleLawn : public SquareLawn
+	class RectangleLawn : public IFenceable, public Lawn
 	{
 	public:
 		RectangleLawn(size_t widthMeter, size_t heightMeter);
@@ -15,7 +15,8 @@ namespace lab5
 		virtual unsigned int GetFencePrice(eFenceType fenceType) const;
 		virtual unsigned int GetArea() const;
 
-	private:
+	protected:
+		size_t mWidthMeter;
 		size_t mHeightMeter;
 	};
 }

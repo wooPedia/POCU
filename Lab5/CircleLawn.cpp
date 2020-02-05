@@ -10,7 +10,7 @@ namespace lab5
 	unsigned int CircleLawn::GetArea() const
 	{
 		const double PI = 3.14;
-		double area = static_cast<double>(mRadiusMeter)* mRadiusMeter* PI;
+		double area = static_cast<double>(mRadiusMeter) * mRadiusMeter * PI;
 
 		// ¹Ý¿Ã¸²
 		if (static_cast<size_t>(area) == static_cast<size_t>(area + 0.5))
