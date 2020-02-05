@@ -20,7 +20,7 @@ namespace lab5
 		const size_t FENCE_PER_METER = 4;
 		return static_cast<size_t>
 			(
-			(static_cast<double>(fenceType) / FENCE_PER_METER) * GetMinimumFencesCount()
+				(static_cast<double>(fenceType) / FENCE_PER_METER) * GetMinimumFencesCount()
 			);
 	}
 
