@@ -20,9 +20,7 @@ namespace lab5
 	unsigned int EquilateralTriangleLawn::GetFencePrice(eFenceType fenceType) const
 	{
 		const size_t FENCE_PER_METER = 4;
-		return static_cast<size_t>(
-			(static_cast<double>(fenceType) / FENCE_PER_METER) * GetMinimumFencesCount()
-			);
+		return static_cast<size_t>((static_cast<double>(fenceType) / FENCE_PER_METER) * GetMinimumFencesCount());
 	}
 
 	unsigned int EquilateralTriangleLawn::GetArea() const

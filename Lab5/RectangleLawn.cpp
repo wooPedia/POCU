@@ -18,7 +18,8 @@ namespace lab5
 	{
 		// fenceType은 1m당 가격이며 울타리 1개는 0.25m
 		const size_t FENCE_PER_METER = 4;
-		return static_cast<size_t>(
+		return static_cast<size_t>
+			(
 			(static_cast<double>(fenceType) / FENCE_PER_METER) * GetMinimumFencesCount()
 			);
 	}
