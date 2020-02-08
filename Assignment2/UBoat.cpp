@@ -6,12 +6,9 @@ namespace assignment2
 {
 	UBoat::UBoat()
 		: Vehicle(50)
-	    , mMovedCount(0) {}
+		, mMovedCount(0) {}
 
-	UBoat::~UBoat()
-	{
-		std::cout << "~UBoat()" << std::endl;
-	}
+	UBoat::~UBoat() {}
 
 	unsigned int UBoat::GetMaxSpeed() const
 	{

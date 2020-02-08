@@ -1,5 +1,4 @@
 #include "Person.h"
-#include <iostream>
 
 namespace assignment2
 {
@@ -10,10 +9,7 @@ namespace assignment2
 		: mName(other.mName)
 		, mWeight(other.mWeight) {}
 
-	Person::~Person() 
-	{
-		std::cout << "~Person" << std::endl;
-	}
+	Person::~Person() {}
 
 	const std::string& Person::GetName() const
 	{
@@ -37,5 +33,4 @@ namespace assignment2
 
 		return *this;
 	}
-
 }

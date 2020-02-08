@@ -1,11 +1,12 @@
-#include "Airplane.h"
-
 #include "DeusExMachina.h"
 
 namespace assignment2
 {
+	DeusExMachina::DeusExMachina()
+		: mManagedVehicleCount(0) {}
+
 	// static 멤버 변수 초기화
-	DeusExMachina* DeusExMachina::instance = nullptr;
+	DeusExMachina* DeusExMachina::mInstance = nullptr;
 
 	DeusExMachina* DeusExMachina::GetInstance()
 	{
@@ -13,13 +14,13 @@ namespace assignment2
 
 		if (!bExist)
 		{
-			instance = new DeusExMachina;
+			mInstance = new DeusExMachina;
 			bExist = true;
-			return instance;
+			return mInstance;
 		}
 		else
 		{
-			return instance;
+			return mInstance;
 		}
 	}
 
@@ -65,7 +66,6 @@ namespace assignment2
 		return true;
 	}
 
-	// friend function in Vehicle class
 	const Vehicle* DeusExMachina::GetFurthestTravelled() const
 	{
 		if (mManagedVehicleCount == 0)
@@ -73,14 +73,20 @@ namespace assignment2
 			return NULL;
 		}
 
-		size_t IndexOfFurthestTravelled = 0;
+		size_t indexOfFurthestTravelled = 0;
 		for (size_t i = 1; i < mManagedVehicleCount; ++i)
 		{
-			IndexOfFurthestTravelled =
-				(mManagedVehicle[IndexOfFurthestTravelled]->GetMovedDistanceKM() > mManagedVehicle[i]->GetMovedDistanceKM()) ?
-				IndexOfFurthestTravelled : i;
+			indexOfFurthestTravelled =
+				(mManagedVehicle[indexOfFurthestTravelled]->GetMovedDistanceKM() > mManagedVehicle[i]->GetMovedDistanceKM()) ?
+				indexOfFurthestTravelled : i;
 		}
 
-		return mManagedVehicle[IndexOfFurthestTravelled];
+		// 움직인 운송 수단이 없다면 첫 번째 운송 수단을 반환합니다.
+		if (mManagedVehicle[indexOfFurthestTravelled]->GetMovedDistanceKM() == 0)
+		{
+			return mManagedVehicle[0];
+		}
+
+		return mManagedVehicle[indexOfFurthestTravelled];
 	}
 }

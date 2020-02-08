@@ -18,10 +18,7 @@ namespace assignment2
 		}
 	}
 
-	Boatplane::~Boatplane()
-	{
-		std::cout << "~Boatplane" << std::endl;
-	}
+	Boatplane::~Boatplane() {}
 
 	unsigned int Boatplane::GetMaxSpeed() const
 	{
@@ -57,7 +54,6 @@ namespace assignment2
 		{
 			return (speed > 20) ? static_cast<unsigned int>(speed + 1) : 20;
 		}
-
 	}
 
 	Boatplane& Boatplane::operator=(const Boatplane& rhs)

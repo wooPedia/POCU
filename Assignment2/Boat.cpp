@@ -7,10 +7,7 @@ namespace assignment2
 		: Vehicle(maxPassengersCount)
 		, mMovedCount(0) {}
 
-	Boat::~Boat()
-	{
-		std::cout << "~Boat" << std::endl;
-	}
+	Boat::~Boat() {}
 
 	Boatplane Boat::operator+(Airplane& plane)
 	{

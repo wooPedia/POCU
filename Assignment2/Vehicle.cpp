@@ -56,8 +56,6 @@ namespace assignment2
 		mBreakCount = 0;
 		mMovedDistanceKM = 0;
 		mbMovable = true;
-
-		std::cout << "~Vehicle" << std::endl;
 	}
 
 	bool Vehicle::AddPassenger(const Person* person)

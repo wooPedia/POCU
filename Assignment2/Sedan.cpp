@@ -8,10 +8,7 @@ namespace assignment2
 		, mMovedCount(0)
 		, mTrailer(nullptr) {}
 
-	Sedan::~Sedan()
-	{
-		std::cout << "~Sedan" << std::endl;
-	}
+	Sedan::~Sedan() {}
 
 	unsigned int Sedan::GetMaxSpeed() const
 	{

@@ -6,10 +6,7 @@ namespace assignment2
 		: Vehicle(2)
 		, mMovedCount(0) {}
 
-	Motorcycle::~Motorcycle()
-	{
-		std::cout << "~Motorcycle()" << std::endl;
-	}
+	Motorcycle::~Motorcycle() {}
 
 	unsigned int Motorcycle::GetMaxSpeed() const
 	{

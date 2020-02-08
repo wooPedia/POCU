@@ -8,7 +8,7 @@ namespace assignment2
 	Airplane::Airplane(unsigned int maxPassengersCount)
 		: Vehicle(maxPassengersCount) {}
 
-	Airplane::~Airplane() { std::cout << "~Airplane" << std::endl; }
+	Airplane::~Airplane() {}
 
 	Boatplane Airplane::operator+(Boat& boat)
 	{
@@ -66,7 +66,10 @@ namespace assignment2
 
 	unsigned int Airplane::GetMaxSpeed() const
 	{
-		return GetFlySpeed();
+		unsigned int driveSpeed = GetDriveSpeed();
+		unsigned int flySpeed = GetFlySpeed();
+
+		return (flySpeed > driveSpeed) ? flySpeed : driveSpeed;
 	}
 
 	unsigned int Airplane::GetDriveSpeed() const

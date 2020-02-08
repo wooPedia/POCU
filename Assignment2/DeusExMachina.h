@@ -21,8 +21,11 @@ namespace assignment2
 		}
 
 	private:
-		static DeusExMachina* instance;
-		Vehicle* mManagedVehicle[10]{ nullptr };
-		unsigned int mManagedVehicleCount{ 0 };
+		DeusExMachina();
+
+		static DeusExMachina* mInstance;
+		Vehicle* mManagedVehicle[10] = { 0, };
+		unsigned int mManagedVehicleCount;
+		bool mbMovedAtLeastOne;
 	};
 }
