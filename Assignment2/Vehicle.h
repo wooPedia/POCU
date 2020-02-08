@@ -3,7 +3,6 @@
 #include <cassert>
 #include <iostream>
 
-#include "DeusExMachina.h"
 #include "Person.h"
 
 #define Assert(expression, message) assert(expression && message)
@@ -22,12 +21,9 @@ namespace assignment2
 		UBOAT = 4
 	};
 
-	class DeusExMachina;
-
 	// 모든 운송 수단 클래스는 해당 클래스를 상속 받아야 합니다.
 	class Vehicle
 	{
-		friend const Vehicle* DeusExMachina::GetFurthestTravelled() const;
 	public:
 		Vehicle(unsigned int maxPassengersCount);
 		Vehicle(const Vehicle& other);
@@ -43,6 +39,7 @@ namespace assignment2
 		unsigned int GetPassengersCount() const;
 		unsigned int GetMaxPassengersCount() const;
 		unsigned int GetPassengersWeightSum() const;
+		unsigned int GetMovedDistanceKM() const;
 
 	protected:
 		unsigned int mMaxPassengersCount; // max 100

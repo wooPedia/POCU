@@ -124,5 +124,8 @@ namespace assignment2
 		return mPassengersWeightSum;
 	}
 
-	
+	unsigned int Vehicle::GetMovedDistanceKM() const
+	{
+		return mMovedDistanceKM;
+	}
 }

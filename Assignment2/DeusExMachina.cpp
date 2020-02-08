@@ -77,7 +77,7 @@ namespace assignment2
 		for (size_t i = 1; i < mManagedVehicleCount; ++i)
 		{
 			IndexOfFurthestTravelled =
-				(mManagedVehicle[IndexOfFurthestTravelled]->mMovedDistanceKM > mManagedVehicle[i]->mMovedDistanceKM) ?
+				(mManagedVehicle[IndexOfFurthestTravelled]->GetMovedDistanceKM() > mManagedVehicle[i]->GetMovedDistanceKM()) ?
 				IndexOfFurthestTravelled : i;
 		}
 
