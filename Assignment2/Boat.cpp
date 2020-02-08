@@ -50,6 +50,12 @@ namespace assignment2
 
 	unsigned int Boat::GetSailSpeed() const
 	{
+		const unsigned int MAX_WEIGHT = 78;
+		if (mPassengersWeightSum >= MAX_WEIGHT)
+		{
+			return 20;
+		}
+
 		unsigned int speed = 800 - 10 * mPassengersWeightSum;
 
 		return (speed > 20) ? speed : 20;

@@ -51,14 +51,13 @@ namespace assignment2
 		
 		if (static_cast<unsigned int>(speed + 0.5) != static_cast<unsigned int>(speed + 1))
 		{
-			speed = static_cast<unsigned int>(speed);
+			return (speed > 20) ? static_cast<unsigned int>(speed) : 20;
 		}
 		else
 		{
-			speed = static_cast<unsigned int>(speed + 1);
+			return (speed > 20) ? static_cast<unsigned int>(speed + 1) : 20;
 		}
 
-		return (speed > 20) ? speed : 20;
 	}
 
 	Boatplane& Boatplane::operator=(const Boatplane& rhs)
