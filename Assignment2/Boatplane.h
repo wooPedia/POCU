@@ -1,15 +1,19 @@
 #pragma once
 
-#include "Vehicle.h"
 #include "IFlyable.h"
 #include "ISailable.h"
+#include "Vehicle.h"
 
 namespace assignment2
 {
+	class Airplane;
+	class Boat;
+
 	class Boatplane : public Vehicle, public IFlyable, public ISailable
 	{
 	public:
 		Boatplane(unsigned int maxPassengersCount);
+		Boatplane(Airplane* a, Boat* b);
 		Boatplane(const Boatplane& other);
 		~Boatplane();
 

@@ -1,3 +1,5 @@
+#include "Airplane.h"
+#include "Boat.h"
 #include "Vehicle.h"
 
 namespace assignment2
@@ -6,6 +8,17 @@ namespace assignment2
 		: mMaxPassengersCount(maxPassengersCount)
 		, mPassengersCount(0)
 		, mPassengersWeightSum(0)
+		, mBreakCount(0)
+		, mMovedDistanceKM(0)
+		, mbMovable(true)
+	{
+		mPassengerList = new const Person * [mMaxPassengersCount];
+	}
+
+	Vehicle::Vehicle(const Airplane& a, const Boat& b)
+		: mMaxPassengersCount(a.GetMaxPassengersCount() + b.GetMaxPassengersCount())
+		, mPassengersCount(a.GetPassengersCount() + b.GetPassengersCount())
+		, mPassengersWeightSum(a.GetPassengersWeightSum() + b.GetPassengersWeightSum())
 		, mBreakCount(0)
 		, mMovedDistanceKM(0)
 		, mbMovable(true)
@@ -26,7 +39,7 @@ namespace assignment2
 		// other의 탑승자는 모두 삭제한다.
 		// mPassengerList[i]에 other.mPassengerList[i]를 모두 옮길 순 있다.
 		// 그리고 other.mPassengerList의 모든 원소를 삭제할 순 있다.
-		//mPassengerList = other.mPassengerList;
+		//mPassengerList = other.mPassengerList; 
 
 		mPassengerList = new const Person * [mMaxPassengersCount];
 		//for (int i = 0; i != mCurPassengersCount; ++i)

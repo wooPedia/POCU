@@ -8,12 +8,13 @@
 namespace assignment2
 {
 	class Boat;
+	class Boatplane;
 
 	class Airplane : public Vehicle, public IDrivable, public IFlyable
 	{
+		friend Boatplane::Boatplane(Airplane* a, Boat* b);
 	public:
 		Airplane(unsigned int maxPassengersCount);
-		Airplane(const Airplane& other);
 		~Airplane();
 		
 		virtual unsigned int GetMaxSpeed() const;
@@ -22,6 +23,5 @@ namespace assignment2
 		virtual void Move();
 
 		Boatplane operator+(Boat& boat);
-		Airplane& operator=(const Airplane& rhs);
 	};
 }

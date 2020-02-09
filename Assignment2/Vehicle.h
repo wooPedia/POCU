@@ -20,11 +20,16 @@ namespace assignment2
 		UBOAT = 4
 	};
 
+	class Airplane;
+	class Boat;
+
 	// 모든 운송 수단 클래스는 해당 클래스를 상속 받아야 합니다.
 	class Vehicle
 	{
 	public:
 		Vehicle(unsigned int maxPassengersCount);
+		Vehicle(const Airplane& a, const Boat& b);
+		//Vehicle(const Boat& b, const Airplane& a);
 		Vehicle(const Vehicle& other);
 		virtual ~Vehicle();
 

@@ -7,9 +7,11 @@
 namespace assignment2
 {
 	class Airplane;
+	class Boatplane;
 
 	class Boat : public Vehicle, public ISailable
 	{
+		friend Boatplane::Boatplane(Airplane* a, Boat* b);
 	public:
 		Boat(unsigned int maxPassengersCount);
 		~Boat();

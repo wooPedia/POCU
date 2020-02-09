@@ -11,33 +11,7 @@ namespace assignment2
 
 	Boatplane Boat::operator+(Airplane& plane)
 	{
-		// Boat b;
-		// Airplane a;
-		// Boatplane bp = b + a;
-
-		unsigned int newMaxPC = mMaxPassengersCount + plane.GetMaxPassengersCount();
-		unsigned int boatPC = mPassengersCount;
-		unsigned int apPC = plane.GetPassengersCount();
-
-		Boatplane bp(newMaxPC);
-		size_t j = 0;
-		for (size_t i = 0; i != apPC + boatPC; ++i)
-		{
-			if (i < apPC)
-			{
-				bp.AddPassenger(new Person(plane.GetPassenger(i)->GetName().c_str(), plane.GetPassenger(i)->GetWeight()));
-			}
-			else
-			{
-				bp.AddPassenger(new Person(mPassengerList[j]->GetName().c_str(), mPassengerList[j]->GetWeight()));
-				++j;
-			}
-		}
-
-		this->~Boat();
-		plane.~Airplane();
-
-		return bp;
+		return Boatplane(&plane, this);
 	}
 
 	unsigned int Boat::GetMaxSpeed() const
