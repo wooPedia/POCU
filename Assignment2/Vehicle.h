@@ -46,7 +46,7 @@ namespace assignment2
 		unsigned int GetPassengersWeightSum() const;
 		unsigned int GetMovedDistanceKM() const;
 
-		Vehicle& operator=(const Vehicle& rhs);
+		Vehicle& operator=(const Vehicle& rhs); 
 
 	protected:
 		unsigned int mMaxPassengersCount; // max 100

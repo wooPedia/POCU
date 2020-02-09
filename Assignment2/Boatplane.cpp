@@ -56,7 +56,7 @@ namespace assignment2
 
 	unsigned int Boatplane::GetFlySpeed() const
 	{
-		double speed = 150 * exp((500 - mPassengersWeightSum) / static_cast<double>(300));
+		double speed = 150 * exp((500 - static_cast<int>(mPassengersWeightSum)) / 300.0);
 
 		if (static_cast<unsigned int>(speed + 0.5) != static_cast<unsigned int>(speed + 1))
 		{
@@ -82,54 +82,6 @@ namespace assignment2
 		}
 	}
 
-	//Boatplane& Boatplane::operator=(const Boatplane& rhs)
-	//{
-	//	// boatplane = boatplane이라면 딥카피하면 되는데 
-	//	// boatplane = a+b일 경우 어떻게 하나?
-	//	if (this == &rhs)
-	//	{
-	//		return *this;
-	//	}
-
-	//	assert(mPassengerList != nullptr);
-
-	//	for (size_t i = 0; i < mPassengersCount; ++i)
-	//	{
-	//		delete mPassengerList[i];
-	//		mPassengerList[i] = nullptr;
-	//	}
-
-	//	// 최대 탑승객 수가 동일하다면 재할당할 필요가 없습니다.
-	//	if (mMaxPassengersCount != rhs.mMaxPassengersCount)
-	//	{
-	//		delete[] mPassengerList;
-	//		mPassengerList = nullptr;
-	//	}
-
-	//	// 멤버 변수 set
-	//	mMaxPassengersCount = rhs.mMaxPassengersCount;
-	//	mPassengersCount = rhs.mPassengersCount;
-	//	mPassengersWeightSum = rhs.mPassengersWeightSum;
-	//	mBreakCount = 0;
-	//	mMovedDistanceKM = 0;
-
-	//	// nullptr이 아닐 경우 메모리를 재할당하지 않습니다. 
-	//	if (mPassengerList == nullptr)
-	//	{
-	//		mPassengerList = new const Person * [mMaxPassengersCount];
-	//	}
-
-	//	assert(mMaxPassengersCount >= mPassengersCount);
-	//	for (size_t i = 0; i < mPassengersCount; ++i)
-	//	{
-	//		mPassengerList[i] = new Person(rhs.mPassengerList[i]->GetName().c_str(), rhs.mPassengerList[i]->GetWeight());
-	//		assert(mPassengerList[i]->GetName() == rhs.mPassengerList[i]->GetName());
-	//		assert(mPassengerList[i]->GetWeight() == rhs.mPassengerList[i]->GetWeight());
-	//	}
-
-	//	return *this;
-	//}
-
 	void Boatplane::Move()
 	{
 		// Boatplane: 한 번 이동 후 세 번 쉽니다.
@@ -153,4 +105,47 @@ namespace assignment2
 			mbMovable = false;
 		}
 	}
+
+	//Boatplane& Boatplane::operator=(const Boatplane& rhs)
+	//{
+	//	// boatplane = boatplane이라면 딥카피하면 되는데 
+	//	// boatplane = a+b일 경우 어떻게 하나?
+	//	// 복사생성자가 호출되지 않도록 object를 반환할 순 있지만
+	//	// 할당연산자는 이미 존재하는 개체에 할당 시 무조건 호출됨
+	//	if (this == &rhs)
+	//	{
+	//		return *this;
+	//	}
+
+	//	assert(mPassengerList != nullptr);
+	//	for (size_t i = 0; i < mPassengersCount; ++i)
+	//	{
+	//		delete mPassengerList[i];
+	//		mPassengerList[i] = nullptr;
+	//	}
+
+	//	// 최대 탑승객 수가 동일하다면 재할당할 필요가 없습니다.
+	//	if (mMaxPassengersCount != rhs.mMaxPassengersCount)
+	//	{
+	//		delete[] mPassengerList;
+	//		mMaxPassengersCount = rhs.mMaxPassengersCount;
+	//		mPassengerList = new const Person * [mMaxPassengersCount];
+	//	}
+
+	//	// 멤버 변수 set
+	//	mPassengersCount = rhs.mPassengersCount;
+	//	mPassengersWeightSum = rhs.mPassengersWeightSum;
+	//	mBreakCount = 0;
+	//	mMovedDistanceKM = 0;
+
+	//	assert(mMaxPassengersCount >= mPassengersCount);
+	//	for (size_t i = 0; i < mPassengersCount; ++i)
+	//	{
+	//		mPassengerList[i] = new Person(*(rhs.mPassengerList[i]));
+	//		assert(mPassengerList[i]->GetName() == rhs.mPassengerList[i]->GetName());
+	//		assert(mPassengerList[i]->GetWeight() == rhs.mPassengerList[i]->GetWeight());
+	//	}
+
+	//	return *this;
+	//}
 }

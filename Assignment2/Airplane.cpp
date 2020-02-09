@@ -11,14 +11,6 @@ namespace assignment2
 
 	Airplane::~Airplane() {}
 
-	Boatplane Airplane::operator+(Boat& boat)
-	{
-		return Boatplane(this, &boat);
-	}
-
-
-	// 상속 받은 함수
-
 	unsigned int Airplane::GetMaxSpeed() const
 	{
 		unsigned int driveSpeed = GetDriveSpeed();
@@ -29,7 +21,7 @@ namespace assignment2
 
 	unsigned int Airplane::GetDriveSpeed() const
 	{
-		double speed = 4 * exp((400 - mPassengersWeightSum) / static_cast<double>(70));
+		double speed = 4 * exp((400 - static_cast<int>(mPassengersWeightSum)) / 70.0);
 
 		if (static_cast<unsigned int>(speed + 0.5) != static_cast<unsigned int>(speed + 1))
 		{
@@ -43,7 +35,7 @@ namespace assignment2
 
 	unsigned int Airplane::GetFlySpeed() const
 	{
-		double speed = 200 * exp((800 - mPassengersWeightSum) / static_cast<double>(500));
+		double speed = 200 * exp((800 - static_cast<int>(mPassengersWeightSum)) / 500.0);
 
 		if (static_cast<unsigned int>(speed + 0.5) != static_cast<unsigned int>(speed + 1))
 		{
@@ -77,5 +69,11 @@ namespace assignment2
 			mBreakCount = 0;
 			mbMovable = false;
 		}
+	}
+
+	Boatplane Airplane::operator+(Boat& boat)
+	{
+		// airplane과 boat의 최대 승객 수 합이 100을 초과하면?
+		return Boatplane(this, &boat);
 	}
 }

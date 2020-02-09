@@ -20,7 +20,7 @@ namespace assignment2
 			return 0;
 		}
 
-		double speed = (2 * static_cast<double>(mPassengersWeightSum) + 400) - pow(mPassengersWeightSum / static_cast<double>(15), 3);
+		double speed = (2.0 * mPassengersWeightSum + 400) - pow(mPassengersWeightSum / 15.0, 3);
 
 		if (static_cast<unsigned int>(speed + 0.5) != static_cast<unsigned int>(speed + 1))
 		{
