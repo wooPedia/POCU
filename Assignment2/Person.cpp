@@ -3,7 +3,8 @@
 namespace assignment2
 {
 	Person::Person(const char* name, unsigned int weight)
-		: mName(name), mWeight(weight) {}
+		: mName(name)
+		, mWeight(weight) {}
 
 	Person::Person(const Person& other)
 		: mName(other.mName)

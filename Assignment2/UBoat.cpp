@@ -8,6 +8,10 @@ namespace assignment2
 		: Vehicle(50)
 		, mMovedCount(0) {}
 
+	UBoat::UBoat(const UBoat& other)
+		: Vehicle(other)
+		, mMovedCount(other.mMovedCount) {}
+
 	UBoat::~UBoat() {}
 
 	unsigned int UBoat::GetMaxSpeed() const

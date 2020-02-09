@@ -30,27 +30,17 @@ namespace assignment2
 		: mMaxPassengersCount(other.mMaxPassengersCount)
 		, mPassengersCount(other.mPassengersCount)
 		, mPassengersWeightSum(other.mPassengersWeightSum)
-		, mBreakCount(0)
-		, mMovedDistanceKM(0)
-		, mbMovable(true)
+		, mBreakCount(other.mBreakCount)
+		, mMovedDistanceKM(other.mMovedDistanceKM)
+		, mbMovable(other.mbMovable)
 	{
-		// 복사 생성자
-		// other의 탑승자를 모두 새 운송수단으로 옮기고
-		// other의 탑승자는 모두 삭제한다.
-		// mPassengerList[i]에 other.mPassengerList[i]를 모두 옮길 순 있다.
-		// 그리고 other.mPassengerList의 모든 원소를 삭제할 순 있다.
-		//mPassengerList = other.mPassengerList; 
-
 		mPassengerList = new const Person * [mMaxPassengersCount];
-		//for (int i = 0; i != mCurPassengersCount; ++i)
-		//{
-		//	mPassengerList[i] = new Person(other.mPassengerList[i]->GetName().c_str(), other.mPassengerList[i]->GetWeight());
-		//}
-		//// other의 탑승자 초기화
-		//// other.mPassengerList는 사라짐
-		//other.~Vehicle();
-		//SetPassengersCount(other.GetPassengersCount());
-		//SetPassengersWeightSum(other.GetPassengersWeightSum());
+
+		assert(mPassengersCount <= mMaxPassengersCount);
+		for (size_t i = 0; i < mPassengersCount; ++i)
+		{
+			mPassengerList[i] = new Person(*(other.mPassengerList[i]));
+		}
 	}
 
 	Vehicle::~Vehicle()
@@ -64,6 +54,7 @@ namespace assignment2
 		mPassengerList = nullptr;
 
 		// 멤버 변수 set 보류
+		mMaxPassengersCount = 0;
 		mPassengersCount = 0;
 		mPassengersWeightSum = 0;
 		mBreakCount = 0;
@@ -138,5 +129,40 @@ namespace assignment2
 	unsigned int Vehicle::GetMovedDistanceKM() const
 	{
 		return mMovedDistanceKM;
+	}
+
+	Vehicle& Vehicle::operator=(const Vehicle& rhs)
+	{
+		if (this == &rhs)
+		{
+			return *this;
+		}
+		
+		for (size_t i = 0; i < mPassengersCount; ++i)
+		{
+			delete mPassengerList[i];
+		}
+
+		// 최대 탑승객 수가 동일하다면 재할당하지 않습니다.
+		if (mMaxPassengersCount != rhs.mMaxPassengersCount)
+		{
+			delete[] mPassengerList;
+			mMaxPassengersCount = rhs.mMaxPassengersCount;
+			mPassengerList = new const Person * [mMaxPassengersCount];
+		}
+
+		mPassengersCount = rhs.mPassengersCount;
+		mPassengersWeightSum = rhs.mPassengersWeightSum;
+		mBreakCount = rhs.mBreakCount;
+		mMovedDistanceKM = rhs.mMovedDistanceKM;
+		mbMovable = rhs.mbMovable;
+
+		assert(mPassengersCount <= mMaxPassengersCount);
+		for (size_t i = 0; i < mPassengersCount; ++i)
+		{
+			mPassengerList[i] = new Person(*(rhs.mPassengerList[i]));
+		}
+
+		return *this;
 	}
 }

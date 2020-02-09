@@ -8,6 +8,21 @@ namespace assignment2
 		, mMovedCount(0)
 		, mTrailer(nullptr) {}
 
+	Sedan::Sedan(const Sedan& other)
+		: Vehicle(other)
+		, mMovedCount(other.mMovedCount)
+		, mTrailer(nullptr)
+	{
+		if (other.mTrailer == nullptr)
+		{
+			return;
+		}
+		else
+		{
+			mTrailer = new Trailer(other.mTrailer->GetWeight());
+		}
+	}
+
 	Sedan::~Sedan() {}
 
 	unsigned int Sedan::GetMaxSpeed() const
@@ -40,34 +55,6 @@ namespace assignment2
 		{
 			return 300;
 		}
-	}
-
-	bool Sedan::AddTrailer(const Trailer* trailer)
-	{
-		if (trailer == nullptr)
-		{
-			return false;
-		}
-		if (mTrailer != nullptr)
-		{
-			return false;
-		}
-		
-		mTrailer = trailer;
-		return true;
-	}
-
-	bool Sedan::RemoveTrailer()
-	{
-		if (mTrailer == nullptr)
-		{
-			return false;
-		}
-
-		delete mTrailer;
-		mTrailer = nullptr;
-
-		return true;
 	}
 
 	void Sedan::Move()
@@ -109,5 +96,78 @@ namespace assignment2
 				mbMovable = false;
 			}
 		}
+	}
+
+	bool Sedan::AddTrailer(const Trailer* trailer)
+	{
+		if (trailer == nullptr)
+		{
+			return false;
+		}
+		if (mTrailer != nullptr)
+		{
+			return false;
+		}
+		
+		mTrailer = trailer;
+		return true;
+	}
+
+	bool Sedan::RemoveTrailer()
+	{
+		if (mTrailer == nullptr)
+		{
+			return false;
+		}
+
+		delete mTrailer;
+		mTrailer = nullptr;
+
+		return true;
+	}
+
+	Sedan& Sedan::operator=(const Sedan& rhs)
+	{
+		if (this == &rhs)
+		{
+			return *this;
+		}
+
+		if (mTrailer != nullptr)
+		{
+			delete mTrailer;
+		}
+
+		for (size_t i = 0; i < mPassengersCount; ++i)
+		{
+			delete mPassengerList[i];
+		}
+
+		// 최대 승객수가 동일하다면 재할당하지 않습니다.
+		if (mMaxPassengersCount != rhs.mMaxPassengersCount)
+		{
+			delete[] mPassengerList;
+			mMaxPassengersCount = rhs.mMaxPassengersCount;
+			mPassengerList = new const Person * [mMaxPassengersCount];
+		}
+
+		mPassengersCount = rhs.mPassengersCount;
+		mPassengersWeightSum = rhs.mPassengersWeightSum;
+		mBreakCount = rhs.mBreakCount;
+		mMovedDistanceKM = rhs.mMovedDistanceKM;
+		mbMovable = rhs.mbMovable;
+
+		assert(mPassengersCount <= mMaxPassengersCount);
+		for (size_t i = 0; i < mPassengersCount; ++i)
+		{
+			mPassengerList[i] = new Person(*(rhs.mPassengerList[i]));
+		}
+
+		if (rhs.mTrailer != nullptr)
+		{
+			mTrailer = new Trailer(rhs.mTrailer->GetWeight());
+		}
+
+		return *this;
 	}
 }

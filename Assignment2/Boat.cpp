@@ -7,12 +7,11 @@ namespace assignment2
 		: Vehicle(maxPassengersCount)
 		, mMovedCount(0) {}
 
-	Boat::~Boat() {}
+	Boat::Boat(const Boat& other)
+		: Vehicle(other)
+		, mMovedCount(other.mMovedCount) {}
 
-	Boatplane Boat::operator+(Airplane& plane)
-	{
-		return Boatplane(&plane, this);
-	}
+	Boat::~Boat() {}
 
 	unsigned int Boat::GetMaxSpeed() const
 	{
@@ -65,4 +64,17 @@ namespace assignment2
 			}
 		}
 	}
+
+	Boatplane Boat::operator+(Airplane& plane)
+	{
+		return Boatplane(&plane, this);
+	}
+
+	//Boat& Boat::operator=(const Boat& rhs)
+	//{
+	//	if (this == &rhs)
+	//	{
+	//		return *this;
+	//	}
+	//}
 }

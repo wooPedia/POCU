@@ -36,25 +36,12 @@ namespace assignment2
 			}
 		}
 
-		// - 승객 수를 변경하여 소멸자에서 각 원소에 대해서는 delete를 못하도록 합니다.
-		// 1. setter 함수 (이 함수에만 쓰임)
-		// 2. friend 함수 (빌드오류남)
+		// 승객 수를 변경하여 소멸자에서 각 원소에 대해서는 delete를 못하도록 합니다.
 		a->mPassengersCount = 0;
 		b->mPassengersCount = 0;
 		
 		a->~Airplane();
 		b->~Boat();
-	}
-
-	Boatplane::Boatplane(const Boatplane& other)
-		: Vehicle(other)
-	{
-		for (size_t i = 0; i != mPassengersCount; ++i)
-		{
-			mPassengerList[i] = new Person(other.mPassengerList[i]->GetName().c_str(), other.mPassengerList[i]->GetWeight());
-			assert(mPassengerList[i]->GetName() == other.mPassengerList[i]->GetName());
-			assert(mPassengerList[i]->GetWeight() == other.mPassengerList[i]->GetWeight());
-		}
 	}
 
 	Boatplane::~Boatplane() {}
@@ -95,51 +82,53 @@ namespace assignment2
 		}
 	}
 
-	Boatplane& Boatplane::operator=(const Boatplane& rhs)
-	{
-		if (this == &rhs)
-		{
-			return *this;
-		}
+	//Boatplane& Boatplane::operator=(const Boatplane& rhs)
+	//{
+	//	// boatplane = boatplane이라면 딥카피하면 되는데 
+	//	// boatplane = a+b일 경우 어떻게 하나?
+	//	if (this == &rhs)
+	//	{
+	//		return *this;
+	//	}
 
-		assert(mPassengerList != nullptr);
+	//	assert(mPassengerList != nullptr);
 
-		for (size_t i = 0; i < mPassengersCount; ++i)
-		{
-			delete mPassengerList[i];
-			mPassengerList[i] = nullptr;
-		}
+	//	for (size_t i = 0; i < mPassengersCount; ++i)
+	//	{
+	//		delete mPassengerList[i];
+	//		mPassengerList[i] = nullptr;
+	//	}
 
-		// 최대 탑승객 수가 동일하다면 재할당할 필요가 없습니다.
-		if (mMaxPassengersCount != rhs.mMaxPassengersCount)
-		{
-			delete[] mPassengerList;
-			mPassengerList = nullptr;
-		}
+	//	// 최대 탑승객 수가 동일하다면 재할당할 필요가 없습니다.
+	//	if (mMaxPassengersCount != rhs.mMaxPassengersCount)
+	//	{
+	//		delete[] mPassengerList;
+	//		mPassengerList = nullptr;
+	//	}
 
-		// 멤버 변수 set
-		mMaxPassengersCount = rhs.mMaxPassengersCount;
-		mPassengersCount = rhs.mPassengersCount;
-		mPassengersWeightSum = rhs.mPassengersWeightSum;
-		mBreakCount = 0;
-		mMovedDistanceKM = 0;
+	//	// 멤버 변수 set
+	//	mMaxPassengersCount = rhs.mMaxPassengersCount;
+	//	mPassengersCount = rhs.mPassengersCount;
+	//	mPassengersWeightSum = rhs.mPassengersWeightSum;
+	//	mBreakCount = 0;
+	//	mMovedDistanceKM = 0;
 
-		// nullptr이 아닐 경우 메모리를 재할당하지 않습니다. 
-		if (mPassengerList == nullptr)
-		{
-			mPassengerList = new const Person * [mMaxPassengersCount];
-		}
+	//	// nullptr이 아닐 경우 메모리를 재할당하지 않습니다. 
+	//	if (mPassengerList == nullptr)
+	//	{
+	//		mPassengerList = new const Person * [mMaxPassengersCount];
+	//	}
 
-		assert(mMaxPassengersCount >= mPassengersCount);
-		for (size_t i = 0; i < mPassengersCount; ++i)
-		{
-			mPassengerList[i] = new Person(rhs.mPassengerList[i]->GetName().c_str(), rhs.mPassengerList[i]->GetWeight());
-			assert(mPassengerList[i]->GetName() == rhs.mPassengerList[i]->GetName());
-			assert(mPassengerList[i]->GetWeight() == rhs.mPassengerList[i]->GetWeight());
-		}
+	//	assert(mMaxPassengersCount >= mPassengersCount);
+	//	for (size_t i = 0; i < mPassengersCount; ++i)
+	//	{
+	//		mPassengerList[i] = new Person(rhs.mPassengerList[i]->GetName().c_str(), rhs.mPassengerList[i]->GetWeight());
+	//		assert(mPassengerList[i]->GetName() == rhs.mPassengerList[i]->GetName());
+	//		assert(mPassengerList[i]->GetWeight() == rhs.mPassengerList[i]->GetWeight());
+	//	}
 
-		return *this;
-	}
+	//	return *this;
+	//}
 
 	void Boatplane::Move()
 	{

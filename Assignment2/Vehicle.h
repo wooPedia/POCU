@@ -39,11 +39,14 @@ namespace assignment2
 
 		bool AddPassenger(const Person* person);
 		bool RemovePassenger(unsigned int i);
+		
 		const Person* GetPassenger(unsigned int i) const;
 		unsigned int GetPassengersCount() const;
 		unsigned int GetMaxPassengersCount() const;
 		unsigned int GetPassengersWeightSum() const;
 		unsigned int GetMovedDistanceKM() const;
+
+		Vehicle& operator=(const Vehicle& rhs);
 
 	protected:
 		unsigned int mMaxPassengersCount; // max 100

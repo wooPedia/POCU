@@ -14,6 +14,7 @@ namespace assignment2
 		friend Boatplane::Boatplane(Airplane* a, Boat* b);
 	public:
 		Boat(unsigned int maxPassengersCount);
+		Boat(const Boat& other);
 		~Boat();
 
 		virtual unsigned int GetMaxSpeed() const;
@@ -21,6 +22,7 @@ namespace assignment2
 		virtual void Move();
 
 		Boatplane operator+(Airplane& plane);
+		//Boat& operator=(const Boat& rhs);
 
 	private:
 		unsigned int mMovedCount;

@@ -11,6 +11,7 @@ namespace assignment2
 	{
 	public:
 		Sedan();
+		Sedan(const Sedan& other);
 		~Sedan();
 
 		virtual unsigned int GetMaxSpeed() const;
@@ -19,6 +20,8 @@ namespace assignment2
 
 		bool AddTrailer(const Trailer* trailer);
 		bool RemoveTrailer();
+
+		Sedan& operator=(const Sedan& rhs);
 
 	private:
 		unsigned int mMovedCount;
