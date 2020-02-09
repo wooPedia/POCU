@@ -23,7 +23,11 @@ namespace assignment2
 		}
 	}
 
-	Sedan::~Sedan() {}
+	Sedan::~Sedan() 
+	{
+		delete mTrailer;
+		mTrailer = nullptr;
+	}
 
 	unsigned int Sedan::GetMaxSpeed() const
 	{
