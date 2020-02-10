@@ -45,7 +45,7 @@ namespace assignment2
 
 	Vehicle::~Vehicle()
 	{
-		deCreateAllocatedMemory();
+		deletePassengerList();
 	}
 
 	bool Vehicle::AddPassenger(const Person* person)

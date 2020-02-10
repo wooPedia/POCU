@@ -47,7 +47,7 @@ namespace assignment2
 		Vehicle& operator=(const Vehicle& rhs); 
 
 	protected:
-		inline void deCreateAllocatedMemory();
+		inline void deletePassengerList();
 
 		unsigned int mMaxPassengersCount; // max 100
 		unsigned int mPassengersCount;	  // current
@@ -60,7 +60,7 @@ namespace assignment2
 	};
 
 	// inline
-	void Vehicle::deCreateAllocatedMemory()
+	void Vehicle::deletePassengerList()
 	{
 		for (size_t i = 0; i != mPassengersCount; ++i)
 		{

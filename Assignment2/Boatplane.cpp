@@ -30,8 +30,8 @@ namespace assignment2
 		}
 		
 		// a와 b의 탑승객 리스트를 제거합니다.
-		a->deCreateAllocatedMemory();
-		b->deCreateAllocatedMemory();
+		a->deletePassengerList();
+		b->deletePassengerList();
 	}
 
 	Boatplane::~Boatplane() {}
