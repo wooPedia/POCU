@@ -27,21 +27,25 @@ namespace assignment2
 		{
 			if (i < a->GetPassengersCount())
 			{
-				mPassengerList[i] = a->GetPassenger(i);
+				//mPassengerList[i] = a->GetPassenger(i);
+				mPassengerList[i] = new Person(*(a->GetPassenger(i)));
 			}
 			else
 			{
-				mPassengerList[i] = b->GetPassenger(j);
+				//mPassengerList[i] = b->GetPassenger(j);
+				mPassengerList[i] = new Person(*(b->GetPassenger(j)));
 				++j;
 			}
 		}
 
 		// 승객 수를 변경하여 소멸자에서 각 원소에 대해서는 delete를 못하도록 합니다.
-		a->mPassengersCount = 0;
-		b->mPassengersCount = 0;
+		//a->mPassengersCount = 0;
+		//b->mPassengersCount = 0;
 		
 		a->~Airplane();
 		b->~Boat();
+		//delete a;
+		//delete b;
 	}
 
 	Boatplane::~Boatplane() {}

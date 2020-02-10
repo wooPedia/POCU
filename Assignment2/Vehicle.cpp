@@ -45,7 +45,7 @@ namespace assignment2
 
 	Vehicle::~Vehicle()
 	{
-		for (int i = 0; i != mPassengersCount; ++i)
+		for (size_t i = 0; i != mPassengersCount; ++i)
 		{
 			delete mPassengerList[i];
 			mPassengerList[i] = nullptr;
@@ -54,7 +54,7 @@ namespace assignment2
 		mPassengerList = nullptr;
 
 		// 멤버 변수 set 보류
-		mMaxPassengersCount = 0;
+		//mMaxPassengersCount = 0;
 		mPassengersCount = 0;
 		mPassengersWeightSum = 0;
 		mBreakCount = 0;
