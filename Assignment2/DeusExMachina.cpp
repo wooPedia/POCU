@@ -12,6 +12,8 @@ namespace assignment2
 	{
 		static bool bExist = false;
 
+		// 인스턴스가 존재하지 않는다면 생성하고, 
+		// 이미 존재한다면 기존 인스턴스를 반환합니다.
 		if (!bExist)
 		{
 			mInstance = new DeusExMachina;
@@ -73,20 +75,20 @@ namespace assignment2
 			return NULL;
 		}
 
-		size_t indexOfFurthestTravelled = 0;
+		size_t theFurthest = 0;
 		for (size_t i = 1; i < mManagedVehicleCount; ++i)
 		{
-			indexOfFurthestTravelled =
-				(mManagedVehicle[indexOfFurthestTravelled]->GetMovedDistanceKM() > mManagedVehicle[i]->GetMovedDistanceKM()) ?
-				indexOfFurthestTravelled : i;
+			theFurthest =
+				(mManagedVehicle[theFurthest]->GetMovedDistanceKM() > mManagedVehicle[i]->GetMovedDistanceKM()) ?
+				theFurthest : i;
 		}
 
 		// 움직인 운송 수단이 없다면 첫 번째 운송 수단을 반환합니다.
-		if (mManagedVehicle[indexOfFurthestTravelled]->GetMovedDistanceKM() == 0)
+		if (mManagedVehicle[theFurthest]->GetMovedDistanceKM() == 0)
 		{
 			return mManagedVehicle[0];
 		}
 
-		return mManagedVehicle[indexOfFurthestTravelled];
+		return mManagedVehicle[theFurthest];
 	}
 }

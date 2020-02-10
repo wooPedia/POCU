@@ -69,12 +69,4 @@ namespace assignment2
 	{
 		return Boatplane(&plane, this);
 	}
-
-	//Boat& Boat::operator=(const Boat& rhs)
-	//{
-	//	if (this == &rhs)
-	//	{
-	//		return *this;
-	//	}
-	//}
 }

@@ -45,21 +45,7 @@ namespace assignment2
 
 	Vehicle::~Vehicle()
 	{
-		for (size_t i = 0; i != mPassengersCount; ++i)
-		{
-			delete mPassengerList[i];
-			mPassengerList[i] = nullptr;
-		}
-		delete[] mPassengerList;
-		mPassengerList = nullptr;
-
-		// 멤버 변수 set 보류
-		//mMaxPassengersCount = 0;
-		mPassengersCount = 0;
-		mPassengersWeightSum = 0;
-		mBreakCount = 0;
-		mMovedDistanceKM = 0;
-		mbMovable = true;
+		deCreateAllocatedMemory();
 	}
 
 	bool Vehicle::AddPassenger(const Person* person)
@@ -165,4 +151,7 @@ namespace assignment2
 
 		return *this;
 	}
+
+	
+
 }

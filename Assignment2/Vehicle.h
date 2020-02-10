@@ -29,11 +29,9 @@ namespace assignment2
 	public:
 		Vehicle(unsigned int maxPassengersCount);
 		Vehicle(const Airplane& a, const Boat& b);
-		//Vehicle(const Boat& b, const Airplane& a);
 		Vehicle(const Vehicle& other);
 		virtual ~Vehicle();
 
-		// 모든 운송 수단 클래스는 최고 속도를 반환하는 함수를 정의해야 합니다.
 		virtual unsigned int GetMaxSpeed() const = 0;
 		virtual void Move() = 0;
 
@@ -49,6 +47,8 @@ namespace assignment2
 		Vehicle& operator=(const Vehicle& rhs); 
 
 	protected:
+		inline void deCreateAllocatedMemory();
+
 		unsigned int mMaxPassengersCount; // max 100
 		unsigned int mPassengersCount;	  // current
 		unsigned int mPassengersWeightSum;
@@ -58,4 +58,18 @@ namespace assignment2
 		unsigned int mMovedDistanceKM;  // 이동한 거리  
 		bool mbMovable;				    // 이동 가능 여부 
 	};
+
+	// inline
+	void Vehicle::deCreateAllocatedMemory()
+	{
+		for (size_t i = 0; i != mPassengersCount; ++i)
+		{
+			delete mPassengerList[i];
+			mPassengerList[i] = nullptr;
+		}
+		delete[] mPassengerList;
+		mPassengerList = nullptr;
+
+		mPassengersCount = 0;
+	}
 }

@@ -15,13 +15,8 @@ namespace assignment2
 		bool RemoveVehicle(unsigned int i);
 		const Vehicle* GetFurthestTravelled() const;
 
-		Vehicle* GetVehicle(unsigned int i) const
-		{
-			return mManagedVehicle[i];
-		}
-
 	private:
-		DeusExMachina();
+		DeusExMachina(); // ╫л╠шео
 
 		static DeusExMachina* mInstance;
 		Vehicle* mManagedVehicle[10] = { 0, };

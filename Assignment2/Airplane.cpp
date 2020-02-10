@@ -73,7 +73,6 @@ namespace assignment2
 
 	Boatplane Airplane::operator+(Boat& boat)
 	{
-		// airplane과 boat의 최대 승객 수 합이 100을 초과하면?
 		return Boatplane(this, &boat);
 	}
 }

@@ -22,7 +22,6 @@ namespace assignment2
 		virtual void Move();
 
 		Boatplane operator+(Airplane& plane);
-		//Boat& operator=(const Boat& rhs);
 
 	private:
 		unsigned int mMovedCount;

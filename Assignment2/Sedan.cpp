@@ -13,6 +13,7 @@ namespace assignment2
 		, mMovedCount(other.mMovedCount)
 		, mTrailer(nullptr)
 	{
+		// Trailer가 존재한다면 복사합니다.
 		if (other.mTrailer == nullptr)
 		{
 			return;
@@ -36,6 +37,7 @@ namespace assignment2
 	
 	unsigned int Sedan::GetDriveSpeed() const
 	{
+		// Trailer가 존재할 경우 Trailer 무게를 포함시킵니다.
 		unsigned int totalWeight = (mTrailer != nullptr) ?
 			mPassengersWeightSum + mTrailer->GetWeight() : mPassengersWeightSum;
 
