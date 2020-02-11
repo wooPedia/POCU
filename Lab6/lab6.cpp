@@ -6,10 +6,15 @@ using std::vector;
 
 namespace lab6
 {
-	struct Pair
+	class Pair
 	{
-		Pair(int value) : mValue(value), mFrequency(1) {}
+		friend class Frequency;
+	public:
+		Pair(int value) 
+			: mValue(value)
+			, mFrequency(1) {}
 
+	private:
 		int mValue;
 		size_t mFrequency;
 	};
