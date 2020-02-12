@@ -15,6 +15,7 @@ namespace lab6
 			, mFrequency(1) {}
 
 	private:
+		// unique한 value와 빈도수 
 		int mValue;
 		size_t mFrequency;
 	};
@@ -22,9 +23,12 @@ namespace lab6
 	class Frequency
 	{
 	public:
+
+		// value가 존재하면 빈도수를 증가시키고,
+		// 존재하지 않는다면 value, 1(frequency)을 쌍으로 추가합니다.
 		void CheckAndAddFrequency(int value)
 		{
-			for (auto& pair : mPairList)
+			for (Pair& pair : mPairList)
 			{
 				if (pair.mValue == value)
 				{
@@ -35,12 +39,13 @@ namespace lab6
 			mPairList.emplace_back(Pair(value));
 		}
 
+		// 빈도수가 가장 높은 값을 반환합니다.
 		int GetTheHighestFrequency() const
 		{
 			assert(!mPairList.empty());
 
 			Pair result = mPairList[0];
-			for (const auto& pair : mPairList)
+			for (const Pair& pair : mPairList)
 			{
 				result = (result.mFrequency > pair.mFrequency) ? result : pair;
 			}
@@ -60,7 +65,7 @@ namespace lab6
 		}
 
 		int sum = 0;
-		for (const auto& data : v)
+		for (const int& data : v)
 		{
 			sum += data;
 		}
@@ -76,7 +81,7 @@ namespace lab6
 		}
 
 		int min = v[0];
-		for (const auto& data : v)
+		for (const int& data : v)
 		{
 			min = (min < data) ? min : data;
 		}
@@ -92,7 +97,7 @@ namespace lab6
 		}
 
 		int max = v[0];
-		for (const auto& data : v)
+		for (const int& data : v)
 		{
 			max = (max > data) ? max : data;
 		}
@@ -132,22 +137,51 @@ namespace lab6
 		using vec_size = vector<int>::size_type;
 		using iter = vector<int>::iterator;
 
-		vec_size size = v.size();
-		if (v.empty() || size == 1)
+		if (v.empty() || v.size() == 1)
 		{
 			return;
 		}
 
-		for (vec_size i = 1; i < size; ++i)
+		/*
+		   ex) 1 3 5 7
+			-> 1 7 5 7    tmp:3
+			-> 1 7 5 
+			-> 3 1 7 5
+
+			-> 3 1 5 5    tmp:7
+			-> 3 1 5
+			-> 7 3 1 5     
+
+			-> 7 3 1 5    tmp:5
+			-> 7 3 1
+			-> 7 5 3 1
+
+			2번째 원소부터 비교
+
+			1. 3이 1보다 크다면 3을 tmp에 저장
+			2. 3 위치에 마지막 원소(7)로 덮어씌움
+			3. 마지막 원소를 삭제
+			4. 1 위치에 tmp를 삽입
+			5. 5와 1비교
+			...
+		*/
+
+		int tmp;
+		vec_size size = v.size();
+		for (vec_size i = 1; i != size; ++i)
 		{
 			for (vec_size j = 0; j != i; ++j)
 			{
 				if (v[i] > v[j])
 				{
-					v.insert(v.begin() + j, v[i]);
-					v.erase(v.begin() + i + 1);
+					tmp = v[i];
+					v[i] = v.back();
+					v.pop_back();
+					v.insert(v.begin() + j, tmp); // j 위치에 tmp를 삽입합니다.
+					break;
 				}
 			}
 		}
+
 	}
 }
