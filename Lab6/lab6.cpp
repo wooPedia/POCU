@@ -137,7 +137,9 @@ namespace lab6
 		using vec_size = vector<int>::size_type;
 		using iter = vector<int>::iterator;
 
-		if (v.empty() || v.size() == 1)
+		vec_size size = v.size();
+
+		if (size <= 1)
 		{
 			return;
 		}
@@ -167,7 +169,6 @@ namespace lab6
 		*/
 
 		int tmp;
-		vec_size size = v.size();
 		for (vec_size i = 1; i != size; ++i)
 		{
 			for (vec_size j = 0; j != i; ++j)
