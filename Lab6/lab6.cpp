@@ -175,7 +175,7 @@ namespace lab6
 				if (v[i] > v[j])
 				{
 					v.insert(v.begin() + j, v[i]); // j 위치에 v[i]를 삽입합니다.
-					v[i+1] = v.back();
+					v[i + 1] = v.back();
 					v.pop_back();
 					break;
 				}
