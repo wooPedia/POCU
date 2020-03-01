@@ -81,7 +81,6 @@ namespace assignment3
 			mStoredMin.push(number);
 		}
 
-		//mStack.push(number >= 0 ? number : number);
 		mStack.push(number);
 		mSum += number;
 		mExpSum += (number * number);

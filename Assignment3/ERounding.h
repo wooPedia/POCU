@@ -17,17 +17,14 @@
 	ex) 3번째 자리 100, 2번째 자리 10, ...
 */
 
-namespace assignment3
+enum class eRounding : int16_t
 {
-	enum class eRounding : int16_t
-	{
-		Four = 1000
-	};
+	Four = 1000
+};
 
 
-	// value에 대해 n번째 자리에서 반올림합니다.
-	double roundHalfUp(double value, eRounding n = eRounding::Four)
-	{
-		return std::round(value * static_cast<int>(n)) / static_cast<int>(n);
-	}
+// value에 대해 n번째 자리에서 반올림합니다.
+double roundHalfUp(double value, eRounding n = eRounding::Four)
+{
+	return std::round(value * static_cast<int>(n)) / static_cast<int>(n);
 }
