@@ -5,10 +5,10 @@
 #include <limits>
 #include <queue>
 
+#include "ERounding.h"
+
 namespace assignment3
 {
-	enum class eRounding : int16_t;
-
 	/*
 		===========================================
 					SmartQueue<T> 클래스
@@ -44,10 +44,6 @@ namespace assignment3
 		T findMax(std::queue<T> q) const;
 		T findMin(std::queue<T> q) const;
 		
-		// value에 대해 소수 넷째 자리 반올림 default
-		inline double roundHalfUp(double value, eRounding n = eRounding::Four) const;
-
-
 		std::queue<T> mQueue;
 		T mMax;
 		T mMin;
@@ -243,13 +239,5 @@ namespace assignment3
 
 		return min;
 	}
-
-	// value를 N번째 자리에서 반올림 후 반환합니다.
-	template <typename T>
-	double SmartQueue<T>::roundHalfUp(double value, eRounding n) const
-	{
-		return std::round(value * static_cast<int>(n)) / static_cast<int>(n);
-	}
-
 
 } // namespace

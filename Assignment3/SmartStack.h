@@ -5,23 +5,10 @@
 #include <limits>
 #include <stack>
 
+#include "ERounding.h"
+
 namespace assignment3
 {
-	/*
-		===========================================
-					enum eRounding 클래스
-		===========================================
-
-		소수점 아래 4번째 자리에서 반올림하기 위해 필요한 상수값입니다.
-		roundHalfUp 함수의 템플릿 인자로 사용됩니다.
-		ex) 3번째 자리 100, 2번째 자리 10, ...
-	*/
-	enum class eRounding : int16_t
-	{
-		Four = 1000
-	};
-
-
 	/*
 		===========================================
 					SmartStack<T> 클래스
@@ -53,10 +40,6 @@ namespace assignment3
 		bool Empty() const;
 
 	private:
-
-		// value에 대해 소수 넷째 자리 반올림 default
-		inline double roundHalfUp(double value, eRounding n = eRounding::Four) const;
-
 
 		std::stack<T> mStack;
 		std::stack<T> mStoredMax; // 최대값 기록 저장
@@ -239,21 +222,6 @@ namespace assignment3
 	bool SmartStack<T>::Empty() const
 	{
 		return mStack.empty();
-	}
-
-
-
-	/*
-		===========================================
-					private 멤버 함수
-		===========================================
-	*/
-
-	// value를 N번째 자리에서 반올림 후 반환합니다.
-	template <typename T>
-	double SmartStack<T>::roundHalfUp(double value, eRounding n) const
-	{
-		return std::round(value * static_cast<int>(n)) / static_cast<int>(n);
 	}
 
 } // namespace

@@ -3,12 +3,10 @@
 #include <cassert>
 #include <queue>
 
-#include "SmartStack.h"
+#include "ERounding.h"
 
 namespace assignment3
 {
-	enum class eRounding : int16_t;
-	
 	/*
 		===========================================
 					QueueStack<T> 클래스
@@ -44,10 +42,6 @@ namespace assignment3
 		// QueueStack에서 최대/최소값을 찾아 반환합니다.
 		T findMax(queueStack qs) const;
 		T findMin(queueStack qs) const;
-
-		// value에 대해 소수 넷째 자리 반올림 default
-		inline double roundHalfUp(double value, eRounding n = eRounding::Four) const;
-
 
 		queueStack mQueueStack;
 		size_t mMaxStackSize;
@@ -223,14 +217,6 @@ namespace assignment3
 		}
 
 		return min;
-	}
-
-
-	// value에 대해 소수 넷째 자리 반올림 default
-	template <typename T>
-	double QueueStack<T>::roundHalfUp(double value, eRounding n) const
-	{
-		return std::round(value * static_cast<int>(n)) / static_cast<int>(n);
 	}
 
 
