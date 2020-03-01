@@ -42,8 +42,7 @@ namespace assignment3
 		T findMin(std::queue<T> q) const;
 		
 		// value에 대해 소수 넷째 자리 반올림 default
-		template <eRounding N = eRounding::Four>
-		inline double roundHalfUp(double value) const;
+		inline double roundHalfUp(double value, eRounding n = eRounding::Four) const;
 
 
 		std::queue<T> mQueue;
@@ -244,10 +243,9 @@ namespace assignment3
 
 	// value를 N번째 자리에서 반올림 후 반환합니다.
 	template <typename T>
-	template <eRounding N>
-	double SmartQueue<T>::roundHalfUp(double value) const
+	double SmartQueue<T>::roundHalfUp(double value, eRounding n) const
 	{
-		return std::round(value * static_cast<int>(N)) / static_cast<int>(N);
+		return std::round(value * static_cast<int>(n)) / static_cast<int>(n);
 	}
 
 

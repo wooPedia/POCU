@@ -42,8 +42,7 @@ namespace assignment3
 		T findMin(queueStack qs) const;
 
 		// value에 대해 소수 넷째 자리 반올림 default
-		template <eRounding N = eRounding::Four>
-		inline double roundHalfUp(double value) const;
+		inline double roundHalfUp(double value, eRounding n = eRounding::Four) const;
 
 
 		queueStack mQueueStack;
@@ -225,10 +224,9 @@ namespace assignment3
 
 	// value에 대해 소수 넷째 자리 반올림 default
 	template <typename T>
-	template <eRounding N>
-	double QueueStack<T>::roundHalfUp(double value) const
+	double QueueStack<T>::roundHalfUp(double value, eRounding n) const
 	{
-		return std::round(value * static_cast<int>(N)) / static_cast<int>(N);
+		return std::round(value * static_cast<int>(n)) / static_cast<int>(n);
 	}
 
 
