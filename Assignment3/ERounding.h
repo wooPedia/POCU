@@ -1,6 +1,9 @@
 #pragma once
 
+#include <cassert>
+#include <cmath>
 #include <stdint.h>
+#include <limits>
 
 /*
 	===========================================
@@ -14,14 +17,17 @@
 	ex) 3번째 자리 100, 2번째 자리 10, ...
 */
 
-enum class eRounding : int16_t
+namespace assignment3
 {
-	Four = 1000
-};
+	enum class eRounding : int16_t
+	{
+		Four = 1000
+	};
 
 
-// value에 대해 n번째 자리에서 반올림합니다.
-double roundHalfUp(double value, eRounding n = eRounding::Four)
-{
-	return std::round(value * static_cast<int>(n)) / static_cast<int>(n);
+	// value에 대해 n번째 자리에서 반올림합니다.
+	double roundHalfUp(double value, eRounding n = eRounding::Four)
+	{
+		return std::round(value * static_cast<int>(n)) / static_cast<int>(n);
+	}
 }

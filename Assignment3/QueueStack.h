@@ -1,9 +1,9 @@
 #pragma once
 
-#include <cassert>
 #include <queue>
 
 #include "ERounding.h"
+#include "SmartStack.h"
 
 namespace assignment3
 {
@@ -18,7 +18,7 @@ namespace assignment3
 	class QueueStack
 	{
 	public:
-		using queueStack = std::queue<SmartStack<T>>;
+		using queueStack = std::queue<SmartStack<T> >;
 
 		QueueStack() = delete;
 		QueueStack(size_t maxStackSize);
