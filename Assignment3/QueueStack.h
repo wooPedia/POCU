@@ -7,11 +7,15 @@
 
 namespace assignment3
 {
+	enum class eRounding : int16_t;
+	
 	/*
 		===========================================
 					QueueStack<T> Å¬·¡½º
 		===========================================
 	*/
+
+
 	template <typename T>
 	class QueueStack
 	{

@@ -16,7 +16,7 @@ namespace assignment3
 		roundHalfUp 함수의 템플릿 인자로 사용됩니다.
 		ex) 3번째 자리 100, 2번째 자리 10, ...
 	*/
-	enum class eRounding
+	enum class eRounding : int16_t
 	{
 		Four = 1000
 	};

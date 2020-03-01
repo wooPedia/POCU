@@ -1,17 +1,20 @@
 #pragma once
 
 #include <cassert>
+#include <cmath>
+#include <limits>
 #include <queue>
 
 namespace assignment3
 {
+	enum class eRounding : int16_t;
 
 	/*
 		===========================================
 					SmartQueue<T> Å¬·¡½º
 		===========================================
 	*/
-
+	
 	template <typename T>
 	class SmartQueue
 	{
