@@ -2,7 +2,7 @@
 
 #include <queue>
 
-#include "ERounding.h"
+//#include "ERounding.h"
 
 namespace assignment3
 {
@@ -118,26 +118,10 @@ namespace assignment3
 	}
 
 	template <>
-	float SmartQueue<float>::GetMin() const
-	{
-		if (mQueue.empty())
-		{
-			return std::numeric_limits<float>::lowest();
-		}
-
-		return findMin(mQueue);
-	}
-
+	float SmartQueue<float>::GetMin() const;
+	
 	template <>
-	double SmartQueue<double>::GetMin() const
-	{
-		if (mQueue.empty())
-		{
-			return std::numeric_limits<double>::lowest();
-		}
-
-		return findMin(mQueue);
-	}
+	double SmartQueue<double>::GetMin() const;
 
 	template <typename T>
 	T SmartQueue<T>::GetSum() const

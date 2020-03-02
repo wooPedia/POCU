@@ -2,7 +2,7 @@
 
 #include <queue>
 
-#include "ERounding.h"
+//#include "ERounding.h"
 #include "SmartStack.h"
 
 namespace assignment3
@@ -125,27 +125,13 @@ namespace assignment3
 		return findMin(mQueueStack);
 	}
 
+	
 	template <>
-	float QueueStack<float>::GetMin() const
-	{
-		if (mQueueStack.front().Empty())
-		{
-			return std::numeric_limits<float>::lowest();
-		}
-
-		return findMin(mQueueStack);
-	}
+	float QueueStack<float>::GetMin() const;
 
 	template <>
-	double QueueStack<double>::GetMin() const
-	{
-		if (mQueueStack.front().Empty())
-		{
-			return std::numeric_limits<double>::lowest();
-		}
+	double QueueStack<double>::GetMin() const;
 
-		return findMin(mQueueStack);
-	}
 
 	template <typename T>
 	T QueueStack<T>::GetSum() const

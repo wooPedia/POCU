@@ -131,6 +131,8 @@ namespace assignment3
 		return mStoredMax.top();
 	}
 
+	
+
 	template <typename T>
 	T SmartStack<T>::GetMin() const
 	{
@@ -142,28 +144,11 @@ namespace assignment3
 		return mStoredMin.top();
 	}
 
-	template <>
-	float SmartStack<float>::GetMin() const
-	{
-		if (mStack.empty())
-		{
-			return std::numeric_limits<float>::lowest();
-		}
+	template <> 
+	float SmartStack<float>::GetMin() const;
 
-		return mStoredMin.top();
-	}
-
-	template <>
-	double SmartStack<double>::GetMin() const
-	{
-		if (mStack.empty())
-		{
-			return std::numeric_limits<double>::lowest();
-		}
-
-		return mStoredMin.top();
-	}
-
+	template <> 
+	double SmartStack<double>::GetMin() const;
 
 
 	template <typename T>
