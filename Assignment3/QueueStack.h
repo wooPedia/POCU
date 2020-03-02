@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cassert>
 #include <queue>
 
 //#include "ERounding.h"

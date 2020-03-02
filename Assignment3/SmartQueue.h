@@ -1,8 +1,9 @@
 #pragma once
 
+#include <cassert>
 #include <queue>
 
-//#include "ERounding.h"
+#include "ERounding.h"
 
 namespace assignment3
 {
@@ -145,7 +146,7 @@ namespace assignment3
 	{
 		// 비어있지 않을 경우에만 테스트합니다.
 		assert(!mQueue.empty());
-
+		
 		// 분산: 각 요소의 제곱의 합을 총개수로 나누고 평균의 제곱을 뺌
 		// 넷째 자리에서 반올림하여 반환합니다.
 

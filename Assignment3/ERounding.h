@@ -1,6 +1,5 @@
 #pragma once
 
-#include <cassert>
 #include <cmath>
 #include <stdint.h>
 #include <limits>
@@ -17,9 +16,6 @@
 	ex) 3번째 자리 100, 2번째 자리 10, ...
 */
 
-#ifndef ROUNDING
-#define ROUNDING
-
 namespace assignment3
 {
 	enum class eRounding : int16_t
@@ -32,5 +28,3 @@ namespace assignment3
 	// default: 4
 	double roundHalfUp(double value, eRounding n = eRounding::Four);
 }
-
-#endif // !define ROUNDING
