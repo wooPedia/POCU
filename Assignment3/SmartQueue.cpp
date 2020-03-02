@@ -10,6 +10,11 @@ namespace assignment3
 			return std::numeric_limits<float>::lowest();
 		}
 
+		if (!mStoredMin.empty())
+		{
+			return mStoredMin.back();
+		}
+
 		return findMin(mQueue);
 	}
 
@@ -19,6 +24,11 @@ namespace assignment3
 		if (mQueue.empty())
 		{
 			return std::numeric_limits<double>::lowest();
+		}
+
+		if (!mStoredMin.empty())
+		{
+			return mStoredMin.back();
 		}
 
 		return findMin(mQueue);

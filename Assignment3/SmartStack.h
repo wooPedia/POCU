@@ -61,6 +61,7 @@ namespace assignment3
 	{
 	}
 
+
 	template<typename T>
 	void SmartStack<T>::Push(T number)
 	{
@@ -133,7 +134,6 @@ namespace assignment3
 	}
 
 	
-
 	template <typename T>
 	T SmartStack<T>::GetMin() const
 	{
@@ -145,12 +145,15 @@ namespace assignment3
 		return mStoredMin.top();
 	}
 
+	//	======== float, double 타입에 대한 함수 템플릿 특수화 ========
+
 	template <> 
 	float SmartStack<float>::GetMin() const;
 
 	template <> 
 	double SmartStack<double>::GetMin() const;
 
+	// =============================================================
 
 	template <typename T>
 	T SmartStack<T>::GetSum() const

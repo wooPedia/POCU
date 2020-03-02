@@ -3,7 +3,6 @@
 #include <cassert>
 #include <queue>
 
-//#include "ERounding.h"
 #include "SmartStack.h"
 
 namespace assignment3
@@ -45,6 +44,9 @@ namespace assignment3
 		T findMin(queueStack qs) const;
 
 		queueStack mQueueStack;
+		std::queue<T> mStoredMax;
+		std::queue<T> mStoredMin;
+
 		size_t mMaxStackSize;
 		T mTotalSum;
 	};
@@ -67,11 +69,22 @@ namespace assignment3
 	template <typename T>
 	void QueueStack<T>::Enqueue(T number)
 	{
+
+		assert(mQueueStack.back().GetCount() <= mMaxStackSize);
+
 		// 사용중인 스택이 최대 크기라면 새 스택을 추가합니다.
 		if (mQueueStack.back().GetCount() == mMaxStackSize)
 		{
 			mQueueStack.push(SmartStack<T>());
 		}
+
+		//if (!mQueueStack.front().Empty())
+		//{
+
+		//}
+		//else
+		//{
+		//}
 
 		// 저장가능한 스택에 값을 추가합니다.
 		mQueueStack.back().Push(number);
@@ -92,8 +105,8 @@ namespace assignment3
 	{
 		assert(!mQueueStack.front().Empty());
 
-		T retValue = mQueueStack.front().Pop();
-		mTotalSum -= retValue;
+		T front = mQueueStack.front().Pop();
+		mTotalSum -= front;
 		
 		// 첫 스택이 비었다면 삭제합니다.
 		if (mQueueStack.front().Empty())
@@ -101,7 +114,7 @@ namespace assignment3
 			mQueueStack.pop();
 		}
 
-		return retValue;
+		return front;
 	}
 
 	template <typename T>
@@ -126,13 +139,16 @@ namespace assignment3
 		return findMin(mQueueStack);
 	}
 
-	
+
+	//	======== float, double 타입에 대한 함수 템플릿 특수화 ========
+
 	template <>
 	float QueueStack<float>::GetMin() const;
 
 	template <>
 	double QueueStack<double>::GetMin() const;
 
+	// =============================================================
 
 	template <typename T>
 	T QueueStack<T>::GetSum() const

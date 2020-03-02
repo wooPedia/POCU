@@ -43,8 +43,8 @@ namespace assignment3
 		T findMin(std::queue<T> q) const;
 		
 		std::queue<T> mQueue;
-		T mMax;
-		T mMin;
+		std::queue<T> mStoredMax;
+		std::queue<T> mStoredMin;
 		T mSum;
 		T mExpSum;
 	};
@@ -60,18 +60,34 @@ namespace assignment3
 	SmartQueue<T>::SmartQueue()
 		: mSum(0)
 		, mExpSum(0)
-		, mMax(0)
-		, mMin(0)
 	{
 	}
 
 	template <typename T>
 	void SmartQueue<T>::Enqueue(T number)
 	{
+		if (!mQueue.empty())
+		{
+			if (number >= mStoredMax.back())
+			{
+				mStoredMax.push(number);
+			}
+			else if(number <= mStoredMin.back())
+			{
+				mStoredMin.push(number);
+			}
+		}
+		else
+		{
+			mStoredMax.push(number);
+			mStoredMin.push(number);
+		}
+
 		mQueue.push(number);
 		mSum += number;
 		mExpSum += (number * number);
 	}
+
 
 	template <typename T>
 	T SmartQueue<T>::Peek()
@@ -82,6 +98,7 @@ namespace assignment3
 		return mQueue.front();
 	}
 
+
 	template <typename T>
 	T SmartQueue<T>::Dequeue()
 	{
@@ -89,9 +106,19 @@ namespace assignment3
 		assert(!mQueue.empty());
 
 		const T front = mQueue.front();
-		mQueue.pop();
 		mSum -= front;
 		mExpSum -= (front * front);
+		mQueue.pop();
+
+		if (!mStoredMax.empty() && front == mStoredMax.front())
+		{
+			mStoredMax.pop();
+		}
+		if (!mStoredMin.empty() &&  front == mStoredMin.front())
+		{
+			mStoredMin.pop();
+		}
+
 
 		return front;
 	}
@@ -102,6 +129,11 @@ namespace assignment3
 		if (mQueue.empty())
 		{
 			return std::numeric_limits<T>::min();
+		}
+
+		if (!mStoredMax.empty())
+		{
+			return mStoredMax.back();
 		}
 
 		return findMax(mQueue);
@@ -115,14 +147,23 @@ namespace assignment3
 			return std::numeric_limits<T>::max();
 		}
 
+		if (!mStoredMin.empty())
+		{
+			return mStoredMin.back();
+		}
+
 		return findMin(mQueue);
 	}
+
+	//	======== float, double 타입에 대한 함수 템플릿 특수화 ========
 
 	template <>
 	float SmartQueue<float>::GetMin() const;
 	
 	template <>
 	double SmartQueue<double>::GetMin() const;
+
+	// =============================================================
 
 	template <typename T>
 	T SmartQueue<T>::GetSum() const
