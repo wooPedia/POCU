@@ -46,8 +46,8 @@ namespace assignment3
 		// QueueStack에서 최대/최소값을 찾아 반환합니다.
 		//T findMax(queueStack qs) const;
 		//T findMin(queueStack qs) const;
-		void reArrangeMaxHeap(queueStack qs);
-		void reArrangeMinHeap(queueStack qs);
+		void rearrangeMaxHeap(queueStack qs);
+		void rearrangeMinHeap(queueStack qs);
 
 		queueStack mQueueStack;
 		std::priority_queue<T> mMaxHeap;
@@ -75,7 +75,6 @@ namespace assignment3
 	template <typename T>
 	void QueueStack<T>::Enqueue(T number)
 	{
-
 		assert(mQueueStack.back().GetCount() <= mMaxStackSize);
 
 		// 사용중인 스택이 최대 크기라면 새 스택을 추가합니다.
@@ -136,11 +135,11 @@ namespace assignment3
 			// 복사로 전달
 			// 현재 최댓값이 바뀐다면 최댓값을 담고있는 큐를 재정렬하여
 			// 최댓값을 갱신합니다.
-			reArrangeMaxHeap(mQueueStack); 
+			rearrangeMaxHeap(mQueueStack); 
 		}
 		else if (front == mMinHeap.top())
 		{
-			reArrangeMinHeap(mQueueStack);
+			rearrangeMinHeap(mQueueStack);
 		}
 
 		return front;
@@ -266,8 +265,9 @@ namespace assignment3
 	//}
 
 	template <typename T>
-	void QueueStack<T>::reArrangeMaxHeap(queueStack qs)
+	void QueueStack<T>::rearrangeMaxHeap(queueStack qs)
 	{
+		mMaxHeap = std::priority_queue<T>();
 		while (!qs.empty())
 		{
 			mMaxHeap.push(qs.front().GetMax());
@@ -276,8 +276,9 @@ namespace assignment3
 	}
 
 	template <typename T>
-	void QueueStack<T>::reArrangeMinHeap(queueStack qs)
+	void QueueStack<T>::rearrangeMinHeap(queueStack qs)
 	{
+		mMinHeap = std::priority_queue<T, std::vector<T>, greater<T> >();
 		while (!qs.empty())
 		{
 			mMinHeap.push(qs.front().GetMin());
