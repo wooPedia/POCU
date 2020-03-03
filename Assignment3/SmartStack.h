@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <stack>
+#include <type_traits>
 
 #include "ERounding.h"
 
@@ -127,7 +128,14 @@ namespace assignment3
 	{
 		if (mStack.empty())
 		{
-			return std::numeric_limits<T>::min();
+			if (std::is_floating_point<T>::value)
+			{
+				return std::numeric_limits<T>::lowest();
+			}
+			else 
+			{
+				return std::numeric_limits<T>::min();
+			}
 		}
 
 		return mStoredMax.top();
@@ -145,15 +153,6 @@ namespace assignment3
 		return mStoredMin.top();
 	}
 
-	//	======== float, double 타입에 대한 함수 템플릿 특수화 ========
-
-	template <> 
-	float SmartStack<float>::GetMin() const;
-
-	template <> 
-	double SmartStack<double>::GetMin() const;
-
-	// =============================================================
 
 	template <typename T>
 	T SmartStack<T>::GetSum() const

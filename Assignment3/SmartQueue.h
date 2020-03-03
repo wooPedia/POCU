@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <queue>
+#include <type_traits>
 
 #include "ERounding.h"
 
@@ -72,7 +73,7 @@ namespace assignment3
 			{
 				mStoredMax.push(number);
 			}
-			else if(number <= mStoredMin.back())
+			else if (number <= mStoredMin.back())
 			{
 				mStoredMin.push(number);
 			}
@@ -128,7 +129,14 @@ namespace assignment3
 	{
 		if (mQueue.empty())
 		{
-			return std::numeric_limits<T>::min();
+			if (std::is_floating_point<T>::value)
+			{
+				return std::numeric_limits<T>::lowest();
+			}
+			else
+			{
+				return std::numeric_limits<T>::min();
+			}
 		}
 
 		if (!mStoredMax.empty())
@@ -154,16 +162,6 @@ namespace assignment3
 
 		return findMin(mQueue);
 	}
-
-	//	======== float, double 타입에 대한 함수 템플릿 특수화 ========
-
-	template <>
-	float SmartQueue<float>::GetMin() const;
-	
-	template <>
-	double SmartQueue<double>::GetMin() const;
-
-	// =============================================================
 
 	template <typename T>
 	T SmartQueue<T>::GetSum() const
