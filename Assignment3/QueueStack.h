@@ -20,6 +20,9 @@ namespace assignment3
 	{
 	public:
 		using queueStack = std::queue<SmartStack<T> >;
+		using maxHeap = std::priority_queue<T>;
+		using minHeap = std::priority_queue<T, std::vector<T>, std::greater<T> >;
+
 
 		QueueStack() = delete;
 		QueueStack(size_t maxStackSize);
@@ -50,8 +53,8 @@ namespace assignment3
 		void rearrangeMinHeap(queueStack qs);
 
 		queueStack mQueueStack;
-		std::priority_queue<T> mMaxHeap;
-		std::priority_queue<T, std::vector<T>, std::greater<T> > mMinHeap;
+		maxHeap mMaxHeap;
+		minHeap mMinHeap;
 
 		size_t mMaxStackSize;
 		T mTotalSum;
@@ -267,7 +270,7 @@ namespace assignment3
 	template <typename T>
 	void QueueStack<T>::rearrangeMaxHeap(queueStack qs)
 	{
-		mMaxHeap = std::priority_queue<T>();
+		mMaxHeap = maxHeap();
 		while (!qs.empty())
 		{
 			mMaxHeap.push(qs.front().GetMax());
@@ -278,7 +281,7 @@ namespace assignment3
 	template <typename T>
 	void QueueStack<T>::rearrangeMinHeap(queueStack qs)
 	{
-		mMinHeap = std::priority_queue<T, std::vector<T>, greater<T> >();
+		mMinHeap = minHeap();
 		while (!qs.empty())
 		{
 			mMinHeap.push(qs.front().GetMin());
