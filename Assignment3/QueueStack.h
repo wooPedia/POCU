@@ -19,7 +19,8 @@ namespace assignment3
 	class QueueStack
 	{
 	public:
-		using queueStack = std::queue<SmartStack<T> >;
+		using queueStack2 = std::queue<SmartStack<T> >;
+		using queueStack = std::queue<std::stack<T> >;
 		using maxHeap = std::priority_queue<T>;
 		using minHeap = std::priority_queue<T, std::vector<T>, std::greater<T> >;
 
@@ -31,24 +32,23 @@ namespace assignment3
 		QueueStack& operator=(const QueueStack& rhs) = default;
 
 		void Enqueue(T number);
-		T Peek() const;
+		inline T Peek() const;
 		T Dequeue();
-		
+
 		T GetMax() const;
 		T GetMin() const;
 		inline T GetSum() const;
-		double GetAverage() const;
+		inline double GetAverage() const;
 		inline size_t GetCount() const;
-		size_t GetStackCount() const; 
+		inline size_t GetStackCount() const;
 
 		// 추가한 함수
-		bool Empty() const;
+		inline bool Empty() const;
 
 	private:
 
 		// QueueStack에서 최대/최소값을 찾아 반환합니다.
-		//T findMax(queueStack qs) const;
-		//T findMin(queueStack qs) const;
+		//void rearrangeMaxHeap(queueStack& qs);
 		void rearrangeMaxHeap(queueStack qs);
 		void rearrangeMinHeap(queueStack qs);
 
@@ -72,39 +72,58 @@ namespace assignment3
 		: mMaxStackSize(maxStackSize)
 		, mTotalSum(0)
 	{
-		mQueueStack.push(SmartStack<T>());
+		//mQueueStack.push(SmartStack<T>());
+		mQueueStack.push(std::stack<T>());
 	}
 
 	template <typename T>
 	void QueueStack<T>::Enqueue(T number)
 	{
 		// 사용중인 스택이 비었거나 최대 크기라면 새 스택을 추가합니다.
-		if (mQueueStack.empty() || mQueueStack.back().GetCount() == mMaxStackSize)
+		//if (mQueueStack.empty() || mQueueStack.back().GetCount() == mMaxStackSize)
+		//{
+		//	mQueueStack.push(SmartStack<T>());
+		//}
+
+		//// 첫 Euqueue가 아닐 경우
+		//if (!mQueueStack.front().Empty())
+		//{
+		//	if (number >= mMaxHeap.top())
+		//	{
+		//		mMaxHeap.push(number);
+		//	}
+		//	else if (number <= mMinHeap.top())
+		//	{
+		//		mMinHeap.push(number);
+		//	}
+		//}
+		//else
+		//{
+		//	mMaxHeap.push(number);
+		//	mMinHeap.push(number);
+		//}
+
+
+		//// 저장가능한 스택에 값을 추가합니다.
+		//mQueueStack.back().Push(number);
+		//mTotalSum += number;
+
+		if (mQueueStack.empty() || mQueueStack.back().size() == mMaxStackSize)
 		{
-			mQueueStack.push(SmartStack<T>());
+			mQueueStack.push(std::stack<T>());
 		}
 
-		// 첫 Euqueue가 아닐 경우
-		if (!mQueueStack.front().Empty())
+		if (mQueueStack.front().size() == mMaxStackSize)
 		{
-			if (number >= mMaxHeap.top())
-			{
-				mMaxHeap.push(number);
-			}
-			else if (number <= mMinHeap.top())
-			{
-				mMinHeap.push(number);
-			}
+			mQueueStack.back().push(number);
 		}
 		else
 		{
-			mMaxHeap.push(number);
-			mMinHeap.push(number);
+			mQueueStack.front().push(number);
 		}
 
-
-		// 저장가능한 스택에 값을 추가합니다.
-		mQueueStack.back().Push(number);
+		mMaxHeap.push(number);
+		mMinHeap.push(number);
 		mTotalSum += number;
 	}
 
@@ -112,33 +131,57 @@ namespace assignment3
 	template <typename T>
 	T QueueStack<T>::Peek() const
 	{
-		assert(!mQueueStack.front().Empty());
+		//assert(!mQueueStack.front().Empty());
+		assert(!mQueueStack.front().empty());
 
-		return mQueueStack.front().Peek();
+		//return mQueueStack.front().Peek();
+		return mQueueStack.front().top();
 	}
 
 	template <typename T>
 	T QueueStack<T>::Dequeue()
 	{
-		assert(!mQueueStack.front().Empty());
+		//assert(!mQueueStack.front().Empty());
 
-		T front = mQueueStack.front().Pop();
+		//T front = mQueueStack.front().popForQueueStack();
+		//mTotalSum -= front;
+
+		//// 첫 스택이 비었다면 삭제합니다.
+		//if (mQueueStack.front().Empty())
+		//{
+		//	mQueueStack.pop();
+		//}
+
+		//if (front == mMaxHeap.top())
+		//{
+		//	// 복사로 전달
+		//	// 현재 최댓값이 바뀐다면 최댓값을 담고있는 우선순위 큐를 재정렬하여
+		//	// 최댓값을 갱신합니다.
+		//	rearrangeMaxHeap(mQueueStack);
+		//}
+		//else if (front == mMinHeap.top())
+		//{
+		//	rearrangeMinHeap(mQueueStack);
+		//}
+
+		//return front;
+
+		assert(!mQueueStack.front().empty());
+
+		T front = mQueueStack.front().top();
+		mQueueStack.front().pop();
 		mTotalSum -= front;
 
-		// 첫 스택이 비었다면 삭제합니다.
-		if (mQueueStack.front().Empty())
+		if (mQueueStack.front().empty())
 		{
 			mQueueStack.pop();
 		}
 
 		if (front == mMaxHeap.top())
 		{
-			// 복사로 전달
-			// 현재 최댓값이 바뀐다면 최댓값을 담고있는 우선순위 큐를 재정렬하여
-			// 최댓값을 갱신합니다.
-			rearrangeMaxHeap(mQueueStack); 
+			rearrangeMaxHeap(mQueueStack);
 		}
-		else if (front == mMinHeap.top())
+		if (front == mMinHeap.top())
 		{
 			rearrangeMinHeap(mQueueStack);
 		}
@@ -149,7 +192,7 @@ namespace assignment3
 	template <typename T>
 	T QueueStack<T>::GetMax() const
 	{
-		if (mQueueStack.empty() || mQueueStack.front().Empty())
+		if (mQueueStack.empty() || mQueueStack.front().empty())
 		{
 			if (std::is_floating_point<T>::value)
 			{
@@ -168,7 +211,7 @@ namespace assignment3
 	template <typename T>
 	T QueueStack<T>::GetMin() const
 	{
-		if (mQueueStack.empty() || mQueueStack.front().Empty())
+		if (mQueueStack.empty() || mQueueStack.front().empty())
 		{
 			return std::numeric_limits<T>::max();
 		}
@@ -186,7 +229,7 @@ namespace assignment3
 	template <typename T>
 	double QueueStack<T>::GetAverage() const
 	{
-		assert(!mQueueStack.front().Empty());
+		assert(!mQueueStack.front().empty());
 
 		double tmp = mTotalSum / (GetCount() + 0.0);
 		return roundHalfUp(tmp);
@@ -195,9 +238,16 @@ namespace assignment3
 	template <typename T>
 	size_t QueueStack<T>::GetCount() const
 	{
-		assert(!mQueueStack.empty());
-
-		return (mQueueStack.size() - 1) * mMaxStackSize + mQueueStack.back().GetCount();
+		if (mQueueStack.size() >= 2)
+		{
+			//return mQueueStack.front().GetCount() + mQueueStack.back().GetCount() + (mQueueStack.size() - 2) * mMaxStackSize;
+			return mQueueStack.front().size() + mQueueStack.back().size() + (mQueueStack.size() - 2) * mMaxStackSize;
+		}
+		else
+		{
+			//return !mQueueStack.empty() ? mQueueStack.front().GetCount() : 0;
+			return !mQueueStack.empty() ? mQueueStack.front().size() : 0;
+		}
 	}
 
 	template <typename T>
@@ -218,60 +268,21 @@ namespace assignment3
 		===========================================
 	*/
 
-	//template <typename T>
-	//T QueueStack<T>::findMax(queueStack qs) const
-	//{
-	//	//T max = qs.front().GetMax();
-	//	//qs.pop();
-
-	//	//while (!qs.empty())
-	//	//{
-	//	//	if (qs.front().GetMax() > max)
-	//	//	{
-	//	//		max = qs.front().GetMax();
-	//	//	}
-	//	//	qs.pop();
-	//	//}
-
-	//	//return max;
-	//	
-	//	// qs.front().Peek() 이 
-
-	//	std::priority_queue<T> pq;
-	//	while (!qs.empty())
-	//	{
-	//		pq.push(qs.front().GetMax());
-	//		qs.pop();
-	//	}
-	//	
-	//	return pq.top();
-	//}
-
-	//template <typename T>
-	//T QueueStack<T>::findMin(queueStack qs) const
-	//{
-	//	T min = qs.front().GetMin();
-	//	qs.pop();
-
-	//	while (!qs.empty())
-	//	{
-	//		if (qs.front().GetMin() < min)
-	//		{
-	//			min = qs.front().GetMin();
-	//		}
-	//		qs.pop();
-	//	}
-
-	//	return min;
-	//}
-
 	template <typename T>
 	void QueueStack<T>::rearrangeMaxHeap(queueStack qs)
 	{
 		mMaxHeap = maxHeap();
+		T tmp;
 		while (!qs.empty())
 		{
-			mMaxHeap.push(qs.front().GetMax());
+			//mMaxHeap.push(qs.front().GetMax());
+			//qs.pop();
+			while(!qs.front().empty())
+			{
+				tmp = qs.front().top();
+				qs.front().pop();
+				mMaxHeap.push(tmp);
+			}
 			qs.pop();
 		}
 	}
@@ -280,12 +291,20 @@ namespace assignment3
 	void QueueStack<T>::rearrangeMinHeap(queueStack qs)
 	{
 		mMinHeap = minHeap();
+		T tmp;
 		while (!qs.empty())
 		{
-			mMinHeap.push(qs.front().GetMin());
+			//mMinHeap.push(qs.front().GetMin());
+			//qs.pop();
+			while(!qs.front().empty())
+			{
+				tmp = qs.front().top();
+				qs.front().pop();
+				mMinHeap.push(tmp);
+			}
 			qs.pop();
 		}
 	}
 
-	
+
 } // namespace

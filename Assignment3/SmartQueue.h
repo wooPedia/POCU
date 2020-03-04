@@ -27,33 +27,27 @@ namespace assignment3
 		SmartQueue& operator=(const SmartQueue& rhs) = default;
 
 		void Enqueue(T number);
-		T Peek();
+		inline T Peek();
 		T Dequeue();
 
 		T GetMax() const;
 		T GetMin() const;
 		inline T GetSum() const;
-		double GetAverage() const;
-		double GetVariance() const;
-		double GetStandardDeviation() const;
+		inline double GetAverage() const;
+		inline double GetVariance() const;
+		inline double GetStandardDeviation() const;
 		inline size_t GetCount() const;
 
 		// 추가한 함수
-		bool Empty() const;
+		inline bool Empty() const;
 
 	private:
-		// 큐에서 최대/최소값을 찾아 반환합니다.
-		T findMax(std::queue<T> q) const;
-		T findMin(std::queue<T> q) const;
-
 		void rearrangeMaxHeap(std::queue<T> q);
 		void rearrangeMinHeap(std::queue<T> q);
 
 		std::queue<T> mQueue;
 		maxHeap mMaxHeap;
 		minHeap mMinHeap;
-		//std::queue<T> mStoredMax;
-		//std::queue<T> mStoredMin;
 		T mSum;
 		T mExpSum;
 	};
@@ -220,44 +214,6 @@ namespace assignment3
 					private 멤버 함수
 		===========================================
 	*/
-
-	template <typename T>
-	T SmartQueue<T>::findMax(std::queue<T> q) const
-	{
-		T max = q.front();
-		q.pop();
-
-		while (!q.empty())
-		{
-			if (q.front() > max)
-			{
-				max = q.front();
-			}
-			q.pop();
-		}
-
-		return max;
-	}
-
-	template <typename T>
-	T SmartQueue<T>::findMin(std::queue<T> q) const
-	{
-		// 첫 요소로 min을 초기화 후 두 번째 요소부터 비교합니다.
-		T min = q.front();
-		q.pop();
-
-		while (!q.empty())
-		{
-			if (q.front() < min)
-			{
-				min = q.front();
-			}
-			q.pop();
-		}
-
-		return min;
-	}
-	
 
 	template <typename T>
 	void SmartQueue<T>::rearrangeMaxHeap(std::queue<T> q)

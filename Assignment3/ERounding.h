@@ -26,5 +26,8 @@ namespace assignment3
 
 	// value에 대해 n번째 자리에서 반올림합니다.
 	// default: 4
-	double roundHalfUp(double value, eRounding n = eRounding::Four);
+	inline double roundHalfUp(double value, eRounding n = eRounding::Four)
+	{
+		return std::round(value * static_cast<int>(n)) / static_cast<int>(n);
+	}
 }
