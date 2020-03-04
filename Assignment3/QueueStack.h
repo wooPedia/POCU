@@ -78,10 +78,8 @@ namespace assignment3
 	template <typename T>
 	void QueueStack<T>::Enqueue(T number)
 	{
-		assert(mQueueStack.back().GetCount() <= mMaxStackSize);
-
-		// 사용중인 스택이 최대 크기라면 새 스택을 추가합니다.
-		if (mQueueStack.back().GetCount() == mMaxStackSize)
+		// 사용중인 스택이 비었거나 최대 크기라면 새 스택을 추가합니다.
+		if (mQueueStack.empty() || mQueueStack.back().GetCount() == mMaxStackSize)
 		{
 			mQueueStack.push(SmartStack<T>());
 		}
@@ -136,7 +134,7 @@ namespace assignment3
 		if (front == mMaxHeap.top())
 		{
 			// 복사로 전달
-			// 현재 최댓값이 바뀐다면 최댓값을 담고있는 큐를 재정렬하여
+			// 현재 최댓값이 바뀐다면 최댓값을 담고있는 우선순위 큐를 재정렬하여
 			// 최댓값을 갱신합니다.
 			rearrangeMaxHeap(mQueueStack); 
 		}
