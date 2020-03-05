@@ -23,10 +23,10 @@ namespace lab7
 		// 두 벡터 중 하나 이상 끝에 도달할 때 까지 반복합니다.
 		while (keysIter != keys.end() && valuesIter != values.end())
 		{
-			pair = m.insert(std::pair<K, V>(*keysIter, *valuesIter));
+			bPair = m.insert(std::pair<K, V>(*keysIter, *valuesIter));
 
 			// insert가 성공할 경우
-			if (pair.second)
+			if (bPair.second)
 			{
 				++valuesIter;
 			}
