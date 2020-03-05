@@ -12,15 +12,13 @@ namespace lab7
 	{
 		static_assert(std::is_fundamental<K>::value && std::is_fundamental<V>::value, "Type K, V must be primitive type");
 
-		// vector keys, values를 합쳐 map<K, V>를 만든다.
-		// K와 V는 기본 자료형만 사용한다.
-		// 키가 중복될 경우 첫 번째 키만 허용한다.
+		// keys와 values를 map으로 합쳐 반환합니다.
+		// 키가 중복될 경우 첫 번째 키만 허용합니다.
 
 		std::map<K, V> m;
-
 		auto keysIter = keys.cbegin();
 		auto valuesIter = values.cbegin();
-		std::pair<typename std::map<K, V>::iterator, bool> pair;
+		std::pair<typename std::map<K, V>::iterator, bool> bPair;
 
 		// 두 벡터 중 하나 이상 끝에 도달할 때 까지 반복합니다.
 		while (keysIter != keys.end() && valuesIter != values.end())
@@ -43,7 +41,7 @@ namespace lab7
 	{
 		static_assert(std::is_fundamental<K>::value && std::is_fundamental<V>::value, "Type K, V must be primitive type");
 
-		// map의 keys를 모두 벡터에 저장하여 반환
+		// map의 keys를 모두 벡터에 저장하여 반환합니다.
 
 		std::vector<K> v;
 		v.reserve(m.size());
@@ -61,7 +59,7 @@ namespace lab7
 	{
 		static_assert(std::is_fundamental<K>::value && std::is_fundamental<V>::value, "Type K, V must be primitive type");
 
-		// map의 values를 모두 벡터에 저장하여 반환
+		// map의 values를 모두 벡터에 저장하여 반환합니다.
 
 		std::vector<V> v;
 		v.reserve(m.size());
@@ -103,12 +101,12 @@ namespace lab7
 		// 합쳐진 벡터에 중복되는 값이 존재하지 않도록 합니다.
 		std::vector<T> combined;
 		std::map<T, char> filter;
-		std::pair<typename std::map<T, char>::iterator, bool> pair;
+		std::pair<typename std::map<T, char>::iterator, bool> bPair;
 
 		for (const auto& data : v1)
 		{
-			pair = filter.insert(std::pair<T, char>(data, NULL));
-			if (!pair.second)
+			bPair = filter.insert(std::pair<T, char>(data, NULL));
+			if (!bPair.second)
 			{
 				continue;
 			}
@@ -117,8 +115,8 @@ namespace lab7
 
 		for (const auto& data : v2)
 		{
-			pair = filter.insert(std::pair<T, char>(data, NULL));
-			if (!pair.second)
+			bPair = filter.insert(std::pair<T, char>(data, NULL));
+			if (!bPair.second)
 			{
 				continue;
 			}
@@ -153,8 +151,9 @@ namespace lab7
 	template <typename T>
 	std::ostream& operator<<(std::ostream& os, const std::vector<T>& v)
 	{
-		auto iter = v.cbegin();
+		static_assert(std::is_fundamental<T>::value, "Type T must be primitive type");
 
+		auto iter = v.cbegin();
 		while (iter != v.end() - 1)
 		{
 			os << *(iter++) << ", ";
@@ -166,8 +165,9 @@ namespace lab7
 	template <typename K, class V>
 	std::ostream& operator<<(std::ostream& os, const std::map<K, V>& m)
 	{
-		auto iter = m.cbegin();
+		static_assert(std::is_fundamental<K>::value && std::is_fundamental<V>::value, "Type K, V must be primitive type");
 
+		auto iter = m.cbegin();
 		for (const auto& data : m)
 		{
 			os << "{ " << data.first << ", " << data.second << " }" << std::endl;
