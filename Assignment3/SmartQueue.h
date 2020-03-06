@@ -18,9 +18,6 @@ namespace assignment3
 	class SmartQueue
 	{
 	public:
-		using maxHeap = std::priority_queue<T>;
-		using minHeap = std::priority_queue<T, std::vector<T>, std::greater<T> >;
-
 		SmartQueue();
 		SmartQueue(const SmartQueue& other) = default;
 		~SmartQueue() = default;
@@ -42,12 +39,13 @@ namespace assignment3
 		inline bool Empty() const;
 
 	private:
-		void rearrangeMaxHeap(std::queue<T> q);
-		void rearrangeMinHeap(std::queue<T> q);
+		void findMaxAndMin(std::queue<T> q);
+		void findMax(std::queue<T> q);
+		void findMin(std::queue<T> q);
 
 		std::queue<T> mQueue;
-		maxHeap mMaxHeap;
-		minHeap mMinHeap;
+		T mMax;
+		T mMin;
 		T mSum;
 		T mExpSum;
 	};
@@ -63,6 +61,8 @@ namespace assignment3
 	SmartQueue<T>::SmartQueue()
 		: mSum(0)
 		, mExpSum(0)
+		, mMax(0)
+		, mMin(0)
 	{
 	}
 
@@ -71,33 +71,25 @@ namespace assignment3
 	{
 		if (!mQueue.empty())
 		{
-			if (number >= mMaxHeap.top())
+			if (number > mMax)
 			{
-				mMaxHeap.push(number);
+				mMax = number;
 			}
-			else if (number <= mMinHeap.top())
+			else if (number < mMin)
 			{
-				mMinHeap.push(number);
+				mMin = number;
 			}
 		}
 		else
 		{
-			mMaxHeap.push(number);
-			mMinHeap.push(number);
+			mMax = number;
+			mMin = number;
 		}
 
 		mQueue.push(number);
 		mSum += number;
 		mExpSum += (number * number);
 	}
-
-	//template <typename T>
-	//void SmartQueue<T>::Enqueue(T number)
-	//{
-	//	mQueue.push(number);
-	//	mSum += number;
-	//	mExpSum += (number * number);
-	//}
 
 
 	template <typename T>
@@ -116,36 +108,30 @@ namespace assignment3
 		// 비어있지 않을 경우에만 테스트합니다.
 		assert(!mQueue.empty());
 
-		const T front = mQueue.front();
+		T front = mQueue.front();
 		mSum -= front;
 		mExpSum -= (front * front);
 		mQueue.pop();
 
-		if (front == mMaxHeap.top())
+		if (!mQueue.empty() && (front == mMax || front == mMin))
 		{
-			rearrangeMaxHeap(mQueue);
+			findMaxAndMin(mQueue);
+			//rearrangeMaxHeap(mQueue);
 		}
-		if (front == mMinHeap.top())
-		{
-			rearrangeMinHeap(mQueue);
-		}
+		//if (!mQueue.empty())
+		//{
+		//	if (front == mMax)
+		//	{
+		//		findMax(mQueue);
+		//	}
+		//	if (front == mMin)
+		//	{
+		//		findMin(mQueue);
+		//	}
+		//}
 
 		return front;
 	}
-
-	//template <typename T>
-	//T SmartQueue<T>::Dequeue()
-	//{
-	//	// 비어있지 않을 경우에만 테스트합니다.
-	//	assert(!mQueue.empty());
-
-	//	const T front = mQueue.front();
-	//	mSum -= front;
-	//	mExpSum -= (front * front);
-	//	mQueue.pop();
-
-	//	return front;
-	//}
 
 	template <typename T>
 	T SmartQueue<T>::GetMax()
@@ -162,8 +148,7 @@ namespace assignment3
 			}
 		}
 
-		//rearrangeMaxHeap(mQueue);
-		return mMaxHeap.top();
+		return mMax;
 	}
 
 	template <typename T>
@@ -174,11 +159,10 @@ namespace assignment3
 			return std::numeric_limits<T>::max();
 		}
 
-		//rearrangeMinHeap(mQueue);
-		return mMinHeap.top();
+		return mMin;
 	}
 
-	template <typename T> 
+	template <typename T>
 	T SmartQueue<T>::GetSum() const
 	{
 		return mSum;
@@ -240,25 +224,61 @@ namespace assignment3
 	*/
 
 	template <typename T>
-	void SmartQueue<T>::rearrangeMaxHeap(std::queue<T> q)
+	void SmartQueue<T>::findMaxAndMin(std::queue<T> q)
 	{
-		// 현재 queue를 우선순위 큐에 넣어 최댓값을 갱신합니다.
+		mMax = q.front();
+		mMin = q.front();
+		q.pop();
+		T tmp;
 
-		mMaxHeap = maxHeap();
 		while (!q.empty())
 		{
-			mMaxHeap.push(q.front());
+			tmp = q.front();
+			if (tmp > mMax)
+			{
+				mMax = tmp;
+			}
+			else if (tmp < mMin)
+			{
+				mMin = tmp;
+			}
+			q.pop();
+		}
+	}
+
+
+	template <typename T>
+	void SmartQueue<T>::findMax(std::queue<T> q)
+	{
+		mMax = q.front();
+		q.pop();
+		T tmp;
+
+		while (!q.empty())
+		{
+			tmp = q.front();
+			if (tmp > mMax)
+			{
+				mMax = tmp;
+			}
 			q.pop();
 		}
 	}
 
 	template <typename T>
-	void SmartQueue<T>::rearrangeMinHeap(std::queue<T> q)
+	void SmartQueue<T>::findMin(std::queue<T> q)
 	{
-		mMinHeap = minHeap();
+		mMin = q.front();
+		q.pop();
+		T tmp;
+
 		while (!q.empty())
 		{
-			mMinHeap.push(q.front());
+			tmp = q.front();
+			if (tmp < mMin)
+			{
+				mMin = tmp;
+			}
 			q.pop();
 		}
 	}
