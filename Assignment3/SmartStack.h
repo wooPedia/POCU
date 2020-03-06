@@ -38,8 +38,6 @@ namespace assignment3
 
 		// 추가한 함수
 		bool Empty() const;
-
-		T popForQueueStack();
 	private:
 		
 		// QueueStack을 위한 Pop()
@@ -219,26 +217,5 @@ namespace assignment3
 		===========================================
 	*/
 
-	template <typename T>
-	T SmartStack<T>::popForQueueStack()
-	{
-		// 스택이 비어있지 않을 때만 테스트하므로 예외처리하지 않습니다.
-		assert(!mStack.empty());
-
-		T top = mStack.top();
-		mStack.pop();
-
-		// pop한 값이 최댓값 또는 최솟값이면 Max, Min 스택에서 pop하여 
-		// 2번째로 큰(작은)값을 top으로 설정합니다.
-		if (top == mStoredMax.top())
-		{
-			mStoredMax.pop();
-		}
-		else if (top == mStoredMin.top())
-		{
-			mStoredMin.pop();
-		}
-
-		return top;
-	}
+	
 } // namespace
