@@ -14,66 +14,66 @@ namespace assignment3
 		===========================================
 	*/
 
-	template <typename T>
-	class TestQueue : public std::priority_queue<T>
-	{
-	public:
+	//template <typename T>
+	//class TestQueue : public std::priority_queue<T>
+	//{
+	//public:
 
-		void Push(T number)
-		{
-			this->push(number);
-		}
+	//	void Push(T number)
+	//	{
+	//		this->push(number);
+	//	}
 
-		T Top() const
-		{
-			return this->c.front();
-		}
+	//	T Top() const
+	//	{
+	//		return this->c.front();
+	//	}
 
-		void Print() const
-		{
-			auto iter = this->c.begin();
+	//	void Print() const
+	//	{
+	//		auto iter = this->c.begin();
 
-			//for (size_t i = 0; i != this->c.size(); ++i)
-			//{
-			//	std::cout << iter[i] << " ";
-			//}
-		}
+	//		//for (size_t i = 0; i != this->c.size(); ++i)
+	//		//{
+	//		//	std::cout << iter[i] << " ";
+	//		//}
+	//	}
 
-		T At(size_t i) const 
-		{
-			return this->c.at(i);
-		}
+	//	T At(size_t i) const
+	//	{
+	//		return this->c.at(i);
+	//	}
 
-		T RBegin() const
-		{
-			//return *this->c.rbegin();
-			auto iter = this->c.rbegin();
-			//return iter[0];
-			return *iter;
-		}
+	//	T RBegin() const
+	//	{
+	//		//return *this->c.rbegin();
+	//		auto iter = this->c.rbegin();
+	//		//return iter[0];
+	//		return *iter;
+	//	}
 
-		size_t GetLowCount() const
-		{
-			size_t height = static_cast<size_t>(log2(this->c.size()));
-			return static_cast<size_t>(pow(2, height));
-		}
+	//	size_t GetLowCount() const
+	//	{
+	//		size_t height = static_cast<size_t>(log2(this->c.size()));
+	//		return static_cast<size_t>(pow(2, height));
+	//	}
 
-		T GetMin() const
-		{
-			assert(!this->c.empty());
+	//	T GetMin() const
+	//	{
+	//		assert(!this->c.empty());
 
-			auto iter = this->c.rbegin();
-			T tmp = *iter;
+	//		auto iter = this->c.rbegin();
+	//		T tmp = *iter;
 
-			for (size_t i = 0; i != GetLowCount() - 1; ++i)
-			{
-				tmp = tmp <= iter[i + 1] ? tmp : iter[i + 1];
-			}
+	//		for (size_t i = 0; i != GetLowCount() - 1; ++i)
+	//		{
+	//			tmp = tmp <= iter[i + 1] ? tmp : iter[i + 1];
+	//		}
 
-			return tmp;
-		}
+	//		return tmp;
+	//	}
 
-	};
+	//};
 
 
 	template <typename T>
@@ -135,29 +135,6 @@ namespace assignment3
 		mQueueStack.push(std::stack<T>());
 	}
 
-	//template <typename T>
-	//void QueueStack<T>::Enqueue(T number)
-	//{
-	//	if (mQueueStack.empty() || mQueueStack.back().size() == mMaxStackSize)
-	//	{
-	//		mQueueStack.push(std::stack<T>());
-	//	}
-
-	//	if (mQueueStack.front().size() == mMaxStackSize)
-	//	{
-	//		mQueueStack.back().push(number);
-	//	}
-	//	else
-	//	{
-	//		mQueueStack.front().push(number);
-	//	}
-
-	//	mMaxHeap.push(number);
-	//	mMinHeap.push(number);
-	//	//tq.Push(number);
-	//	mTotalSum += number;
-	//}
-
 	template <typename T>
 	void QueueStack<T>::Enqueue(T number)
 	{
@@ -175,9 +152,32 @@ namespace assignment3
 			mQueueStack.front().push(number);
 		}
 
+		mMaxHeap.push(number);
+		mMinHeap.push(number);
 		//tq.Push(number);
 		mTotalSum += number;
 	}
+
+	//template <typename T>
+	//void QueueStack<T>::Enqueue(T number)
+	//{
+	//	if (mQueueStack.empty() || mQueueStack.back().size() == mMaxStackSize)
+	//	{
+	//		mQueueStack.push(std::stack<T>());
+	//	}
+
+	//	if (mQueueStack.front().size() == mMaxStackSize)
+	//	{
+	//		mQueueStack.back().push(number);
+	//	}
+	//	else
+	//	{
+	//		mQueueStack.front().push(number);
+	//	}
+
+	//	//tq.Push(number);
+	//	mTotalSum += number;
+	//}
 
 	// 첫 요소(스택)의 top을 반환합니다. 
 	template <typename T>
@@ -188,36 +188,6 @@ namespace assignment3
 		return mQueueStack.front().top();
 	}
 
-	//template <typename T>
-	//T QueueStack<T>::Dequeue()
-	//{
-	//	assert(!mQueueStack.front().empty());
-
-	//	T front = mQueueStack.front().top();
-	//	mQueueStack.front().pop();
-	//	mTotalSum -= front;
-
-	//	if (mQueueStack.front().empty())
-	//	{
-	//		mQueueStack.pop();
-	//	}
-
-	//	if (front == mMaxHeap.top())
-	//	{
-	//		rearrangeMaxHeap(mQueueStack);
-	//	}
-	//	if (front == mMinHeap.top())
-	//	{
-	//		rearrangeMinHeap(mQueueStack);
-	//	}
-	//	//if (front == tq.Top() || front == tq.GetMin())
-	//	//{
-	//	//	rearrangeMaxHeap(mQueueStack);
-	//	//}
-
-	//	return front;
-	//}
-	
 	template <typename T>
 	T QueueStack<T>::Dequeue()
 	{
@@ -232,8 +202,38 @@ namespace assignment3
 			mQueueStack.pop();
 		}
 
+		if (front == mMaxHeap.top())
+		{
+			rearrangeMaxHeap(mQueueStack);
+		}
+		if (front == mMinHeap.top())
+		{
+			rearrangeMinHeap(mQueueStack);
+		}
+		//if (front == tq.Top() || front == tq.GetMin())
+		//{
+		//	rearrangeMaxHeap(mQueueStack);
+		//}
+
 		return front;
 	}
+
+	/*template <typename T>
+	T QueueStack<T>::Dequeue()
+	{
+		assert(!mQueueStack.front().empty());
+
+		T front = mQueueStack.front().top();
+		mQueueStack.front().pop();
+		mTotalSum -= front;
+
+		if (mQueueStack.front().empty())
+		{
+			mQueueStack.pop();
+		}
+
+		return front;
+	}*/
 
 	template <typename T>
 	T QueueStack<T>::GetMax()
@@ -250,7 +250,7 @@ namespace assignment3
 			}
 		}
 
-		rearrangeMaxHeap(mQueueStack);
+		//rearrangeMaxHeap(mQueueStack);
 
 		return mMaxHeap.top();
 		//return tq.Top();
@@ -265,7 +265,7 @@ namespace assignment3
 		}
 
 
-		rearrangeMinHeap(mQueueStack);
+		//rearrangeMinHeap(mQueueStack);
 		return mMinHeap.top();
 		//return tq.GetMin();
 	}

@@ -66,38 +66,38 @@ namespace assignment3
 	{
 	}
 
-	//template <typename T>
-	//void SmartQueue<T>::Enqueue(T number)
-	//{
-	//	if (!mQueue.empty())
-	//	{
-	//		if (number >= mMaxHeap.top())
-	//		{
-	//			mMaxHeap.push(number);
-	//		}
-	//		else if (number <= mMinHeap.top())
-	//		{
-	//			mMinHeap.push(number);
-	//		}
-	//	}
-	//	else
-	//	{
-	//		mMaxHeap.push(number);
-	//		mMinHeap.push(number);
-	//	}
-
-	//	mQueue.push(number);
-	//	mSum += number;
-	//	mExpSum += (number * number);
-	//}
-
 	template <typename T>
 	void SmartQueue<T>::Enqueue(T number)
 	{
+		if (!mQueue.empty())
+		{
+			if (number >= mMaxHeap.top())
+			{
+				mMaxHeap.push(number);
+			}
+			else if (number <= mMinHeap.top())
+			{
+				mMinHeap.push(number);
+			}
+		}
+		else
+		{
+			mMaxHeap.push(number);
+			mMinHeap.push(number);
+		}
+
 		mQueue.push(number);
 		mSum += number;
 		mExpSum += (number * number);
 	}
+
+	//template <typename T>
+	//void SmartQueue<T>::Enqueue(T number)
+	//{
+	//	mQueue.push(number);
+	//	mSum += number;
+	//	mExpSum += (number * number);
+	//}
 
 
 	template <typename T>
@@ -110,29 +110,6 @@ namespace assignment3
 	}
 
 
-	//template <typename T>
-	//T SmartQueue<T>::Dequeue()
-	//{
-	//	// 비어있지 않을 경우에만 테스트합니다.
-	//	assert(!mQueue.empty());
-
-	//	const T front = mQueue.front();
-	//	mSum -= front;
-	//	mExpSum -= (front * front);
-	//	mQueue.pop();
-
-	//	if (front == mMaxHeap.top())
-	//	{
-	//		rearrangeMaxHeap(mQueue);
-	//	}
-	//	if (front == mMinHeap.top())
-	//	{
-	//		rearrangeMinHeap(mQueue);
-	//	}
-
-	//	return front;
-	//}
-
 	template <typename T>
 	T SmartQueue<T>::Dequeue()
 	{
@@ -144,8 +121,31 @@ namespace assignment3
 		mExpSum -= (front * front);
 		mQueue.pop();
 
+		if (front == mMaxHeap.top())
+		{
+			rearrangeMaxHeap(mQueue);
+		}
+		if (front == mMinHeap.top())
+		{
+			rearrangeMinHeap(mQueue);
+		}
+
 		return front;
 	}
+
+	//template <typename T>
+	//T SmartQueue<T>::Dequeue()
+	//{
+	//	// 비어있지 않을 경우에만 테스트합니다.
+	//	assert(!mQueue.empty());
+
+	//	const T front = mQueue.front();
+	//	mSum -= front;
+	//	mExpSum -= (front * front);
+	//	mQueue.pop();
+
+	//	return front;
+	//}
 
 	template <typename T>
 	T SmartQueue<T>::GetMax()
@@ -162,7 +162,7 @@ namespace assignment3
 			}
 		}
 
-		rearrangeMaxHeap(mQueue);
+		//rearrangeMaxHeap(mQueue);
 		return mMaxHeap.top();
 	}
 
@@ -174,7 +174,7 @@ namespace assignment3
 			return std::numeric_limits<T>::max();
 		}
 
-		rearrangeMinHeap(mQueue);
+		//rearrangeMinHeap(mQueue);
 		return mMinHeap.top();
 	}
 
