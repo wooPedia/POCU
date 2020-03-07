@@ -15,66 +15,6 @@ namespace assignment3
 		===========================================
 	*/
 
-	//template <typename T>
-	//class TestQueue : public std::priority_queue<T>
-	//{
-	//public:
-
-	//	void Push(T number)
-	//	{
-	//		this->push(number);
-	//	}
-
-	//	T Top() const
-	//	{
-	//		return this->c.front();
-	//	}
-
-	//	void Print() const
-	//	{
-	//		auto iter = this->c.begin();
-
-	//		//for (size_t i = 0; i != this->c.size(); ++i)
-	//		//{
-	//		//	std::cout << iter[i] << " ";
-	//		//}
-	//	}
-
-	//	T At(size_t i) const
-	//	{
-	//		return this->c.at(i);
-	//	}
-
-	//	T RBegin() const
-	//	{
-	//		//return *this->c.rbegin();
-	//		auto iter = this->c.rbegin();
-	//		//return iter[0];
-	//		return *iter;
-	//	}
-
-	//	size_t GetLowCount() const
-	//	{
-	//		size_t height = static_cast<size_t>(log2(this->c.size()));
-	//		return static_cast<size_t>(pow(2, height));
-	//	}
-
-	//	T GetMin() const
-	//	{
-	//		assert(!this->c.empty());
-
-	//		auto iter = this->c.rbegin();
-	//		T tmp = *iter;
-
-	//		for (size_t i = 0; i != GetLowCount() - 1; ++i)
-	//		{
-	//			tmp = tmp <= iter[i + 1] ? tmp : iter[i + 1];
-	//		}
-
-	//		return tmp;
-	//	}
-
-	//};
 
 
 
@@ -157,8 +97,9 @@ namespace assignment3
 				mStatistics.Min = number;
 			}
 		}
-		else
-		{ // 첫 요소라면 Max, Min 모두 reset 시켜줍니다.
+		else 
+		{ 
+			// 첫 요소라면 Max, Min 모두 reset 시켜줍니다.
 			mStatistics.Max = number;
 			mStatistics.Min = number;
 		}
