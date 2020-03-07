@@ -49,13 +49,15 @@ namespace assignment3
 			T Max;
 			T Min;
 		};
-		void updateMaxAndMin(queueStack qs);
+		//void updateMaxAndMin(queueStack qs);
+		void updateMax(queueStack qs);
+		void updateMin(queueStack qs);
 
 		queueStack mQueueStack;
 		size_t mMaxStackSize;
 		Statistic mStatistics;
-		bool mMaxChanged;
-		bool mMinChanged;
+		bool mbMaxChanged;
+		bool mbMinChanged;
 	};
 
 
@@ -70,8 +72,8 @@ namespace assignment3
 	QueueStack<T>::QueueStack(size_t maxStackSize)
 		: mMaxStackSize(maxStackSize)
 		, mStatistics({})
-		, mMaxChanged(true)
-		, mMinChanged(true)
+		, mbMaxChanged(true)
+		, mbMinChanged(true)
 	{
 		// 빈 스택을 push합니다.
 		mQueueStack.push(std::stack<T>());
@@ -85,25 +87,6 @@ namespace assignment3
 		{
 			mQueueStack.push(std::stack<T>());
 		}
-
-		// Max값과 Min값을 새로들어온 number와 비교하여 얻습니다.
-		//if (!mQueueStack.front().empty())
-		//{
-		//	if (number > mStatistics.Max)
-		//	{
-		//		mStatistics.Max = number;
-		//	}
-		//	else if (number < mStatistics.Min)
-		//	{
-		//		mStatistics.Min = number;
-		//	}
-		//}
-		//else 
-		//{ 
-		//	// 첫 요소라면 Max, Min 모두 reset 시켜줍니다.
-		//	mStatistics.Max = number;
-		//	mStatistics.Min = number;
-		//}
 
 		// 첫 스택이 꽉 찼다면 맨 뒤에 push하고 그렇지 않으면 첫 스택에 push합니다.
 		if (mQueueStack.front().size() == mMaxStackSize)
@@ -142,12 +125,23 @@ namespace assignment3
 			mQueueStack.pop();
 		}
 
-		// 큐스택이 비어있지 않고 Dequeue한 값이 max 또는 min이라면 max와 min을 갱신합니다.
-		if (!mQueueStack.empty() && (front == mStatistics.Max || front == mStatistics.Min))
+		// Dequeue한 값이 max 또는 min이였다면 다음 boolean 타입 변수를 이용하여 
+		// GetMax 또는 GetMin 호출 시 Max 및 Min을 갱신할 수 있도록 합니다.
+		/*if (!mQueueStack.empty() && (front == mStatistics.Max || front == mStatistics.Min))
 		{
-			//updateMaxAndMin(mQueueStack);
-			mMaxChanged = true;
-			mMinChanged = true;
+			mbMaxChanged = true;
+			mbMinChanged = true;
+		}*/
+		if (!mQueueStack.empty())
+		{
+			if (front == mStatistics.Max)
+			{
+				mbMaxChanged = true;
+			}
+			else if (front == mStatistics.Min)
+			{
+				mbMinChanged = true;
+			}
 		}
 
 		return front;
@@ -168,10 +162,11 @@ namespace assignment3
 			}
 		}
 
-		//if (mMaxChanged || mMinChanged)
-		if (mMaxChanged)
+		// max값이 변경되었을 경우 Max 및 Min 값을 갱신합니다.
+		if (mbMaxChanged)
 		{
-			updateMaxAndMin(mQueueStack);
+			//updateMaxAndMin(mQueueStack);
+			updateMax(mQueueStack);
 		}
 		return mStatistics.Max;
 	}
@@ -184,10 +179,11 @@ namespace assignment3
 			return std::numeric_limits<T>::max();
 		}
 
-		//if (mMaxChanged || mMinChanged)
-		if (mMinChanged)
+		// max값이 변경되었을 경우 Max 및 Min 값을 갱신합니다.
+		if (mbMinChanged)
 		{
-			updateMaxAndMin(mQueueStack);
+			//updateMaxAndMin(mQueueStack);
+			updateMin(mQueueStack);
 		}
 		return mStatistics.Min;
 	}
@@ -238,11 +234,41 @@ namespace assignment3
 		===========================================
 	*/
 
+	//template <typename T>
+	//void QueueStack<T>::updateMaxAndMin(queueStack qs)
+	//{
+	//	mStatistics.Max = qs.front().top();
+	//	mStatistics.Min = qs.front().top();
+	//	qs.front().pop();
+	//	T tmp;
+
+	//	while (!qs.empty())
+	//	{
+	//		while (!qs.front().empty())
+	//		{
+	//			tmp = qs.front().top();
+	//			qs.front().pop();
+	//			if (tmp > mStatistics.Max)
+	//			{
+	//				mStatistics.Max = tmp;
+	//			}
+	//			else if (tmp < mStatistics.Min)
+	//			{
+	//				mStatistics.Min = tmp;
+	//			}
+	//		}
+	//		qs.pop();
+	//	}
+
+	//	// 갱신했으므로 false로 변경합니다.
+	//	mbMaxChanged = false;
+	//	mbMinChanged = false;
+	//}
+
 	template <typename T>
-	void QueueStack<T>::updateMaxAndMin(queueStack qs)
+	void QueueStack<T>::updateMax(queueStack qs)
 	{
 		mStatistics.Max = qs.front().top();
-		mStatistics.Min = qs.front().top();
 		qs.front().pop();
 		T tmp;
 
@@ -256,7 +282,28 @@ namespace assignment3
 				{
 					mStatistics.Max = tmp;
 				}
-				else if (tmp < mStatistics.Min)
+			}
+			qs.pop();
+		}
+
+		// 갱신했으므로 false로 변경합니다.
+		mbMaxChanged = false;
+	}
+
+	template <typename T>
+	void QueueStack<T>::updateMin(queueStack qs)
+	{
+		mStatistics.Min = qs.front().top();
+		qs.front().pop();
+		T tmp;
+
+		while (!qs.empty())
+		{
+			while (!qs.front().empty())
+			{
+				tmp = qs.front().top();
+				qs.front().pop();
+				if (tmp < mStatistics.Min)
 				{
 					mStatistics.Min = tmp;
 				}
@@ -264,8 +311,7 @@ namespace assignment3
 			qs.pop();
 		}
 
-		mMaxChanged = false;
-		mMinChanged = false;
+		// 갱신했으므로 false로 변경합니다.
+		mbMinChanged = false;
 	}
-
 } // namespace

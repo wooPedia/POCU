@@ -51,14 +51,14 @@ namespace assignment3
 			T Min;
 		};
 
-		void updateMaxAndMin(std::queue<T> q);
+		//void updateMaxAndMin(std::queue<T> q);
 		void findMax(std::queue<T> q);
 		void findMin(std::queue<T> q);
 
 		std::queue<T> mQueue;
 		Statistic mStatistics;
-		bool mMaxChanged;
-		bool mMinChanged;
+		bool mbMaxChanged;
+		bool mbMinChanged;
 	};
 
 
@@ -71,31 +71,14 @@ namespace assignment3
 	template <typename T>
 	SmartQueue<T>::SmartQueue()
 		: mStatistics({})
-		, mMaxChanged(true)
-		, mMinChanged(true)
+		, mbMaxChanged(true)
+		, mbMinChanged(true)
 	{
 	}
 
 	template <typename T>
 	void SmartQueue<T>::Enqueue(T number)
 	{
-		//if (!mQueue.empty())
-		//{
-		//	if (number > mStatistics.Max)
-		//	{
-		//		mStatistics.Max = number;
-		//	}
-		//	else if (number < mStatistics.Min)
-		//	{
-		//		mStatistics.Min = number;
-		//	}
-		//}
-		//else
-		//{
-		//	mStatistics.Max = number;
-		//	mStatistics.Min = number;
-		//}
-
 		mQueue.push(number);
 		mStatistics.Sum += number;
 		mStatistics.ExpSum += (number * number);
@@ -123,24 +106,25 @@ namespace assignment3
 		mStatistics.ExpSum -= (front * front);
 		mQueue.pop();
 
-		if (!mQueue.empty() && (front == mStatistics.Max || front == mStatistics.Min))
+		// Dequeue한 값이 max 또는 min이였다면 다음 boolean 타입 변수를 이용하여 
+		// GetMax 또는 GetMin 호출 시 Max 및 Min을 갱신할 수 있도록 합니다.
+		/*if (!mQueue.empty() && (front == mStatistics.Max || front == mStatistics.Min))
 		{
-			//updateMaxAndMin(mQueue);
-			mMaxChanged = true;
-			mMaxChanged = true;
-			//rearrangeMaxHeap(mQueue);
+			mbMaxChanged = true;
+			mbMinChanged = true;
+		}*/
+
+		if (!mQueue.empty())
+		{
+			if (front == mStatistics.Max)
+			{
+				mbMaxChanged = true;
+			}
+			else if (front == mStatistics.Min)
+			{
+				mbMinChanged = true;
+			}
 		}
-		//if (!mQueue.empty())
-		//{
-		//	if (front == mMax)
-		//	{
-		//		findMax(mQueue);
-		//	}
-		//	if (front == mMin)
-		//	{
-		//		findMin(mQueue);
-		//	}
-		//}
 
 		return front;
 	}
@@ -160,9 +144,11 @@ namespace assignment3
 			}
 		}
 
-		if (mMaxChanged)
+		// max값이 변경되었을 경우 Max 및 Min 값을 갱신합니다.
+		if (mbMaxChanged)
 		{
-			updateMaxAndMin(mQueue);
+			//updateMaxAndMin(mQueue);
+			findMax(mQueue);
 		}
 
 		return mStatistics.Max;
@@ -176,9 +162,11 @@ namespace assignment3
 			return std::numeric_limits<T>::max();
 		}
 
-		if (mMinChanged)
+		// max값이 변경되었을 경우 Max 및 Min 값을 갱신합니다.
+		if (mbMinChanged)
 		{
-			updateMaxAndMin(mQueue);
+			//updateMaxAndMin(mQueue);
+			findMin(mQueue);
 		}
 
 		return mStatistics.Min;
@@ -245,31 +233,32 @@ namespace assignment3
 		===========================================
 	*/
 
-	template <typename T>
-	void SmartQueue<T>::updateMaxAndMin(std::queue<T> q)
-	{
-		mStatistics.Max = q.front();
-		mStatistics.Min = q.front();
-		q.pop();
-		T tmp;
+	//template <typename T>
+	//void SmartQueue<T>::updateMaxAndMin(std::queue<T> q)
+	//{
+	//	mStatistics.Max = q.front();
+	//	mStatistics.Min = q.front();
+	//	q.pop();
+	//	T tmp;
 
-		while (!q.empty())
-		{
-			tmp = q.front();
-			if (tmp > mStatistics.Max)
-			{
-				mStatistics.Max = tmp;
-			}
-			else if (tmp < mStatistics.Min)
-			{
-				mStatistics.Min = tmp;
-			}
-			q.pop();
-		}
+	//	while (!q.empty())
+	//	{
+	//		tmp = q.front();
+	//		if (tmp > mStatistics.Max)
+	//		{
+	//			mStatistics.Max = tmp;
+	//		}
+	//		else if (tmp < mStatistics.Min)
+	//		{
+	//			mStatistics.Min = tmp;
+	//		}
+	//		q.pop();
+	//	}
 
-		mMaxChanged = false;
-		mMinChanged = false;
-	}
+	//	// 갱신했으므로 false로 변경합니다.
+	//	mbMaxChanged = false;
+	//	mbMinChanged = false;
+	//}
 
 
 	template <typename T>
@@ -288,6 +277,7 @@ namespace assignment3
 			}
 			q.pop();
 		}
+		mbMaxChanged = false;
 	}
 
 	template <typename T>
@@ -306,6 +296,7 @@ namespace assignment3
 			}
 			q.pop();
 		}
+		mbMinChanged = false;
 	}
 
 } // namespace
