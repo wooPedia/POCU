@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cmath>
-#include <cstdint>
+//#include <cstdint>
 #include <limits>
 
 /*
@@ -18,7 +18,7 @@
 
 namespace assignment3
 {
-	enum class eRounding : int16_t
+	enum class eRounding
 	{
 		Four = 1000
 	};

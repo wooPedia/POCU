@@ -22,7 +22,7 @@ namespace assignment3
 		SmartStack(const SmartStack& other) = default;
 		~SmartStack() = default;
 		SmartStack& operator=(const SmartStack& rhs) = default;
-		
+
 
 		void Push(T number);
 		T Pop();
@@ -40,11 +40,16 @@ namespace assignment3
 		inline bool Empty() const;
 
 	private:
+		struct Statistic
+		{
+			T Sum;
+			T ExpSum;
+		};
+
 		std::stack<T> mStack;
 		std::stack<T> mStoredMax; // 최대값 기록 저장
 		std::stack<T> mStoredMin; // 최소값 기록 저장
-		T mSum;
-		T mExpSum;
+		Statistic mStatistics;
 	};
 
 
@@ -57,8 +62,7 @@ namespace assignment3
 
 	template <typename T>
 	SmartStack<T>::SmartStack()
-		: mSum(0)
-		, mExpSum(0)
+		: mStatistics({})
 	{
 	}
 
@@ -85,8 +89,8 @@ namespace assignment3
 		}
 
 		mStack.push(number);
-		mSum += number;
-		mExpSum += (number * number);
+		mStatistics.Sum += number;
+		mStatistics.ExpSum += (number * number);
 	}
 
 	template<typename T>
@@ -97,8 +101,8 @@ namespace assignment3
 
 		T top = mStack.top();
 		mStack.pop();
-		mSum -= top;
-		mExpSum -= (top * top);
+		mStatistics.Sum -= top;
+		mStatistics.ExpSum -= (top * top);
 
 		// pop한 값이 최댓값 또는 최솟값이면 Max, Min 스택에서 pop하여 
 		// 2번째로 큰(작은)값을 top으로 설정합니다.
@@ -132,7 +136,7 @@ namespace assignment3
 			{
 				return std::numeric_limits<T>::lowest();
 			}
-			else 
+			else
 			{
 				return std::numeric_limits<T>::min();
 			}
@@ -141,7 +145,7 @@ namespace assignment3
 		return mStoredMax.top();
 	}
 
-	
+
 	template <typename T>
 	T SmartStack<T>::GetMin() const
 	{
@@ -157,7 +161,7 @@ namespace assignment3
 	template <typename T>
 	T SmartStack<T>::GetSum() const
 	{
-		return mSum;
+		return mStatistics.Sum;
 	}
 
 	template <typename T>
@@ -167,7 +171,7 @@ namespace assignment3
 		assert(!mStack.empty());
 
 		// 소수 넷째 자리에서 반올림하여 반환합니다.
-		double tmp = mSum / (mStack.size() + 0.0);
+		double tmp = mStatistics.Sum / (mStack.size() + 0.0);
 		return roundHalfUp(tmp);
 	}
 
@@ -180,8 +184,8 @@ namespace assignment3
 		// 넷째 자리에서 반올림하여 반환합니다.
 
 		// 반올림된 평균을 사용하면 오차생김
-		double avg = mSum / (mStack.size() + 0.0);
-		double tmp = (mExpSum / (mStack.size() + 0.0)) - (avg * avg);
+		double avg = mStatistics.Sum / (mStack.size() + 0.0);
+		double tmp = (mStatistics.ExpSum / (mStack.size() + 0.0)) - (avg * avg);
 
 		return roundHalfUp(tmp);
 	}
@@ -214,5 +218,5 @@ namespace assignment3
 		===========================================
 	*/
 
-	
+
 } // namespace

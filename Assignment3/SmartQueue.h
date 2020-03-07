@@ -14,6 +14,8 @@ namespace assignment3
 		===========================================
 	*/
 
+
+
 	template <typename T>
 	class SmartQueue
 	{
@@ -39,15 +41,20 @@ namespace assignment3
 		inline bool Empty() const;
 
 	private:
+		struct Statistic
+		{
+			T Sum;
+			T ExpSum;
+			T Max;
+			T Min;
+		};
+
 		void findMaxAndMin(std::queue<T> q);
 		void findMax(std::queue<T> q);
 		void findMin(std::queue<T> q);
 
 		std::queue<T> mQueue;
-		T mMax;
-		T mMin;
-		T mSum;
-		T mExpSum;
+		Statistic mStatistics;
 	};
 
 
@@ -59,10 +66,7 @@ namespace assignment3
 
 	template <typename T>
 	SmartQueue<T>::SmartQueue()
-		: mSum(0)
-		, mExpSum(0)
-		, mMax(0)
-		, mMin(0)
+		: mStatistics({})
 	{
 	}
 
@@ -71,24 +75,24 @@ namespace assignment3
 	{
 		if (!mQueue.empty())
 		{
-			if (number > mMax)
+			if (number > mStatistics.Max)
 			{
-				mMax = number;
+				mStatistics.Max = number;
 			}
-			else if (number < mMin)
+			else if (number < mStatistics.Min)
 			{
-				mMin = number;
+				mStatistics.Min = number;
 			}
 		}
 		else
 		{
-			mMax = number;
-			mMin = number;
+			mStatistics.Max = number;
+			mStatistics.Min = number;
 		}
 
 		mQueue.push(number);
-		mSum += number;
-		mExpSum += (number * number);
+		mStatistics.Sum += number;
+		mStatistics.ExpSum += (number * number);
 	}
 
 
@@ -109,11 +113,11 @@ namespace assignment3
 		assert(!mQueue.empty());
 
 		T front = mQueue.front();
-		mSum -= front;
-		mExpSum -= (front * front);
+		mStatistics.Sum -= front;
+		mStatistics.ExpSum -= (front * front);
 		mQueue.pop();
 
-		if (!mQueue.empty() && (front == mMax || front == mMin))
+		if (!mQueue.empty() && (front == mStatistics.Max || front == mStatistics.Min))
 		{
 			findMaxAndMin(mQueue);
 			//rearrangeMaxHeap(mQueue);
@@ -148,7 +152,7 @@ namespace assignment3
 			}
 		}
 
-		return mMax;
+		return mStatistics.Max;
 	}
 
 	template <typename T>
@@ -159,13 +163,13 @@ namespace assignment3
 			return std::numeric_limits<T>::max();
 		}
 
-		return mMin;
+		return mStatistics.Min;
 	}
 
 	template <typename T>
 	T SmartQueue<T>::GetSum() const
 	{
-		return mSum;
+		return mStatistics.Sum;
 	}
 
 	template <typename T>
@@ -175,7 +179,7 @@ namespace assignment3
 		assert(!mQueue.empty());
 
 		// 소수 넷째 자리에서 반올림하여 반환합니다.
-		double tmp = mSum / (mQueue.size() + 0.0);
+		double tmp = mStatistics.Sum / (mQueue.size() + 0.0);
 		return roundHalfUp(tmp);
 	}
 
@@ -189,8 +193,8 @@ namespace assignment3
 		// 넷째 자리에서 반올림하여 반환합니다.
 
 		// 반올림된 평균을 사용하면 오차생김
-		double avg = mSum / (mQueue.size() + 0.0);
-		double tmp = (mExpSum / (mQueue.size() + 0.0)) - (avg * avg);
+		double avg = mStatistics.Sum / (mQueue.size() + 0.0);
+		double tmp = (mStatistics.ExpSum / (mQueue.size() + 0.0)) - (avg * avg);
 
 		return roundHalfUp(tmp);
 	}
@@ -226,21 +230,21 @@ namespace assignment3
 	template <typename T>
 	void SmartQueue<T>::findMaxAndMin(std::queue<T> q)
 	{
-		mMax = q.front();
-		mMin = q.front();
+		mStatistics.Max = q.front();
+		mStatistics.Min = q.front();
 		q.pop();
 		T tmp;
 
 		while (!q.empty())
 		{
 			tmp = q.front();
-			if (tmp > mMax)
+			if (tmp > mStatistics.Max)
 			{
-				mMax = tmp;
+				mStatistics.Max = tmp;
 			}
-			else if (tmp < mMin)
+			else if (tmp < mStatistics.Min)
 			{
-				mMin = tmp;
+				mStatistics.Min = tmp;
 			}
 			q.pop();
 		}
@@ -250,16 +254,16 @@ namespace assignment3
 	template <typename T>
 	void SmartQueue<T>::findMax(std::queue<T> q)
 	{
-		mMax = q.front();
+		mStatistics.Max = q.front();
 		q.pop();
 		T tmp;
 
 		while (!q.empty())
 		{
 			tmp = q.front();
-			if (tmp > mMax)
+			if (tmp > mStatistics.Max)
 			{
-				mMax = tmp;
+				mStatistics.Max = tmp;
 			}
 			q.pop();
 		}
@@ -268,16 +272,16 @@ namespace assignment3
 	template <typename T>
 	void SmartQueue<T>::findMin(std::queue<T> q)
 	{
-		mMin = q.front();
+		mStatistics.Min = q.front();
 		q.pop();
 		T tmp;
 
 		while (!q.empty())
 		{
 			tmp = q.front();
-			if (tmp < mMin)
+			if (tmp < mStatistics.Min)
 			{
-				mMin = tmp;
+				mStatistics.Min = tmp;
 			}
 			q.pop();
 		}

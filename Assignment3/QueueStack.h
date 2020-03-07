@@ -77,6 +77,7 @@ namespace assignment3
 	//};
 
 
+
 	template <typename T>
 	class QueueStack
 	{
@@ -104,15 +105,19 @@ namespace assignment3
 		inline bool Empty() const;
 
 	private:
+		struct Statistic
+		{
+			T Sum;
+			T Max;
+			T Min;
+		};
 		//void rearrangeMaxHeap(queueStack qs);
 		//void rearrangeMinHeap(queueStack qs);
 		void findMaxAndMin(queueStack qs);
 
 		queueStack mQueueStack;
 		size_t mMaxStackSize;
-		T mTotalSum;
-		T mMax;
-		T mMin;
+		Statistic mStatistics;
 	};
 
 
@@ -125,38 +130,40 @@ namespace assignment3
 	template <typename T>
 	QueueStack<T>::QueueStack(size_t maxStackSize)
 		: mMaxStackSize(maxStackSize)
-		, mTotalSum(0)
-		, mMax(0)
-		, mMin(0)
+		, mStatistics({})
 	{
+		// 빈 스택을 push합니다.
 		mQueueStack.push(std::stack<T>());
 	}
 
 	template <typename T>
 	void QueueStack<T>::Enqueue(T number)
 	{
+		// 큐스택이 비었거나 마지막 스택의 크기가 최대 크기일 경우 스택을 새로 추가합니다. 
 		if (mQueueStack.empty() || mQueueStack.back().size() == mMaxStackSize)
 		{
 			mQueueStack.push(std::stack<T>());
 		}
 
+		// Max값과 Min값을 새로들어온 number와 비교하여 얻습니다.
 		if (!mQueueStack.front().empty())
 		{
-			if (number > mMax)
+			if (number > mStatistics.Max)
 			{
-				mMax = number;
+				mStatistics.Max = number;
 			}
-			else if (number < mMin)
+			else if (number < mStatistics.Min)
 			{
-				mMin = number;
+				mStatistics.Min = number;
 			}
 		}
 		else
-		{
-			mMax = number;
-			mMin = number;
+		{ // 첫 요소라면 Max, Min 모두 reset 시켜줍니다.
+			mStatistics.Max = number;
+			mStatistics.Min = number;
 		}
 
+		// 첫 스택이 꽉 찼다면 맨 뒤에 push하고 그렇지 않으면 첫 스택에 push합니다.
 		if (mQueueStack.front().size() == mMaxStackSize)
 		{
 			mQueueStack.back().push(number);
@@ -166,7 +173,7 @@ namespace assignment3
 			mQueueStack.front().push(number);
 		}
 
-		mTotalSum += number;
+		mStatistics.Sum += number;
 	}
 
 	// 첫 요소(스택)의 top을 반환합니다. 
@@ -185,14 +192,16 @@ namespace assignment3
 
 		T front = mQueueStack.front().top();
 		mQueueStack.front().pop();
-		mTotalSum -= front;
+		mStatistics.Sum -= front;
 
+		// 첫 스택의 요소를 pop 후 스택이 비었다면 스택을 pop 합니다.
 		if (mQueueStack.front().empty())
 		{
 			mQueueStack.pop();
 		}
 
-		if (!mQueueStack.empty() && (mQueueStack.front().top() == mMax || mQueueStack.front().top() == mMin))
+		// 
+		if (!mQueueStack.empty() && (front == mStatistics.Max || front == mStatistics.Min))
 		{
 			findMaxAndMin(mQueueStack);
 		}
@@ -215,7 +224,7 @@ namespace assignment3
 			}
 		}
 
-		return mMax;
+		return mStatistics.Max;
 	}
 
 	template <typename T>
@@ -226,13 +235,13 @@ namespace assignment3
 			return std::numeric_limits<T>::max();
 		}
 
-		return mMin;
+		return mStatistics.Min;
 	}
 
 	template <typename T>
 	T QueueStack<T>::GetSum() const
 	{
-		return mTotalSum;
+		return mStatistics.Sum;
 	}
 
 	template <typename T>
@@ -240,7 +249,7 @@ namespace assignment3
 	{
 		assert(!mQueueStack.front().empty());
 
-		double tmp = mTotalSum / (GetCount() + 0.0);
+		double tmp = mStatistics.Sum / (GetCount() + 0.0);
 		return roundHalfUp(tmp);
 	}
 
@@ -312,8 +321,8 @@ namespace assignment3
 	template <typename T>
 	void QueueStack<T>::findMaxAndMin(queueStack qs)
 	{
-		mMax = qs.front().top();
-		mMin = qs.front().top();
+		mStatistics.Max = qs.front().top();
+		mStatistics.Min = qs.front().top();
 		qs.front().pop();
 		T tmp;
 
@@ -323,13 +332,13 @@ namespace assignment3
 			{
 				tmp = qs.front().top();
 				qs.front().pop();
-				if (tmp > mMax)
+				if (tmp > mStatistics.Max)
 				{
-					mMax = tmp;
+					mStatistics.Max = tmp;
 				}
-				else if (tmp < mMin)
+				else if (tmp < mStatistics.Min)
 				{
-					mMin = tmp;
+					mStatistics.Min = tmp;
 				}
 			}
 			qs.pop();
