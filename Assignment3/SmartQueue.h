@@ -41,6 +41,8 @@ namespace assignment3
 		inline bool Empty() const;
 
 	private:
+
+		// 통계 수치 관련 구조체
 		struct Statistic
 		{
 			T Sum;
@@ -49,12 +51,14 @@ namespace assignment3
 			T Min;
 		};
 
-		void findMaxAndMin(std::queue<T> q);
+		void updateMaxAndMin(std::queue<T> q);
 		void findMax(std::queue<T> q);
 		void findMin(std::queue<T> q);
 
 		std::queue<T> mQueue;
 		Statistic mStatistics;
+		bool mMaxChanged;
+		bool mMinChanged;
 	};
 
 
@@ -67,28 +71,30 @@ namespace assignment3
 	template <typename T>
 	SmartQueue<T>::SmartQueue()
 		: mStatistics({})
+		, mMaxChanged(true)
+		, mMinChanged(true)
 	{
 	}
 
 	template <typename T>
 	void SmartQueue<T>::Enqueue(T number)
 	{
-		if (!mQueue.empty())
-		{
-			if (number > mStatistics.Max)
-			{
-				mStatistics.Max = number;
-			}
-			else if (number < mStatistics.Min)
-			{
-				mStatistics.Min = number;
-			}
-		}
-		else
-		{
-			mStatistics.Max = number;
-			mStatistics.Min = number;
-		}
+		//if (!mQueue.empty())
+		//{
+		//	if (number > mStatistics.Max)
+		//	{
+		//		mStatistics.Max = number;
+		//	}
+		//	else if (number < mStatistics.Min)
+		//	{
+		//		mStatistics.Min = number;
+		//	}
+		//}
+		//else
+		//{
+		//	mStatistics.Max = number;
+		//	mStatistics.Min = number;
+		//}
 
 		mQueue.push(number);
 		mStatistics.Sum += number;
@@ -119,7 +125,9 @@ namespace assignment3
 
 		if (!mQueue.empty() && (front == mStatistics.Max || front == mStatistics.Min))
 		{
-			findMaxAndMin(mQueue);
+			//updateMaxAndMin(mQueue);
+			mMaxChanged = true;
+			mMaxChanged = true;
 			//rearrangeMaxHeap(mQueue);
 		}
 		//if (!mQueue.empty())
@@ -152,6 +160,11 @@ namespace assignment3
 			}
 		}
 
+		if (mMaxChanged)
+		{
+			updateMaxAndMin(mQueue);
+		}
+
 		return mStatistics.Max;
 	}
 
@@ -161,6 +174,11 @@ namespace assignment3
 		if (mQueue.empty())
 		{
 			return std::numeric_limits<T>::max();
+		}
+
+		if (mMinChanged)
+		{
+			updateMaxAndMin(mQueue);
 		}
 
 		return mStatistics.Min;
@@ -228,7 +246,7 @@ namespace assignment3
 	*/
 
 	template <typename T>
-	void SmartQueue<T>::findMaxAndMin(std::queue<T> q)
+	void SmartQueue<T>::updateMaxAndMin(std::queue<T> q)
 	{
 		mStatistics.Max = q.front();
 		mStatistics.Min = q.front();
@@ -248,6 +266,9 @@ namespace assignment3
 			}
 			q.pop();
 		}
+
+		mMaxChanged = false;
+		mMinChanged = false;
 	}
 
 

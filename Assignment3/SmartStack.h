@@ -40,6 +40,8 @@ namespace assignment3
 		inline bool Empty() const;
 
 	private:
+
+		// 통계 수치 관련 구조체
 		struct Statistic
 		{
 			T Sum;

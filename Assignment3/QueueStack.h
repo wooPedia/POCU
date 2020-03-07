@@ -15,9 +15,6 @@ namespace assignment3
 		===========================================
 	*/
 
-
-
-
 	template <typename T>
 	class QueueStack
 	{
@@ -34,8 +31,8 @@ namespace assignment3
 		inline T Peek() const;
 		T Dequeue();
 
-		T GetMax() const;
-		T GetMin() const;
+		T GetMax();
+		T GetMin();
 		inline T GetSum() const;
 		inline double GetAverage() const;
 		inline size_t GetCount() const;
@@ -45,19 +42,20 @@ namespace assignment3
 		inline bool Empty() const;
 
 	private:
+		// 통계 수치 관련 구조체
 		struct Statistic
 		{
 			T Sum;
 			T Max;
 			T Min;
 		};
-		//void rearrangeMaxHeap(queueStack qs);
-		//void rearrangeMinHeap(queueStack qs);
-		void findMaxAndMin(queueStack qs);
+		void updateMaxAndMin(queueStack qs);
 
 		queueStack mQueueStack;
 		size_t mMaxStackSize;
 		Statistic mStatistics;
+		bool mMaxChanged;
+		bool mMinChanged;
 	};
 
 
@@ -67,10 +65,13 @@ namespace assignment3
 		===========================================
 	*/
 
+	// 큐스택에 들어있는 각 스택의 최대 높이를 인자로 설정합니다.
 	template <typename T>
 	QueueStack<T>::QueueStack(size_t maxStackSize)
 		: mMaxStackSize(maxStackSize)
 		, mStatistics({})
+		, mMaxChanged(true)
+		, mMinChanged(true)
 	{
 		// 빈 스택을 push합니다.
 		mQueueStack.push(std::stack<T>());
@@ -86,23 +87,23 @@ namespace assignment3
 		}
 
 		// Max값과 Min값을 새로들어온 number와 비교하여 얻습니다.
-		if (!mQueueStack.front().empty())
-		{
-			if (number > mStatistics.Max)
-			{
-				mStatistics.Max = number;
-			}
-			else if (number < mStatistics.Min)
-			{
-				mStatistics.Min = number;
-			}
-		}
-		else 
-		{ 
-			// 첫 요소라면 Max, Min 모두 reset 시켜줍니다.
-			mStatistics.Max = number;
-			mStatistics.Min = number;
-		}
+		//if (!mQueueStack.front().empty())
+		//{
+		//	if (number > mStatistics.Max)
+		//	{
+		//		mStatistics.Max = number;
+		//	}
+		//	else if (number < mStatistics.Min)
+		//	{
+		//		mStatistics.Min = number;
+		//	}
+		//}
+		//else 
+		//{ 
+		//	// 첫 요소라면 Max, Min 모두 reset 시켜줍니다.
+		//	mStatistics.Max = number;
+		//	mStatistics.Min = number;
+		//}
 
 		// 첫 스택이 꽉 찼다면 맨 뒤에 push하고 그렇지 않으면 첫 스택에 push합니다.
 		if (mQueueStack.front().size() == mMaxStackSize)
@@ -141,17 +142,19 @@ namespace assignment3
 			mQueueStack.pop();
 		}
 
-		// 
+		// 큐스택이 비어있지 않고 Dequeue한 값이 max 또는 min이라면 max와 min을 갱신합니다.
 		if (!mQueueStack.empty() && (front == mStatistics.Max || front == mStatistics.Min))
 		{
-			findMaxAndMin(mQueueStack);
+			//updateMaxAndMin(mQueueStack);
+			mMaxChanged = true;
+			mMinChanged = true;
 		}
 
 		return front;
 	}
 
 	template <typename T>
-	T QueueStack<T>::GetMax() const
+	T QueueStack<T>::GetMax()
 	{
 		if (mQueueStack.empty() || mQueueStack.front().empty())
 		{
@@ -165,17 +168,27 @@ namespace assignment3
 			}
 		}
 
+		//if (mMaxChanged || mMinChanged)
+		if (mMaxChanged)
+		{
+			updateMaxAndMin(mQueueStack);
+		}
 		return mStatistics.Max;
 	}
 
 	template <typename T>
-	T QueueStack<T>::GetMin() const
+	T QueueStack<T>::GetMin()
 	{
 		if (mQueueStack.empty() || mQueueStack.front().empty())
 		{
 			return std::numeric_limits<T>::max();
 		}
 
+		//if (mMaxChanged || mMinChanged)
+		if (mMinChanged)
+		{
+			updateMaxAndMin(mQueueStack);
+		}
 		return mStatistics.Min;
 	}
 
@@ -225,42 +238,8 @@ namespace assignment3
 		===========================================
 	*/
 
-	//template <typename T>
-	//void QueueStack<T>::rearrangeMaxHeap(queueStack qs)
-	//{
-	//	mMaxHeap = maxHeap();
-	//	T tmp;
-	//	while (!qs.empty())
-	//	{
-	//		while (!qs.front().empty())
-	//		{
-	//			tmp = qs.front().top();
-	//			qs.front().pop();
-	//			mMaxHeap.push(tmp);
-	//		}
-	//		qs.pop();
-	//	}
-	//}
-
-	//template <typename T>
-	//void QueueStack<T>::rearrangeMinHeap(queueStack qs)
-	//{
-	//	mMinHeap = minHeap();
-	//	T tmp;
-	//	while (!qs.empty())
-	//	{
-	//		while (!qs.front().empty())
-	//		{
-	//			tmp = qs.front().top();
-	//			qs.front().pop();
-	//			mMinHeap.push(tmp);
-	//		}
-	//		qs.pop();
-	//	}
-	//}
-
 	template <typename T>
-	void QueueStack<T>::findMaxAndMin(queueStack qs)
+	void QueueStack<T>::updateMaxAndMin(queueStack qs)
 	{
 		mStatistics.Max = qs.front().top();
 		mStatistics.Min = qs.front().top();
@@ -284,6 +263,9 @@ namespace assignment3
 			}
 			qs.pop();
 		}
+
+		mMaxChanged = false;
+		mMinChanged = false;
 	}
 
 } // namespace
