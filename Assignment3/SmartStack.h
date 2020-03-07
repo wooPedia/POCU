@@ -1,7 +1,7 @@
 #pragma once
 
-#include <cassert>
 #include <stack>
+#include <cassert>
 #include <type_traits>
 
 #include "ERounding.h"
@@ -26,23 +26,20 @@ namespace assignment3
 
 		void Push(T number);
 		T Pop();
-		T Peek() const;
+		inline T Peek() const;
 
 		T GetMax() const;
 		T GetMin() const;
 		inline T GetSum() const;
-		double GetAverage() const;
-		double GetVariance() const;
-		double GetStandardDeviation() const;
+		inline double GetAverage() const;
+		inline double GetVariance() const;
+		inline double GetStandardDeviation() const;
 		inline size_t GetCount() const;
 
 		// 추가한 함수
-		bool Empty() const;
+		inline bool Empty() const;
+
 	private:
-		
-		// QueueStack을 위한 Pop()
-
-
 		std::stack<T> mStack;
 		std::stack<T> mStoredMax; // 최대값 기록 저장
 		std::stack<T> mStoredMin; // 최소값 기록 저장

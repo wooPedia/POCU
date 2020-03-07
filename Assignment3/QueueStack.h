@@ -1,10 +1,11 @@
 #pragma once
 
-#include <cassert>
 #include <queue>
+#include <stack>
+#include <cassert>
 #include <type_traits>
 
-#include "SmartStack.h"
+#include "ERounding.h"
 
 namespace assignment3
 {
@@ -107,9 +108,7 @@ namespace assignment3
 		//void rearrangeMinHeap(queueStack qs);
 		void findMaxAndMin(queueStack qs);
 
-
 		queueStack mQueueStack;
-
 		size_t mMaxStackSize;
 		T mTotalSum;
 		T mMax;

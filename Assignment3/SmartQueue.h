@@ -1,7 +1,7 @@
 #pragma once
 
-#include <cassert>
 #include <queue>
+#include <cassert>
 #include <type_traits>
 
 #include "ERounding.h"
