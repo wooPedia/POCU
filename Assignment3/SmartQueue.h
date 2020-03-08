@@ -26,7 +26,7 @@ namespace assignment3
 		SmartQueue& operator=(const SmartQueue& rhs) = default;
 
 		void Enqueue(T number);
-		inline T Peek();
+		inline T Peek() const;
 		T Dequeue();
 
 		T GetMax();
@@ -49,16 +49,16 @@ namespace assignment3
 			T ExpSum;
 			T Max;
 			T Min;
+			bool BMaxChanged = true;
+			bool BMinChanged = true;
 		};
 
-		//void updateMaxAndMin(std::queue<T> q);
-		void findMax(std::queue<T> q);
-		void findMin(std::queue<T> q);
+		// Max와 Min을 갱신합니다.
+		void updateMax(std::queue<T> q);
+		void updateMin(std::queue<T> q);
 
 		std::queue<T> mQueue;
 		Statistic mStatistics;
-		bool mbMaxChanged;
-		bool mbMinChanged;
 	};
 
 
@@ -70,9 +70,7 @@ namespace assignment3
 
 	template <typename T>
 	SmartQueue<T>::SmartQueue()
-		: mbMaxChanged(true)
-		, mbMinChanged(true)
-		, mStatistics({})
+		: mStatistics({})
 	{
 	}
 
@@ -86,7 +84,7 @@ namespace assignment3
 
 
 	template <typename T>
-	T SmartQueue<T>::Peek()
+	T SmartQueue<T>::Peek() const
 	{
 		// 비어있지 않을 경우에만 테스트합니다.
 		assert(!mQueue.empty());
@@ -106,24 +104,15 @@ namespace assignment3
 		mStatistics.ExpSum -= (front * front);
 		mQueue.pop();
 
-		// Dequeue한 값이 max 또는 min이였다면 다음 boolean 타입 변수를 이용하여 
-		// GetMax 또는 GetMin 호출 시 Max 및 Min을 갱신할 수 있도록 합니다.
-		/*if (!mQueue.empty() && (front == mStatistics.Max || front == mStatistics.Min))
+		// Dequeue한 값이 max 또는 min이였다면 boolean 변수를 이용하여 
+		// GetMax 또는 GetMin 호출 시 Max 및 Min을 갱신 후 반환할 수 있도록 합니다.
+		if (front == mStatistics.Max)
 		{
-			mbMaxChanged = true;
-			mbMinChanged = true;
-		}*/
-
-		if (!mQueue.empty())
+			mStatistics.BMaxChanged = true;
+		}
+		if (front == mStatistics.Min)
 		{
-			if (front == mStatistics.Max)
-			{
-				mbMaxChanged = true;
-			}
-			else if (front == mStatistics.Min)
-			{
-				mbMinChanged = true;
-			}
+			mStatistics.BMinChanged = true;
 		}
 
 		return front;
@@ -144,11 +133,10 @@ namespace assignment3
 			}
 		}
 
-		// max값이 변경되었을 경우 Max 및 Min 값을 갱신합니다.
-		if (mbMaxChanged)
+		// Max가 변경되었을 경우 Max 값을 갱신 후 반환합니다.
+		if (mStatistics.BMaxChanged)
 		{
-			//updateMaxAndMin(mQueue);
-			findMax(mQueue);
+			updateMax(mQueue);
 		}
 
 		return mStatistics.Max;
@@ -162,11 +150,10 @@ namespace assignment3
 			return std::numeric_limits<T>::max();
 		}
 
-		// max값이 변경되었을 경우 Max 및 Min 값을 갱신합니다.
-		if (mbMinChanged)
+		// Min이 변경되었을 경우 Min 값을 갱신 후 반환합니다.
+		if (mStatistics.BMinChanged)
 		{
-			//updateMaxAndMin(mQueue);
-			findMin(mQueue);
+			updateMin(mQueue);
 		}
 
 		return mStatistics.Min;
@@ -208,10 +195,15 @@ namespace assignment3
 	template <typename T>
 	double SmartQueue<T>::GetStandardDeviation() const
 	{
+		assert(!mQueue.empty());
+
 		// 표준 편차: 분산의 제곱근
 		// 넷째 자리에서 반올림하여 반환합니다.
-		double tmpStdDev = sqrt(GetVariance());
-		return roundHalfUp(tmpStdDev);
+		double avg = mStatistics.Sum / (mQueue.size() + 0.0);
+		double variance = (mStatistics.ExpSum / (mQueue.size() + 0.0)) - (avg * avg);
+		double stdDev = sqrt(variance);
+
+		return roundHalfUp(stdDev);
 	}
 
 	template <typename T>
@@ -233,37 +225,12 @@ namespace assignment3
 		===========================================
 	*/
 
-	//template <typename T>
-	//void SmartQueue<T>::updateMaxAndMin(std::queue<T> q)
-	//{
-	//	mStatistics.Max = q.front();
-	//	mStatistics.Min = q.front();
-	//	q.pop();
-	//	T tmp;
-
-	//	while (!q.empty())
-	//	{
-	//		tmp = q.front();
-	//		if (tmp > mStatistics.Max)
-	//		{
-	//			mStatistics.Max = tmp;
-	//		}
-	//		else if (tmp < mStatistics.Min)
-	//		{
-	//			mStatistics.Min = tmp;
-	//		}
-	//		q.pop();
-	//	}
-
-	//	// 갱신했으므로 false로 변경합니다.
-	//	mbMaxChanged = false;
-	//	mbMinChanged = false;
-	//}
-
 
 	template <typename T>
-	void SmartQueue<T>::findMax(std::queue<T> q)
+	void SmartQueue<T>::updateMax(std::queue<T> q)
 	{
+		assert(!q.empty());
+
 		mStatistics.Max = q.front();
 		q.pop();
 		T tmp;
@@ -277,12 +244,14 @@ namespace assignment3
 			}
 			q.pop();
 		}
-		mbMaxChanged = false;
+		mStatistics.BMaxChanged = false;
 	}
 
 	template <typename T>
-	void SmartQueue<T>::findMin(std::queue<T> q)
+	void SmartQueue<T>::updateMin(std::queue<T> q)
 	{
+		assert(!q.empty());
+
 		mStatistics.Min = q.front();
 		q.pop();
 		T tmp;
@@ -296,7 +265,7 @@ namespace assignment3
 			}
 			q.pop();
 		}
-		mbMinChanged = false;
+		mStatistics.BMinChanged = false;
 	}
 
 } // namespace

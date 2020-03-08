@@ -106,10 +106,10 @@ namespace assignment3
 		mStatistics.Sum -= top;
 		mStatistics.ExpSum -= (top * top);
 
+		assert(!mStoredMax.empty() && !mStoredMin.empty());
+
 		// pop한 값이 최댓값 또는 최솟값이면 Max, Min 스택에서 pop하여 
 		// 2번째로 큰(작은)값을 top으로 설정합니다.
-
-		assert(!mStoredMax.empty() && !mStoredMin.empty());
 		if (top == mStoredMax.top())
 		{
 			mStoredMax.pop();
@@ -199,11 +199,16 @@ namespace assignment3
 	template <typename T>
 	double SmartStack<T>::GetStandardDeviation() const
 	{
+		assert(!mStack.empty());
+
 		// 표준 편차: 분산의 제곱근
 		// 넷째 자리에서 반올림하여 반환합니다.
 
-		double tmpStdDev = sqrt(GetVariance());
-		return roundHalfUp(tmpStdDev);
+		double avg = mStatistics.Sum / (mStack.size() + 0.0);
+		double variance = (mStatistics.ExpSum / (mStack.size() + 0.0)) - (avg * avg);
+		double stdDev = sqrt(variance);
+
+		return roundHalfUp(stdDev);
 	}
 
 	template <typename T>
