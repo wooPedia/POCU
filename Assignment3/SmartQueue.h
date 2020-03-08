@@ -49,8 +49,8 @@ namespace assignment3
 			T ExpSum;
 			T Max;
 			T Min;
-			bool BMaxChanged = true;
-			bool BMinChanged = true;
+			bool bMaxChanged = true;
+			bool bMinChanged = true;
 		};
 
 		// Max와 Min을 갱신합니다.
@@ -77,6 +77,29 @@ namespace assignment3
 	template <typename T>
 	void SmartQueue<T>::Enqueue(T number)
 	{
+		if (!mQueue.empty())
+		{
+			// 첫 요소가 아닐 경우 추가되는 값과 Max 및 Min을 비교하여 변경 여부를 설정합니다.
+			if (number > mStatistics.Max)
+			{
+				mStatistics.Max = number;
+				mStatistics.bMaxChanged = false;
+			}
+			if (number < mStatistics.Min)
+			{
+				mStatistics.Min = number;
+				mStatistics.bMinChanged = false;
+			}
+		}
+		else
+		{
+			// 첫 요소일 경우 Max와 Min을 number로 할당합니다.
+			mStatistics.Max = number;
+			mStatistics.Min = number;
+			mStatistics.bMaxChanged = false;
+			mStatistics.bMinChanged = false;
+		}
+
 		mQueue.push(number);
 		mStatistics.Sum += number;
 		mStatistics.ExpSum += (number * number);
@@ -108,11 +131,11 @@ namespace assignment3
 		// GetMax 또는 GetMin 호출 시 Max 및 Min을 갱신 후 반환할 수 있도록 합니다.
 		if (front == mStatistics.Max)
 		{
-			mStatistics.BMaxChanged = true;
+			mStatistics.bMaxChanged = true;
 		}
 		if (front == mStatistics.Min)
 		{
-			mStatistics.BMinChanged = true;
+			mStatistics.bMinChanged = true;
 		}
 
 		return front;
@@ -133,8 +156,8 @@ namespace assignment3
 			}
 		}
 
-		// Max가 변경되었을 경우 Max 값을 갱신 후 반환합니다.
-		if (mStatistics.BMaxChanged)
+		// Max가 변경되었을 경우 Max 값을 갱신합니다.
+		if (mStatistics.bMaxChanged)
 		{
 			updateMax(mQueue);
 		}
@@ -150,8 +173,8 @@ namespace assignment3
 			return std::numeric_limits<T>::max();
 		}
 
-		// Min이 변경되었을 경우 Min 값을 갱신 후 반환합니다.
-		if (mStatistics.BMinChanged)
+		// Min이 변경되었을 경우 Min 값을 갱신합니다.
+		if (mStatistics.bMinChanged)
 		{
 			updateMin(mQueue);
 		}
@@ -244,7 +267,7 @@ namespace assignment3
 			}
 			q.pop();
 		}
-		mStatistics.BMaxChanged = false;
+		mStatistics.bMaxChanged = false;
 	}
 
 	template <typename T>
@@ -265,7 +288,7 @@ namespace assignment3
 			}
 			q.pop();
 		}
-		mStatistics.BMinChanged = false;
+		mStatistics.bMinChanged = false;
 	}
 
 } // namespace
