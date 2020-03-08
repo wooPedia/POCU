@@ -56,7 +56,7 @@ namespace assignment3
 			bool bMinChanged = true;
 		};
 
-		void memCpy(Statistic* destination, const Statistic* source);
+		void copyStatistic(Statistic* destination, const Statistic* source);
 
 
 		// Max와 Min을 갱신합니다.
@@ -94,7 +94,7 @@ namespace assignment3
 
 		mQueue = other.mQueue;
 		mStatistics = new Statistic();
-		memCpy(&this->mStatistics, &other.mStatistics);
+		copyStatistic(&this->mStatistics, &other.mStatistics);
 	}
 
 	template <typename T>
@@ -113,7 +113,7 @@ namespace assignment3
 		mStatistics = new Statistic();
 
 		mQueue = rhs.mQueue;
-		memCpy(&this->mStatistics, &rhs.mStatistics);
+		copyStatistic(&this->mStatistics, &rhs.mStatistics);
 	}
 
 
@@ -340,7 +340,7 @@ namespace assignment3
 	}
 
 	template <typename T>
-	void SmartQueue<T>::memCpy(Statistic* destination, const Statistic* source)
+	void SmartQueue<T>::copyStatistic(Statistic* destination, const Statistic* source)
 	{
 		destination->Sum = source->Sum;
 		destination->ExpSum = source->ExpSum;
