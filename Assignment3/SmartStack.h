@@ -46,6 +46,8 @@ namespace assignment3
 		{
 			T Sum;
 			T ExpSum;
+			double TmpSum;
+			double TmpExpSum;
 		};
 
 		std::stack<T> mStack;
@@ -93,6 +95,9 @@ namespace assignment3
 		mStack.push(number);
 		mStatistics.Sum += number;
 		mStatistics.ExpSum += (number * number);
+
+		mStatistics.TmpSum += number;
+		mStatistics.TmpExpSum += (number * number);
 	}
 
 	template<typename T>
@@ -105,6 +110,9 @@ namespace assignment3
 		mStack.pop();
 		mStatistics.Sum -= top;
 		mStatistics.ExpSum -= (top * top);
+
+		mStatistics.TmpSum -= top;
+		mStatistics.TmpExpSum -= (top * top);
 
 		assert(!mStoredMax.empty() && !mStoredMin.empty());
 
@@ -190,10 +198,10 @@ namespace assignment3
 		// 넷째 자리에서 반올림하여 반환합니다.
 
 		// 반올림된 평균을 사용하면 오차생김
-		double avg = mStatistics.Sum / (mStack.size() + 0.0);
-		double tmp = (mStatistics.ExpSum / (mStack.size() + 0.0)) - (avg * avg);
+		double avg = mStatistics.TmpSum / (mStack.size() + 0.0);
+		double variance = (mStatistics.TmpExpSum / (mStack.size() + 0.0)) - (avg * avg);
 
-		return roundHalfUp(tmp);
+		return roundHalfUp(variance);
 	}
 
 	template <typename T>
@@ -204,8 +212,8 @@ namespace assignment3
 		// 표준 편차: 분산의 제곱근
 		// 넷째 자리에서 반올림하여 반환합니다.
 
-		double avg = mStatistics.Sum / (mStack.size() + 0.0);
-		double variance = (mStatistics.ExpSum / (mStack.size() + 0.0)) - (avg * avg);
+		double avg = mStatistics.TmpSum / (mStack.size() + 0.0);
+		double variance = (mStatistics.TmpExpSum / (mStack.size() + 0.0)) - (avg * avg);
 		double stdDev = sqrt(variance);
 
 		return roundHalfUp(stdDev);

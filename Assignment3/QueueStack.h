@@ -120,8 +120,6 @@ namespace assignment3
 			mQueueStack.front().push(number);
 		}
 
-
-
 		mStatistics.Sum += number;
 		++mCount;
 	}
