@@ -70,9 +70,9 @@ namespace assignment3
 
 	template <typename T>
 	SmartQueue<T>::SmartQueue()
-		: mStatistics({})
-		, mbMaxChanged(true)
+		: mbMaxChanged(true)
 		, mbMinChanged(true)
+		, mStatistics({})
 	{
 	}
 

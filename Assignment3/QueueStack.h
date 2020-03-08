@@ -71,9 +71,9 @@ namespace assignment3
 	template <typename T>
 	QueueStack<T>::QueueStack(size_t maxStackSize)
 		: mMaxStackSize(maxStackSize)
-		, mStatistics({})
 		, mbMaxChanged(true)
 		, mbMinChanged(true)
+		, mStatistics({})
 	{
 		// 빈 스택을 push합니다.
 		mQueueStack.push(std::stack<T>());

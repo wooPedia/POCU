@@ -79,7 +79,7 @@ namespace assignment3
 			{
 				mStoredMax.push(number);
 			}
-			else if (number <= mStoredMin.top())
+			if (number <= mStoredMin.top())
 			{
 				mStoredMin.push(number);
 			}
@@ -108,6 +108,8 @@ namespace assignment3
 
 		// pop한 값이 최댓값 또는 최솟값이면 Max, Min 스택에서 pop하여 
 		// 2번째로 큰(작은)값을 top으로 설정합니다.
+
+		assert(!mStoredMax.empty() && !mStoredMin.empty());
 		if (top == mStoredMax.top())
 		{
 			mStoredMax.pop();
@@ -144,6 +146,7 @@ namespace assignment3
 			}
 		}
 
+		assert(!mStoredMax.empty());
 		return mStoredMax.top();
 	}
 
@@ -156,6 +159,7 @@ namespace assignment3
 			return std::numeric_limits<T>::max();
 		}
 
+		assert(!mStoredMin.empty());
 		return mStoredMin.top();
 	}
 
