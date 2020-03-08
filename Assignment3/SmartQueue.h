@@ -94,7 +94,7 @@ namespace assignment3
 
 		mQueue = other.mQueue;
 		mStatistics = new Statistic();
-		copyStatistic(&this->mStatistics, &other.mStatistics);
+		copyStatistic(this->mStatistics, other.mStatistics);
 	}
 
 	template <typename T>
@@ -113,7 +113,9 @@ namespace assignment3
 		mStatistics = new Statistic();
 
 		mQueue = rhs.mQueue;
-		copyStatistic(&this->mStatistics, &rhs.mStatistics);
+		copyStatistic(mStatistics, rhs.mStatistics);
+
+		return *this;
 	}
 
 

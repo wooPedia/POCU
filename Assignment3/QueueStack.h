@@ -88,13 +88,15 @@ namespace assignment3
 		mMaxStackSize = other.mMaxStackSize;
 		mCount = other.mCount;
 
-		copyStatistic(&mStatistics, &other.mStatistics);
+		copyStatistic(mStatistics, other.mStatistics);
 	}
+
 	template <typename T>
 	QueueStack<T>::~QueueStack()
 	{
 		delete mStatistics;
 	}
+
 	template <typename T>
 	QueueStack<T>& QueueStack<T>::operator=(const QueueStack& rhs)
 	{
@@ -111,7 +113,9 @@ namespace assignment3
 		mStatistics = new Statistic();
 
 		mQueueStack = rhs.mQueueStack;
-		copyStatistic(&this->mStatistics, &rhs.mStatistics);
+		copyStatistic(mStatistics, rhs.mStatistics);
+
+		return *this;
 	}
 
 
@@ -185,7 +189,7 @@ namespace assignment3
 		{ // 첫 요소라면 Max, Min 모두 reset 시켜줍니다.
 			mStatistics->Max = number;
 			mStatistics->Min = number;
-		 }
+		}
 
 		// 첫 스택이 꽉 찼다면 맨 뒤에 push하고 그렇지 않으면 첫 스택에 push합니다.
 		if (mQueueStack.front().size() == mMaxStackSize)
