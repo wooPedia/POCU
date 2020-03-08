@@ -47,6 +47,9 @@ namespace assignment3
 		{
 			T Sum;
 			T ExpSum;
+			double TmpSum;
+			double TmpExpSum;
+
 			T Max;
 			T Min;
 			bool bMaxChanged = true;
@@ -102,7 +105,9 @@ namespace assignment3
 
 		mQueue.push(number);
 		mStatistics.Sum += number;
+		mStatistics.TmpSum += number;
 		mStatistics.ExpSum += (number * number);
+		mStatistics.TmpExpSum += (number * number);
 	}
 
 
@@ -124,8 +129,11 @@ namespace assignment3
 
 		T front = mQueue.front();
 		mStatistics.Sum -= front;
+		mStatistics.TmpSum -= front;
 		mStatistics.ExpSum -= (front * front);
+		mStatistics.TmpExpSum -= (front * front);
 		mQueue.pop();
+
 
 		// Dequeue한 값이 max 또는 min이였다면 boolean 변수를 이용하여 
 		// GetMax 또는 GetMin 호출 시 Max 및 Min을 갱신 후 반환할 수 있도록 합니다.
@@ -209,8 +217,8 @@ namespace assignment3
 		// 넷째 자리에서 반올림하여 반환합니다.
 
 		// 반올림된 평균을 사용하면 오차생김
-		double avg = mStatistics.Sum / (mQueue.size() + 0.0);
-		double tmp = (mStatistics.ExpSum / (mQueue.size() + 0.0)) - (avg * avg);
+		double avg = mStatistics.TmpSum / (mQueue.size() + 0.0);
+		double tmp = (mStatistics.TmpExpSum / (mQueue.size() + 0.0)) - (avg * avg);
 
 		return roundHalfUp(tmp);
 	}
@@ -222,8 +230,8 @@ namespace assignment3
 
 		// 표준 편차: 분산의 제곱근
 		// 넷째 자리에서 반올림하여 반환합니다.
-		double avg = mStatistics.Sum / (mQueue.size() + 0.0);
-		double variance = (mStatistics.ExpSum / (mQueue.size() + 0.0)) - (avg * avg);
+		double avg = mStatistics.TmpSum / (mQueue.size() + 0.0);
+		double variance = (mStatistics.TmpExpSum / (mQueue.size() + 0.0)) - (avg * avg);
 		double stdDev = sqrt(variance);
 
 		return roundHalfUp(stdDev);
