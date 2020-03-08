@@ -21,9 +21,9 @@ namespace assignment3
 	{
 	public:
 		SmartQueue();
-		SmartQueue(const SmartQueue& other) = default;
-		~SmartQueue() = default;
-		SmartQueue& operator=(const SmartQueue& rhs) = default;
+		SmartQueue(const SmartQueue& other);
+		~SmartQueue();
+		SmartQueue<T>& operator=(const SmartQueue& rhs);
 
 		void Enqueue(T number);
 		inline T Peek() const;
@@ -45,23 +45,26 @@ namespace assignment3
 		// 통계 수치 관련 구조체
 		struct Statistic
 		{
-			T Sum;
-			T ExpSum;
-			double TmpSum;
-			double TmpExpSum;
+			T Sum{};
+			T ExpSum{};
+			double TmpSum{};
+			double TmpExpSum{};
 
-			T Max;
-			T Min;
+			T Max{};
+			T Min{};
 			bool bMaxChanged = true;
 			bool bMinChanged = true;
 		};
+
+		void memCpy(Statistic* destination, const Statistic* source);
+
 
 		// Max와 Min을 갱신합니다.
 		void updateMax(std::queue<T> q);
 		void updateMin(std::queue<T> q);
 
 		std::queue<T> mQueue;
-		Statistic mStatistics;
+		Statistic* mStatistics;
 	};
 
 
@@ -73,9 +76,46 @@ namespace assignment3
 
 	template <typename T>
 	SmartQueue<T>::SmartQueue()
-		: mStatistics({})
+		: mStatistics(new Statistic())
 	{
 	}
+
+	template <typename T>
+	SmartQueue<T>::~SmartQueue()
+	{
+		delete mStatistics;
+	}
+
+	template <typename T>
+	SmartQueue<T>::SmartQueue(const SmartQueue& other)
+	{
+		// mQueue는 그대로 옮기고
+		// mStatistics는 새 주소 생성 후 옮김
+
+		mQueue = other.mQueue;
+		mStatistics = new Statistic();
+		memCpy(&this->mStatistics, &other.mStatistics);
+	}
+
+	template <typename T>
+	SmartQueue<T>& SmartQueue<T>::operator=(const SmartQueue& rhs)
+	{
+		if (this == &rhs)
+		{
+			return *this;
+		}
+
+		if (this->mStatistics)
+		{
+			delete mStatistics;
+		}
+
+		mStatistics = new Statistic();
+
+		mQueue = rhs.mQueue;
+		memCpy(&this->mStatistics, &rhs.mStatistics);
+	}
+
 
 	template <typename T>
 	void SmartQueue<T>::Enqueue(T number)
@@ -83,31 +123,31 @@ namespace assignment3
 		if (!mQueue.empty())
 		{
 			// 첫 요소가 아닐 경우 추가되는 값과 Max 및 Min을 비교하여 변경 여부를 설정합니다.
-			if (number > mStatistics.Max)
+			if (number > mStatistics->Max)
 			{
-				mStatistics.Max = number;
-				mStatistics.bMaxChanged = false;
+				mStatistics->Max = number;
+				mStatistics->bMaxChanged = false;
 			}
-			if (number < mStatistics.Min)
+			if (number < mStatistics->Min)
 			{
-				mStatistics.Min = number;
-				mStatistics.bMinChanged = false;
+				mStatistics->Min = number;
+				mStatistics->bMinChanged = false;
 			}
 		}
 		else
 		{
 			// 첫 요소일 경우 Max와 Min을 number로 할당합니다.
-			mStatistics.Max = number;
-			mStatistics.Min = number;
-			mStatistics.bMaxChanged = false;
-			mStatistics.bMinChanged = false;
+			mStatistics->Max = number;
+			mStatistics->Min = number;
+			mStatistics->bMaxChanged = false;
+			mStatistics->bMinChanged = false;
 		}
 
 		mQueue.push(number);
-		mStatistics.Sum += number;
-		mStatistics.TmpSum += number;
-		mStatistics.ExpSum += (number * number);
-		mStatistics.TmpExpSum += (number * number);
+		mStatistics->Sum += number;
+		mStatistics->TmpSum += number;
+		mStatistics->ExpSum += (number * number);
+		mStatistics->TmpExpSum += (number * number);
 	}
 
 
@@ -128,22 +168,22 @@ namespace assignment3
 		assert(!mQueue.empty());
 
 		T front = mQueue.front();
-		mStatistics.Sum -= front;
-		mStatistics.TmpSum -= front;
-		mStatistics.ExpSum -= (front * front);
-		mStatistics.TmpExpSum -= (front * front);
+		mStatistics->Sum -= front;
+		mStatistics->TmpSum -= front;
+		mStatistics->ExpSum -= (front * front);
+		mStatistics->TmpExpSum -= (front * front);
 		mQueue.pop();
 
 
 		// Dequeue한 값이 max 또는 min이였다면 boolean 변수를 이용하여 
 		// GetMax 또는 GetMin 호출 시 Max 및 Min을 갱신 후 반환할 수 있도록 합니다.
-		if (front == mStatistics.Max)
+		if (front == mStatistics->Max)
 		{
-			mStatistics.bMaxChanged = true;
+			mStatistics->bMaxChanged = true;
 		}
-		if (front == mStatistics.Min)
+		if (front == mStatistics->Min)
 		{
-			mStatistics.bMinChanged = true;
+			mStatistics->bMinChanged = true;
 		}
 
 		return front;
@@ -165,12 +205,12 @@ namespace assignment3
 		}
 
 		// Max가 변경되었을 경우 Max 값을 갱신합니다.
-		if (mStatistics.bMaxChanged)
+		if (mStatistics->bMaxChanged)
 		{
 			updateMax(mQueue);
 		}
 
-		return mStatistics.Max;
+		return mStatistics->Max;
 	}
 
 	template <typename T>
@@ -182,18 +222,18 @@ namespace assignment3
 		}
 
 		// Min이 변경되었을 경우 Min 값을 갱신합니다.
-		if (mStatistics.bMinChanged)
+		if (mStatistics->bMinChanged)
 		{
 			updateMin(mQueue);
 		}
 
-		return mStatistics.Min;
+		return mStatistics->Min;
 	}
 
 	template <typename T>
 	T SmartQueue<T>::GetSum() const
 	{
-		return mStatistics.Sum;
+		return mStatistics->Sum;
 	}
 
 	template <typename T>
@@ -203,7 +243,7 @@ namespace assignment3
 		assert(!mQueue.empty());
 
 		// 소수 넷째 자리에서 반올림하여 반환합니다.
-		double tmp = mStatistics.Sum / (mQueue.size() + 0.0);
+		double tmp = mStatistics->Sum / (mQueue.size() + 0.0);
 		return roundHalfUp(tmp);
 	}
 
@@ -217,8 +257,8 @@ namespace assignment3
 		// 넷째 자리에서 반올림하여 반환합니다.
 
 		// 반올림된 평균을 사용하면 오차생김
-		double avg = mStatistics.TmpSum / (mQueue.size() + 0.0);
-		double tmp = (mStatistics.TmpExpSum / (mQueue.size() + 0.0)) - (avg * avg);
+		double avg = mStatistics->TmpSum / (mQueue.size() + 0.0);
+		double tmp = (mStatistics->TmpExpSum / (mQueue.size() + 0.0)) - (avg * avg);
 
 		return roundHalfUp(tmp);
 	}
@@ -230,8 +270,8 @@ namespace assignment3
 
 		// 표준 편차: 분산의 제곱근
 		// 넷째 자리에서 반올림하여 반환합니다.
-		double avg = mStatistics.TmpSum / (mQueue.size() + 0.0);
-		double variance = (mStatistics.TmpExpSum / (mQueue.size() + 0.0)) - (avg * avg);
+		double avg = mStatistics->TmpSum / (mQueue.size() + 0.0);
+		double variance = (mStatistics->TmpExpSum / (mQueue.size() + 0.0)) - (avg * avg);
 		double stdDev = sqrt(variance);
 
 		return roundHalfUp(stdDev);
@@ -262,20 +302,20 @@ namespace assignment3
 	{
 		assert(!q.empty());
 
-		mStatistics.Max = q.front();
+		mStatistics->Max = q.front();
 		q.pop();
 		T tmp;
 
 		while (!q.empty())
 		{
 			tmp = q.front();
-			if (tmp > mStatistics.Max)
+			if (tmp > mStatistics->Max)
 			{
-				mStatistics.Max = tmp;
+				mStatistics->Max = tmp;
 			}
 			q.pop();
 		}
-		mStatistics.bMaxChanged = false;
+		mStatistics->bMaxChanged = false;
 	}
 
 	template <typename T>
@@ -283,20 +323,34 @@ namespace assignment3
 	{
 		assert(!q.empty());
 
-		mStatistics.Min = q.front();
+		mStatistics->Min = q.front();
 		q.pop();
 		T tmp;
 
 		while (!q.empty())
 		{
 			tmp = q.front();
-			if (tmp < mStatistics.Min)
+			if (tmp < mStatistics->Min)
 			{
-				mStatistics.Min = tmp;
+				mStatistics->Min = tmp;
 			}
 			q.pop();
 		}
-		mStatistics.bMinChanged = false;
+		mStatistics->bMinChanged = false;
 	}
+
+	template <typename T>
+	void SmartQueue<T>::memCpy(Statistic* destination, const Statistic* source)
+	{
+		destination->Sum = source->Sum;
+		destination->ExpSum = source->ExpSum;
+		destination->TmpSum = source->TmpSum;
+		destination->TmpExpSum = source->TmpExpSum;
+		destination->Max = source->Max;
+		destination->Min = source->Min;
+		destination->bMaxChanged = source->bMaxChanged;
+		destination->bMinChanged = source->bMinChanged;
+	}
+
 
 } // namespace
