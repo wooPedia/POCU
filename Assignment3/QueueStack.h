@@ -93,7 +93,7 @@ namespace assignment3
 		, mStatistics(new Statistic())
 		, mSizeType(new Size())
 	{
-		copyToThis(other.mStatistics, other.mSizeType);
+		copyToThis(*other.mStatistics, *other.mSizeType);
 	}
 
 	template <typename T>
@@ -123,7 +123,7 @@ namespace assignment3
 		mSizeType = new Size();
 
 		mQueueStack = rhs.mQueueStack;
-		copyToThis(rhs.mStatistics, rhs.mSizeType);
+		copyToThis(*rhs.mStatistics, *rhs.mSizeType);
 
 		return *this;
 	}

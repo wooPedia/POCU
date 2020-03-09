@@ -93,7 +93,7 @@ namespace assignment3
 		, mbMaxChanged(other.mbMaxChanged)
 		, mbMinChanged(other.mbMinChanged)
 	{
-		copyToThis(other.mStatistics);
+		copyToThis(*other.mStatistics);
 	}
 
 	template <typename T>
@@ -114,7 +114,7 @@ namespace assignment3
 		mQueue = rhs.mQueue;
 		mbMaxChanged = rhs.mbMaxChanged;
 		mbMinChanged = rhs.mbMinChanged;
-		copyToThis(rhs.mStatistics);
+		copyToThis(*rhs.mStatistics);
 
 		return *this;
 	}
