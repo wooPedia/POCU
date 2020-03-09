@@ -14,8 +14,6 @@ namespace assignment3
 		===========================================
 	*/
 
-
-
 	template <typename T>
 	class SmartQueue
 	{
@@ -47,13 +45,17 @@ namespace assignment3
 		{
 			T Sum;
 			T ExpSum;
-			double TmpSum;
-			double TmpExpSum;
 			T Max;
 			T Min;
 		};
 
-		void copyToThis(const Statistic& source);
+		struct TempStatistic
+		{
+			double TmpSum;
+			double TmpExpSum;
+		};
+
+		void copyToThis(const Statistic& source1, const TempStatistic& source2);
 
 		// Max와 Min을 갱신합니다.
 		void updateMax(std::queue<T> q);
@@ -61,6 +63,7 @@ namespace assignment3
 
 		std::queue<T> mQueue;
 		Statistic* mStatistics;
+		TempStatistic* mTempStatistics;
 		bool mbMaxChanged;
 		bool mbMinChanged;
 	};
@@ -75,6 +78,7 @@ namespace assignment3
 	template <typename T>
 	SmartQueue<T>::SmartQueue()
 		: mStatistics(new Statistic())
+		, mTempStatistics(new TempStatistic())
 		, mbMaxChanged(true)
 		, mbMinChanged(true)
 	{
@@ -84,16 +88,18 @@ namespace assignment3
 	SmartQueue<T>::~SmartQueue()
 	{
 		delete mStatistics;
+		delete mTempStatistics;
 	}
 
 	template <typename T>
 	SmartQueue<T>::SmartQueue(const SmartQueue& other)
 		: mQueue(other.mQueue)
 		, mStatistics(new Statistic())
+		, mTempStatistics(new TempStatistic())
 		, mbMaxChanged(other.mbMaxChanged)
 		, mbMinChanged(other.mbMinChanged)
 	{
-		copyToThis(*(other.mStatistics));
+		copyToThis(*(other.mStatistics), *(other.mTempStatistics));
 	}
 
 	template <typename T>
@@ -104,17 +110,22 @@ namespace assignment3
 			return *this;
 		}
 
-		if (this->mStatistics)
+		if (mStatistics)
 		{
 			delete mStatistics;
 		}
+		if (mTempStatistics)
+		{
+			delete mTempStatistics;
+		}
 
 		mStatistics = new Statistic();
+		mTempStatistics = new TempStatistic();
 
 		mQueue = rhs.mQueue;
 		mbMaxChanged = rhs.mbMaxChanged;
 		mbMinChanged = rhs.mbMinChanged;
-		copyToThis(*(rhs.mStatistics));
+		copyToThis(*(rhs.mStatistics), *(rhs.mTempStatistics));
 
 		return *this;
 	}
@@ -148,9 +159,9 @@ namespace assignment3
 
 		mQueue.push(number);
 		mStatistics->Sum += number;
-		mStatistics->TmpSum += number;
 		mStatistics->ExpSum += (number * number);
-		mStatistics->TmpExpSum += (number * number);
+		mTempStatistics->TmpSum += number;
+		mTempStatistics->TmpExpSum += (number * number);
 	}
 
 
@@ -172,9 +183,9 @@ namespace assignment3
 
 		T front = mQueue.front();
 		mStatistics->Sum -= front;
-		mStatistics->TmpSum -= front;
 		mStatistics->ExpSum -= (front * front);
-		mStatistics->TmpExpSum -= (front * front);
+		mTempStatistics->TmpSum -= front;
+		mTempStatistics->TmpExpSum -= (front * front);
 		mQueue.pop();
 
 
@@ -260,8 +271,8 @@ namespace assignment3
 		// 넷째 자리에서 반올림하여 반환합니다.
 
 		// 반올림된 평균을 사용하면 오차생김
-		double avg = mStatistics->TmpSum / (mQueue.size() + 0.0);
-		double tmp = (mStatistics->TmpExpSum / (mQueue.size() + 0.0)) - (avg * avg);
+		double avg = mTempStatistics->TmpSum / (mQueue.size() + 0.0);
+		double tmp = (mTempStatistics->TmpExpSum / (mQueue.size() + 0.0)) - (avg * avg);
 
 		return roundHalfUp(tmp);
 	}
@@ -273,8 +284,8 @@ namespace assignment3
 
 		// 표준 편차: 분산의 제곱근
 		// 넷째 자리에서 반올림하여 반환합니다.
-		double avg = mStatistics->TmpSum / (mQueue.size() + 0.0);
-		double variance = (mStatistics->TmpExpSum / (mQueue.size() + 0.0)) - (avg * avg);
+		double avg = mTempStatistics->TmpSum / (mQueue.size() + 0.0);
+		double variance = (mTempStatistics->TmpExpSum / (mQueue.size() + 0.0)) - (avg * avg);
 		double stdDev = sqrt(variance);
 
 		return roundHalfUp(stdDev);
@@ -343,15 +354,16 @@ namespace assignment3
 	}
 
 	template <typename T>
-	void SmartQueue<T>::copyToThis(const Statistic& source)
+	void SmartQueue<T>::copyToThis(const Statistic& source1, const TempStatistic& source2)
 	{
 		// source를 this 개체의 각 구조체 멤버에 복사합니다,.  
-		mStatistics->Sum = source.Sum;
-		mStatistics->ExpSum = source.ExpSum;
-		mStatistics->TmpSum = source.TmpSum;
-		mStatistics->TmpExpSum = source.TmpExpSum;
-		mStatistics->Max = source.Max;
-		mStatistics->Min = source.Min;
+		mStatistics->Sum = source1.Sum;
+		mStatistics->ExpSum = source1.ExpSum;
+		mStatistics->Max = source1.Max;
+		mStatistics->Min = source1.Min;
+
+		mTempStatistics->TmpSum = source2.TmpSum;
+		mTempStatistics->TmpExpSum = source2.TmpExpSum;
 	}
 
 } // namespace
