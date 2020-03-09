@@ -93,7 +93,7 @@ namespace assignment3
 		, mbMaxChanged(other.mbMaxChanged)
 		, mbMinChanged(other.mbMinChanged)
 	{
-		copyToThis(*other.mStatistics);
+		copyToThis(*(other.mStatistics));
 	}
 
 	template <typename T>
@@ -114,7 +114,7 @@ namespace assignment3
 		mQueue = rhs.mQueue;
 		mbMaxChanged = rhs.mbMaxChanged;
 		mbMinChanged = rhs.mbMinChanged;
-		copyToThis(*rhs.mStatistics);
+		copyToThis(*(rhs.mStatistics));
 
 		return *this;
 	}
@@ -346,12 +346,12 @@ namespace assignment3
 	void SmartQueue<T>::copyToThis(const Statistic& source)
 	{
 		// source를 this 개체의 각 구조체 멤버에 복사합니다,.  
-		mStatistics.Sum = source.Sum;
-		mStatistics.ExpSum = source.ExpSum;
-		mStatistics.TmpSum = source.TmpSum;
-		mStatistics.TmpExpSum = source.TmpExpSum;
-		mStatistics.Max = source.Max;
-		mStatistics.Min = source.Min;
+		mStatistics->Sum = source.Sum;
+		mStatistics->ExpSum = source.ExpSum;
+		mStatistics->TmpSum = source.TmpSum;
+		mStatistics->TmpExpSum = source.TmpExpSum;
+		mStatistics->Max = source.Max;
+		mStatistics->Min = source.Min;
 	}
 
 } // namespace

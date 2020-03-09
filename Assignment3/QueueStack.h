@@ -93,7 +93,7 @@ namespace assignment3
 		, mStatistics(new Statistic())
 		, mSizeType(new Size())
 	{
-		copyToThis(*other.mStatistics, *other.mSizeType);
+		copyToThis(*(other.mStatistics), *(other.mSizeType));
 	}
 
 	template <typename T>
@@ -123,7 +123,7 @@ namespace assignment3
 		mSizeType = new Size();
 
 		mQueueStack = rhs.mQueueStack;
-		copyToThis(*rhs.mStatistics, *rhs.mSizeType);
+		copyToThis(*(rhs.mStatistics), *(rhs.mSizeType));
 
 		return *this;
 	}
@@ -431,14 +431,14 @@ namespace assignment3
 	void QueueStack<T>::copyToThis(const Statistic& source1, const Size& source2)
 	{
 		// source를 this 개체의 각 구조체 멤버에 복사합니다.  
-		mStatistics.Sum = source1.Sum;
-		mStatistics.Max = source1.Max;
-		mStatistics.Min = source1.Min;
-		mStatistics.bMaxChanged = source1.bMaxChanged;
-		mStatistics.bMinChanged = source1.bMinChanged;
+		mStatistics->Sum = source1.Sum;
+		mStatistics->Max = source1.Max;
+		mStatistics->Min = source1.Min;
+		mStatistics->bMaxChanged = source1.bMaxChanged;
+		mStatistics->bMinChanged = source1.bMinChanged;
 
-		mSizeType.MaxStackSize = source2.MaxStackSize;
-		mSizeType.Count = source2.Count;
+		mSizeType->MaxStackSize = source2.MaxStackSize;
+		mSizeType->Count = source2.Count;
 	}
 
 	template <typename T>
