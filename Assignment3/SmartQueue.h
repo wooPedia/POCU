@@ -53,7 +53,7 @@ namespace assignment3
 			T Min;
 		};
 
-		void copyToThis(const Statistic& source1);
+		void copyToThis(const Statistic& source);
 
 		// Max와 Min을 갱신합니다.
 		void updateMax(std::queue<T> q);

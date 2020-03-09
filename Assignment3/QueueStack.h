@@ -55,7 +55,7 @@ namespace assignment3
 		struct Size
 		{
 			size_t MaxStackSize; // 각 스택당 최대 크기
-			size_t Count;	     // 요소의 총개수
+			size_t TotalCount;	 // 요소의 총개수
 		};
 
 		void copyToThis(const Statistic& source1, const Size& source2);
@@ -84,7 +84,7 @@ namespace assignment3
 		mSizeType->MaxStackSize = maxStackSize;
 
 		// 빈 스택을 push합니다.
-		mQueueStack.push(std::stack<T>());
+		//mQueueStack.push(std::stack<T>());
 	}
 
 	template <typename T>
@@ -211,7 +211,7 @@ namespace assignment3
 		}
 
 		// 맨 앞의 스택이 꽉 찼을 경우 맨 뒤에 저장합니다.
-		if (mQueueStack.front().size() == mSizeType->Count)
+		if (mQueueStack.front().size() == mSizeType->MaxStackSize)
 		{
 			mQueueStack.back().push(number);
 		}
@@ -221,7 +221,7 @@ namespace assignment3
 		}
 
 		mStatistics->Sum += number;
-		++mSizeType->Count;
+		++mSizeType->TotalCount;
 	}
 
 	// 첫 요소(스택)의 top을 반환합니다. 
@@ -271,7 +271,7 @@ namespace assignment3
 		T front = mQueueStack.front().top();
 		mQueueStack.front().pop();
 		mStatistics->Sum -= front;
-		--mSizeType->Count;
+		--mSizeType->TotalCount;
 
 		// 맨 앞의 스택이 비었다면 삭제합니다.
 		if (mQueueStack.front().empty())
@@ -345,14 +345,14 @@ namespace assignment3
 	{
 		assert(!mQueueStack.front().empty());
 
-		double tmp = mStatistics->Sum / (mSizeType->Count + 0.0);
+		double tmp = mStatistics->Sum / (mSizeType->TotalCount + 0.0);
 		return roundHalfUp(tmp);
 	}
 
 	template <typename T>
 	size_t QueueStack<T>::GetCount() const
 	{
-		return mSizeType->Count;
+		return mSizeType->TotalCount;
 	}
 
 	template <typename T>
@@ -438,7 +438,7 @@ namespace assignment3
 		mStatistics->bMinChanged = source1.bMinChanged;
 
 		mSizeType->MaxStackSize = source2.MaxStackSize;
-		mSizeType->Count = source2.Count;
+		mSizeType->TotalCount = source2.TotalCount;
 	}
 
 	template <typename T>
