@@ -48,19 +48,24 @@ namespace assignment3
 			T Sum{};
 			T Max{};
 			T Min{};
-			bool bMaxChanged = true;
+			bool bMaxChanged = true; // 값이 갱신되어야 한다면 true, 아니라면 false
 			bool bMinChanged = true;
 		};
 
-		void copyStatistic(Statistic* destination, const Statistic* source);
+		struct Size
+		{
+			size_t MaxStackSize; // 각 스택당 최대 크기
+			size_t Count;	     // 요소의 총개수
+		};
+
+		void copyToThis(const Statistic& source1, const Size& source2);
 		void findMaxAndMin(queueStack qs);
 		void updateMax(queueStack qs);
 		void updateMin(queueStack qs);
 
 		queueStack mQueueStack;
-		size_t mMaxStackSize;
-		size_t mCount;
 		Statistic* mStatistics;
+		Size* mSizeType;
 	};
 
 
@@ -73,28 +78,29 @@ namespace assignment3
 	// 큐스택에 들어있는 각 스택의 최대 높이를 인자로 설정합니다.
 	template <typename T>
 	QueueStack<T>::QueueStack(size_t maxStackSize)
-		: mMaxStackSize(maxStackSize)
-		, mCount(0)
-		, mStatistics(new Statistic())
+		: mStatistics(new Statistic())
+		, mSizeType(new Size())
 	{
+		mSizeType->MaxStackSize = maxStackSize;
+
 		// 빈 스택을 push합니다.
 		mQueueStack.push(std::stack<T>());
 	}
 
 	template <typename T>
 	QueueStack<T>::QueueStack(const QueueStack& other)
+		: mQueueStack(other.mQueueStack)
+		, mStatistics(new Statistic())
+		, mSizeType(new Size())
 	{
-		mQueueStack = other.mQueueStack;
-		mMaxStackSize = other.mMaxStackSize;
-		mCount = other.mCount;
-
-		copyStatistic(mStatistics, other.mStatistics);
+		copyToThis(other.mStatistics, other.mSizeType);
 	}
 
 	template <typename T>
 	QueueStack<T>::~QueueStack()
 	{
 		delete mStatistics;
+		delete mSizeType;
 	}
 
 	template <typename T>
@@ -105,15 +111,19 @@ namespace assignment3
 			return *this;
 		}
 
-		if (this->mStatistics)
+		if (mStatistics)
 		{
 			delete mStatistics;
 		}
-
+		if (mSizeType)
+		{
+			delete mSizeType;
+		}
 		mStatistics = new Statistic();
+		mSizeType = new Size();
 
 		mQueueStack = rhs.mQueueStack;
-		copyStatistic(mStatistics, rhs.mStatistics);
+		copyToThis(rhs.mStatistics, rhs.mSizeType);
 
 		return *this;
 	}
@@ -167,32 +177,41 @@ namespace assignment3
 	template <typename T>
 	void QueueStack<T>::Enqueue(T number)
 	{
-		// 큐스택이 비었거나 마지막 스택의 크기가 최대 크기일 경우 스택을 새로 추가합니다. 
-		if (mQueueStack.empty() || mQueueStack.back().size() == mMaxStackSize)
+		// 큐스택이 비었거나 첫 스택 및 마지막 스택의 크기가 최대 크기일 경우 스택을 새로 추가합니다. 
+		if (mQueueStack.empty() ||
+			(mQueueStack.front().size() == mSizeType->MaxStackSize && mQueueStack.back().size() == mSizeType->MaxStackSize))
 		{
 			mQueueStack.push(std::stack<T>());
 		}
 
-		// Max값과 Min값을 새로들어온 number와 비교하여 얻습니다.
+
+		// 첫 요소가 아니라면 Max와 Min 값과 비교하여 저장합니다.
 		if (!mQueueStack.front().empty())
 		{
 			if (number > mStatistics->Max)
 			{
 				mStatistics->Max = number;
+				mStatistics->bMaxChanged = false;
 			}
 			if (number < mStatistics->Min)
 			{
 				mStatistics->Min = number;
+				mStatistics->bMinChanged = false;
 			}
 		}
 		else
-		{ // 첫 요소라면 Max, Min 모두 reset 시켜줍니다.
+		{
+			// 첫 요소라면 Max와 Min 모두 number로 설정합니다.
 			mStatistics->Max = number;
 			mStatistics->Min = number;
+
+			// Max 및 Min 값을 갱신했으니 변화 여부를 false로 설정합니다.
+			mStatistics->bMaxChanged = false;
+			mStatistics->bMinChanged = false;
 		}
 
-		// 첫 스택이 꽉 찼다면 맨 뒤에 push하고 그렇지 않으면 첫 스택에 push합니다.
-		if (mQueueStack.front().size() == mMaxStackSize)
+		// 맨 앞의 스택이 꽉 찼을 경우 맨 뒤에 저장합니다.
+		if (mQueueStack.front().size() == mSizeType->Count)
 		{
 			mQueueStack.back().push(number);
 		}
@@ -202,7 +221,7 @@ namespace assignment3
 		}
 
 		mStatistics->Sum += number;
-		++mCount;
+		++mSizeType->Count;
 	}
 
 	// 첫 요소(스택)의 top을 반환합니다. 
@@ -252,18 +271,23 @@ namespace assignment3
 		T front = mQueueStack.front().top();
 		mQueueStack.front().pop();
 		mStatistics->Sum -= front;
-		--mCount;
+		--mSizeType->Count;
 
-		// 첫 스택의 요소를 pop 후 스택이 비었다면 스택을 pop 합니다.
+		// 맨 앞의 스택이 비었다면 삭제합니다.
 		if (mQueueStack.front().empty())
 		{
 			mQueueStack.pop();
 		}
 
-
-		if (!mQueueStack.empty() && (front == mStatistics->Max || front == mStatistics->Min))
+		// pop한 값이 Max 또는 Min일 경우 Max/Min 변화여부를 true로 설정하여
+		// GetMax 또는 GetMin 호출 시 갱신 후 반환할 수 있도록 합니다.
+		if (front == mStatistics->Max)
 		{
-			findMaxAndMin(mQueueStack);
+			mStatistics->bMaxChanged = true;
+		}
+		if (front == mStatistics->Min)
+		{
+			mStatistics->bMinChanged = true;
 		}
 
 		return front;
@@ -285,10 +309,10 @@ namespace assignment3
 		}
 
 		// Max가 변경되었을 경우 Max 값을 갱신 후 반환합니다.
-		/*if (mStatistics.bMaxChanged)
+		if (mStatistics->bMaxChanged)
 		{
 			updateMax(mQueueStack);
-		}*/
+		}
 
 		return mStatistics->Max;
 	}
@@ -302,10 +326,10 @@ namespace assignment3
 		}
 
 		// Min이 변경되었을 경우 Min 값을 갱신 후 반환합니다.
-		/*if (mStatistics.bMinChanged)
+		if (mStatistics->bMinChanged)
 		{
 			updateMin(mQueueStack);
-		}*/
+		}
 
 		return mStatistics->Min;
 	}
@@ -321,14 +345,14 @@ namespace assignment3
 	{
 		assert(!mQueueStack.front().empty());
 
-		double tmp = mStatistics->Sum / (mCount + 0.0);
+		double tmp = mStatistics->Sum / (mSizeType->Count + 0.0);
 		return roundHalfUp(tmp);
 	}
 
 	template <typename T>
 	size_t QueueStack<T>::GetCount() const
 	{
-		return mCount;
+		return mSizeType->Count;
 	}
 
 	template <typename T>
@@ -404,13 +428,17 @@ namespace assignment3
 	}
 
 	template <typename T>
-	void QueueStack<T>::copyStatistic(Statistic* destination, const Statistic* source)
+	void QueueStack<T>::copyToThis(const Statistic& source1, const Size& source2)
 	{
-		destination->Sum = source->Sum;
-		destination->Max = source->Max;
-		destination->Min = source->Min;
-		destination->bMaxChanged = source->bMaxChanged;
-		destination->bMinChanged = source->bMinChanged;
+		// source를 this 개체의 각 구조체 멤버에 복사합니다.  
+		mStatistics.Sum = source1.Sum;
+		mStatistics.Max = source1.Max;
+		mStatistics.Min = source1.Min;
+		mStatistics.bMaxChanged = source1.bMaxChanged;
+		mStatistics.bMinChanged = source1.bMinChanged;
+
+		mSizeType.MaxStackSize = source2.MaxStackSize;
+		mSizeType.Count = source2.Count;
 	}
 
 	template <typename T>

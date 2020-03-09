@@ -45,19 +45,15 @@ namespace assignment3
 		// 통계 수치 관련 구조체
 		struct Statistic
 		{
-			T Sum{};
-			T ExpSum{};
-			double TmpSum{};
-			double TmpExpSum{};
-
-			T Max{};
-			T Min{};
-			bool bMaxChanged = true;
-			bool bMinChanged = true;
+			T Sum;
+			T ExpSum;
+			double TmpSum;
+			double TmpExpSum;
+			T Max;
+			T Min;
 		};
 
-		void copyStatistic(Statistic* destination, const Statistic* source);
-
+		void copyToThis(const Statistic& source1);
 
 		// Max와 Min을 갱신합니다.
 		void updateMax(std::queue<T> q);
@@ -65,6 +61,8 @@ namespace assignment3
 
 		std::queue<T> mQueue;
 		Statistic* mStatistics;
+		bool mbMaxChanged;
+		bool mbMinChanged;
 	};
 
 
@@ -77,6 +75,8 @@ namespace assignment3
 	template <typename T>
 	SmartQueue<T>::SmartQueue()
 		: mStatistics(new Statistic())
+		, mbMaxChanged(true)
+		, mbMinChanged(true)
 	{
 	}
 
@@ -88,13 +88,12 @@ namespace assignment3
 
 	template <typename T>
 	SmartQueue<T>::SmartQueue(const SmartQueue& other)
+		: mQueue(other.mQueue)
+		, mStatistics(new Statistic())
+		, mbMaxChanged(other.mbMaxChanged)
+		, mbMinChanged(other.mbMinChanged)
 	{
-		// mQueue는 그대로 옮기고
-		// mStatistics는 새 주소 생성 후 옮김
-
-		mQueue = other.mQueue;
-		mStatistics = new Statistic();
-		copyStatistic(this->mStatistics, other.mStatistics);
+		copyToThis(other.mStatistics);
 	}
 
 	template <typename T>
@@ -113,7 +112,9 @@ namespace assignment3
 		mStatistics = new Statistic();
 
 		mQueue = rhs.mQueue;
-		copyStatistic(mStatistics, rhs.mStatistics);
+		mbMaxChanged = rhs.mbMaxChanged;
+		mbMinChanged = rhs.mbMinChanged;
+		copyToThis(rhs.mStatistics);
 
 		return *this;
 	}
@@ -128,12 +129,12 @@ namespace assignment3
 			if (number > mStatistics->Max)
 			{
 				mStatistics->Max = number;
-				mStatistics->bMaxChanged = false;
+				mbMaxChanged = false;
 			}
 			if (number < mStatistics->Min)
 			{
 				mStatistics->Min = number;
-				mStatistics->bMinChanged = false;
+				mbMinChanged = false;
 			}
 		}
 		else
@@ -141,8 +142,8 @@ namespace assignment3
 			// 첫 요소일 경우 Max와 Min을 number로 할당합니다.
 			mStatistics->Max = number;
 			mStatistics->Min = number;
-			mStatistics->bMaxChanged = false;
-			mStatistics->bMinChanged = false;
+			mbMaxChanged = false;
+			mbMinChanged = false;
 		}
 
 		mQueue.push(number);
@@ -181,11 +182,11 @@ namespace assignment3
 		// GetMax 또는 GetMin 호출 시 Max 및 Min을 갱신 후 반환할 수 있도록 합니다.
 		if (front == mStatistics->Max)
 		{
-			mStatistics->bMaxChanged = true;
+			mbMaxChanged = true;
 		}
 		if (front == mStatistics->Min)
 		{
-			mStatistics->bMinChanged = true;
+			mbMinChanged = true;
 		}
 
 		return front;
@@ -207,7 +208,7 @@ namespace assignment3
 		}
 
 		// Max가 변경되었을 경우 Max 값을 갱신합니다.
-		if (mStatistics->bMaxChanged)
+		if (mbMaxChanged)
 		{
 			updateMax(mQueue);
 		}
@@ -224,7 +225,7 @@ namespace assignment3
 		}
 
 		// Min이 변경되었을 경우 Min 값을 갱신합니다.
-		if (mStatistics->bMinChanged)
+		if (mbMinChanged)
 		{
 			updateMin(mQueue);
 		}
@@ -317,7 +318,7 @@ namespace assignment3
 			}
 			q.pop();
 		}
-		mStatistics->bMaxChanged = false;
+		mbMaxChanged = false;
 	}
 
 	template <typename T>
@@ -338,21 +339,19 @@ namespace assignment3
 			}
 			q.pop();
 		}
-		mStatistics->bMinChanged = false;
+		mbMinChanged = false;
 	}
 
 	template <typename T>
-	void SmartQueue<T>::copyStatistic(Statistic* destination, const Statistic* source)
+	void SmartQueue<T>::copyToThis(const Statistic& source)
 	{
-		destination->Sum = source->Sum;
-		destination->ExpSum = source->ExpSum;
-		destination->TmpSum = source->TmpSum;
-		destination->TmpExpSum = source->TmpExpSum;
-		destination->Max = source->Max;
-		destination->Min = source->Min;
-		destination->bMaxChanged = source->bMaxChanged;
-		destination->bMinChanged = source->bMinChanged;
+		// source를 this 개체의 각 구조체 멤버에 복사합니다,.  
+		mStatistics.Sum = source.Sum;
+		mStatistics.ExpSum = source.ExpSum;
+		mStatistics.TmpSum = source.TmpSum;
+		mStatistics.TmpExpSum = source.TmpExpSum;
+		mStatistics.Max = source.Max;
+		mStatistics.Min = source.Min;
 	}
-
 
 } // namespace
