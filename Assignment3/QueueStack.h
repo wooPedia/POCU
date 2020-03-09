@@ -177,6 +177,11 @@ namespace assignment3
 	template <typename T>
 	void QueueStack<T>::Enqueue(T number)
 	{
+		if (mSizeType->MaxStackSize == 0)
+		{
+			return;
+		}
+
 		// 큐스택이 비었거나 첫 스택 및 마지막 스택의 크기가 최대 크기일 경우 스택을 새로 추가합니다. 
 		if (mQueueStack.empty() ||
 			(mQueueStack.front().size() == mSizeType->MaxStackSize && mQueueStack.back().size() == mSizeType->MaxStackSize))
