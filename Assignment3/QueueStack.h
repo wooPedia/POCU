@@ -24,7 +24,7 @@ namespace assignment3
 		QueueStack() = delete;
 		QueueStack(size_t maxStackSize);
 		QueueStack(const QueueStack& other);
-		~QueueStack(); 
+		~QueueStack();
 		QueueStack<T>& operator=(const QueueStack& rhs);
 
 		void Enqueue(T number);
@@ -101,7 +101,7 @@ namespace assignment3
 
 		return *this;
 	}
-	
+
 
 	template <typename T>
 	void QueueStack<T>::Enqueue(T number)
@@ -146,7 +146,7 @@ namespace assignment3
 	T QueueStack<T>::Dequeue()
 	{
 		assert(!mQueueStack.empty() && !mQueueStack.front().empty());
-		
+
 		T front = mQueueStack.front().top();
 		mQueueStack.front().pop();
 		mStatistics->Sum -= front;
@@ -188,13 +188,21 @@ namespace assignment3
 	template <typename T>
 	inline size_t QueueStack<T>::GetCount() const
 	{
-		return size_t();
+		// 스택이 2개 이상일 경우
+		if (mQueueStack.size() >= 2)
+		{
+			return mQueueStack.front().size() + mQueueStack.back().size() + (mMaxStackSize * (mQueueStack.size() - 2));
+		}
+		else
+		{
+			return !mQueueStack.empty() ? mQueueStack.front().size() : 0;
+		}
 	}
 
 	template <typename T>
 	inline size_t QueueStack<T>::GetStackCount() const
 	{
-		return size_t();
+		return mQueueStack.size();
 	}
 
 	// 추가한 함수
