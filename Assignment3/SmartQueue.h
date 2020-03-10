@@ -24,7 +24,7 @@ namespace assignment3
 		SmartQueue<T>& operator=(const SmartQueue& rhs);
 
 		void Enqueue(T number);
-		inline T Peek() const;
+		inline const T& Peek() const;
 		T Dequeue();
 
 		T GetMax();
@@ -166,7 +166,7 @@ namespace assignment3
 
 
 	template <typename T>
-	T SmartQueue<T>::Peek() const
+	const T& SmartQueue<T>::Peek() const
 	{
 		// 비어있지 않을 경우에만 테스트합니다.
 		assert(!mQueue.empty());

@@ -143,7 +143,7 @@ namespace assignment3
 	}
 
 	template <typename T>
-	const T& QueueStack<T>::Dequeue()
+	T QueueStack<T>::Dequeue()
 	{
 		assert(!mQueueStack.empty() && !mQueueStack.front().empty());
 
