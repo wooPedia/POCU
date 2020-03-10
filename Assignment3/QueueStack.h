@@ -176,13 +176,14 @@ namespace assignment3
 	template <typename T>
 	inline T QueueStack<T>::GetSum() const
 	{
-		return T();
+		return static_cast<T>(mStatistics->TmpSum);
 	}
 
 	template <typename T>
 	inline double QueueStack<T>::GetAverage() const
 	{
-		return double();
+		double avg = mStatistics->TmpSum / GetCount();
+		return roundHalfUp(avg);
 	}
 
 	template <typename T>
@@ -209,7 +210,7 @@ namespace assignment3
 	template <typename T>
 	inline bool QueueStack<T>::Empty() const
 	{
-		return true;
+		return mQueueStack.empty();
 	}
 
 
