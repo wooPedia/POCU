@@ -28,8 +28,8 @@ namespace assignment3
 		QueueStack<T>& operator=(const QueueStack& rhs);
 
 		void Enqueue(T number);
-		inline T Peek() const;
-		T Dequeue();
+		inline const T& Peek() const;
+		T& Dequeue();
 
 		T GetMax();
 		T GetMin();
@@ -134,7 +134,7 @@ namespace assignment3
 	}
 
 	template <typename T>
-	inline T QueueStack<T>::Peek() const
+	inline const T& QueueStack<T>::Peek() const
 	{
 		assert(!mQueueStack.empty() && !mQueueStack.front().empty());
 
@@ -143,11 +143,11 @@ namespace assignment3
 	}
 
 	template <typename T>
-	T QueueStack<T>::Dequeue()
+	T& QueueStack<T>::Dequeue()
 	{
 		assert(!mQueueStack.empty() && !mQueueStack.front().empty());
 
-		T front = mQueueStack.front().top();
+		T& front = mQueueStack.front().top();
 		mQueueStack.front().pop();
 		mStatistics->Sum -= front;
 		mStatistics->TmpSum -= front;
