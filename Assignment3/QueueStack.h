@@ -29,7 +29,7 @@ namespace assignment3
 
 		void Enqueue(T number);
 		inline const T& Peek() const;
-		T& Dequeue();
+		T Dequeue();
 
 		T GetMax();
 		T GetMin();
@@ -109,6 +109,7 @@ namespace assignment3
 		// 각 스택의 최대 크기가 0일 경우 요소를 추가하지 않습니다.
 		if (mMaxStackSize == 0)
 		{
+			mQueueStack.emplace(std::stack<T>());
 			return;
 		}
 
@@ -119,7 +120,7 @@ namespace assignment3
 			mQueueStack.emplace(std::stack<T>());
 		}
 
-		// 첫 스택이 비었다면 첫 스택에, 꽉 찼다면 마지막 스택에 저장합니다.
+		// 첫 스택이 꽉 찼다면 마지막 스택에, 빈 공간이 있다면 첫 스택에 저장합니다.
 		if (mQueueStack.front().size() == mMaxStackSize)
 		{
 			mQueueStack.back().push(number);
@@ -143,11 +144,16 @@ namespace assignment3
 	}
 
 	template <typename T>
-	T& QueueStack<T>::Dequeue()
+	T QueueStack<T>::Dequeue()
 	{
 		//assert(!mQueueStack.empty() && !mQueueStack.front().empty());
+		if (mMaxStackSize == 0 && !mQueueStack.empty())
+		{
+			mQueueStack.pop();
+			return NULL;
+		}
 
-		T& front = mQueueStack.front().top();
+		T front = mQueueStack.front().top();
 		mQueueStack.front().pop();
 		mStatistics->Sum -= front;
 		mStatistics->TmpSum -= front;
