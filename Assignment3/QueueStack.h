@@ -19,7 +19,7 @@ namespace assignment3
 	class QueueStack
 	{
 	public:
-		using queueStack = std::queue<std::stack<T> >;
+		//using queueStack = std::queue<std::stack<T> >;
 
 		QueueStack() = delete;
 		QueueStack(size_t maxStackSize);
@@ -62,10 +62,10 @@ namespace assignment3
 		//void copyToThis(const Statistic& source1, const Size& source2);
 		void copyToThis(const Statistic& source);
 		//void findMaxAndMin(queueStack qs);
-		void updateMax(queueStack qs);
-		void updateMin(queueStack qs);
+		void updateMax(std::queue<std::stack<T> > qs);
+		void updateMin(std::queue<std::stack<T> > qs);
 
-		queueStack mQueueStack;
+		std::queue<std::stack<T> > mQueueStack;
 		Statistic* mStatistics;
 		//Size* mStatistics;
 	};
@@ -433,7 +433,7 @@ namespace assignment3
 	*/
 
 	template <typename T>
-	void QueueStack<T>::updateMax(queueStack qs)
+	void QueueStack<T>::updateMax(std::queue<std::stack<T> > qs)
 	{
 		assert(!qs.empty() && !qs.front().empty());
 
@@ -460,7 +460,7 @@ namespace assignment3
 	}
 
 	template <typename T>
-	void QueueStack<T>::updateMin(queueStack qs)
+	void QueueStack<T>::updateMin(std::queue<std::stack<T> > qs)
 	{
 		assert(!qs.empty() && !qs.front().empty());
 
