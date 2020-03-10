@@ -25,7 +25,7 @@ namespace assignment3
 
 		void Enqueue(T number);
 		inline const T& Peek() const;
-		T Dequeue();
+		T& Dequeue();
 
 		T GetMax();
 		T GetMin();
@@ -176,12 +176,12 @@ namespace assignment3
 
 
 	template <typename T>
-	T SmartQueue<T>::Dequeue()
+	T& SmartQueue<T>::Dequeue()
 	{
 		// 비어있지 않을 경우에만 테스트합니다.
 		assert(!mQueue.empty());
 
-		T front = mQueue.front();
+		T& front = mQueue.front();
 		mStatistics->Sum -= front;
 		mStatistics->ExpSum -= (front * front);
 		mTempStatistics->TmpSum -= front;

@@ -136,7 +136,7 @@ namespace assignment3
 	template <typename T>
 	inline const T& QueueStack<T>::Peek() const
 	{
-		assert(!mQueueStack.empty() && !mQueueStack.front().empty());
+		//assert(!mQueueStack.empty() && !mQueueStack.front().empty());
 
 		// 제일 첫 번째 스택의 top을 반환합니다.
 		return mQueueStack.front().top();
@@ -145,7 +145,7 @@ namespace assignment3
 	template <typename T>
 	T& QueueStack<T>::Dequeue()
 	{
-		assert(!mQueueStack.empty() && !mQueueStack.front().empty());
+		//assert(!mQueueStack.empty() && !mQueueStack.front().empty());
 
 		T& front = mQueueStack.front().top();
 		mQueueStack.front().pop();
