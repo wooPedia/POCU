@@ -29,7 +29,7 @@ namespace assignment3
 
 		void Enqueue(T number);
 		inline const T& Peek() const;
-		const T& Dequeue();
+		T& Dequeue();
 
 		T GetMax();
 		T GetMin();
@@ -143,7 +143,7 @@ namespace assignment3
 	}
 
 	template <typename T>
-	T QueueStack<T>::Dequeue()
+	T& QueueStack<T>::Dequeue()
 	{
 		assert(!mQueueStack.empty() && !mQueueStack.front().empty());
 
