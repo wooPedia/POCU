@@ -29,13 +29,13 @@ namespace lab8
 		int GetIndex(const bool t) const;
 		size_t GetSize() const;
 		size_t GetCapacity() const;
+		enum { MAX = (N % 32 != 0) ? static_cast<size_t>((N / 32) + 1) : N / 32 };
+		unsigned int mFixedVector[MAX];
 
 	private:
 		void shiftForRemove(size_t vecIndex, size_t removedBit);
 		void rearrangeVector(size_t begin, size_t end);
 
-		enum { MAX = (N % 32 != 0) ? static_cast<size_t>((N / 32) + 1) : N / 32 };
-		unsigned int mFixedVector[MAX];
 		size_t mSize;
 	};
 
@@ -97,11 +97,11 @@ namespace lab8
 		}
 
 		// 현재까지 저장된 데이터 범위 내에서 탐색할 수 있도록 범위 값을 구합니다.
-		size_t vecSize = (mSize % 32 != 0) ? (mSize / 32 + 1) : (mSize / 32);
-		size_t bitForLoof = (mSize % 32);
+		size_t vecSize = (mSize % 32 != 0) ? (mSize / 32) + 1 : (mSize / 32);
+		size_t bitForLoof = (mSize % 32 != 0) ? (mSize % 32) : 32;
 
 		assert(vecSize <= MAX);
-		assert(bitForLoof < 32);
+		assert(bitForLoof <= 32);
 
 		// 0011 1100 [0]
 		// 1100 0011 [1]
@@ -187,11 +187,11 @@ namespace lab8
 		}
 
 		// 현재까지 저장된 데이터 범위내에서 탐색할 수 있도록 범위 값을 구합니다.
-		size_t vecSize = (mSize / 32) + 1;
-		size_t bitForLoof = (mSize % 32);
+		size_t vecSize = (mSize % 32 != 0) ? (mSize / 32 + 1) : (mSize / 32);
+		size_t bitForLoof = (mSize % 32 != 0) ? (mSize % 32) : 32;
 
 		assert(vecSize <= MAX);
-		assert(bitForLoof < 32);
+		assert(bitForLoof <= 32);
 
 		// 배열에서 t와 일치하는 요소를 탐색합니다.
 		++bitForLoof;
