@@ -31,8 +31,8 @@ namespace lab8
 		size_t GetCapacity() const;
 
 	private:
-		size_t getVectorIndexFromTarget(size_t targetIndex, unsigned int& n) const;
 		void shiftForRemove(size_t vecIndex, size_t removedBit);
+		void rearrangeVector(size_t begin, size_t end);
 
 		enum { MAX = (N % 32 != 0) ? static_cast<size_t>((N / 32) + 1) : N / 32 };
 		unsigned int mFixedVector[MAX];
@@ -50,7 +50,7 @@ namespace lab8
 	}
 
 	template <size_t N>
-	bool FixedVector<bool, N>::Add(const bool t)
+	bool FixedVector<bool, N>::Add(const bool bValue)
 	{
 		// Add가 성공하면 true, 실패하면 false를 반환합니다.
 
@@ -59,30 +59,35 @@ namespace lab8
 			return false;
 		}
 
-		unsigned int bitOfN = 0;
-
 		// add를 수행할 위치의 배열 인덱스와 비트 자리 수를 구합니다.
-		size_t addIndex = getVectorIndexFromTarget(mSize++, bitOfN);
+		// addIndex는 bValue가 추가될 위치의 vector index.
+		// addBit는 bValue가 추가될 위치의 인덱스이여야 함 
+		// (ex: 현재 size가 35일 경우 요소가 35개 이므로 vec[1]의 4번째 비트[index: 3] 위치에 add해야 함)
+		// 건드릴 필요 X
+		size_t addIndex = mSize / 32;
+		unsigned int addBit = mSize % 32;
 
-		assert(addIndex < N);
-		assert(bitOfN < 32);
+		assert(addIndex < MAX);
+		assert(addBit < 32);
 
-		// true일 경우 bitOfN 번째 비트를 true로 설정합니다.
-		if (t)
+		// true일 경우 addBit 번째 비트를 true로 설정합니다.
+		if (bValue)
 		{
-			mFixedVector[addIndex] |= (1 << bitOfN);
+			mFixedVector[addIndex] |= (1 << addBit);
 		}
 		else
 		{
-			// false일 경우 bitOfN 번째 비트를 false로 설정합니다.
-			mFixedVector[addIndex] &= ~(1 << bitOfN);
+			// false일 경우 addBit 번째 비트를 false로 설정합니다.
+			mFixedVector[addIndex] &= ~(1 << addBit);
 		}
+
+		++mSize;
 
 		return true;
 	}
 
 	template <size_t N>
-	bool FixedVector<bool, N>::Remove(const bool t)
+	bool FixedVector<bool, N>::Remove(const bool bValue)
 	{
 		// Remove가 성공하면 true, 실패하면 false를 반환합니다.
 
@@ -91,27 +96,38 @@ namespace lab8
 			return false;
 		}
 
-		// 현재까지 저장된 데이터 범위내에서 탐색할 수 있도록 범위 값을 구합니다.
+		// 현재까지 저장된 데이터 범위 내에서 탐색할 수 있도록 범위 값을 구합니다.
+		size_t vecSize = (mSize % 32 != 0) ? (mSize / 32 + 1) : (mSize / 32);
+		size_t bitForLoof = (mSize % 32);
 
-		size_t lastBitOfLastIndex = 0; // 마지막 요소의 마지막 비트의 인덱스
-		size_t currentLastIndex = getVectorIndexFromTarget(mSize, lastBitOfLastIndex);
+		assert(vecSize <= MAX);
+		assert(bitForLoof < 32);
 
-		assert(lastBitOfLastIndex < 32);
-		assert(currentLastIndex < MAX);
+		// 0011 1100 [0]
+		// 1100 0011 [1]
+		// 10		 [2]
+		// remove(false)
+		// 1001 1110 [0]
+		// 1110 0001 [1]
+		// 0000 0000 [2]
 
-		// 배열에서 t와 일치하는 요소를 탐색합니다.
-		++currentLastIndex;
-		for (size_t i = 0; i != currentLastIndex; ++i)
+		// 현재 vector의 size만큼 탐색합니다. 
+		for (size_t i = 0; i != vecSize; ++i)
 		{
 			// 마지막 요소 전까지는 32bit 모두 확인합니다.
-			if (i < currentLastIndex - 1)
+			// 삭제될 비트의 다음 비트부터 1bit 씩 right shift합니다.
+			if (i < vecSize - 1)
 			{
-				// 배열의 각 원소마다 32bit를 확인합니다.
 				for (size_t j = 0; j != 32; ++j)
 				{
-					if (((mFixedVector[i] >> j) & 1) == t)
+					// 일치하는 value를 찾는다면 
+					if (((mFixedVector[i] >> j) & 1) == bValue)
 					{
-						shiftForRemove(i, j); // 삭제될 비트의 다음 비트부터 1bit 씩 right shift합니다.
+						// remove(false)
+						// 0101 1010 [0] -> 1010 010 
+						// 0101 1111 [1]
+						shiftForRemove(i, j);
+						rearrangeVector(i + 1, vecSize); // [i+1, vecSize) 범위를 재정렬합니다.
 						--mSize;
 
 						return true;
@@ -121,11 +137,12 @@ namespace lab8
 			else
 			{
 				// 마지막 요소는 저장된 비트 수만큼만 확인합니다.
-				for (size_t j = 0; j != lastBitOfLastIndex; ++j)
+				for (size_t j = 0; j != bitForLoof; ++j)
 				{
-					if (((mFixedVector[i] >> j) & 1) == t)
+					if (((mFixedVector[i] >> j) & 1) == bValue)
 					{
 						shiftForRemove(i, j);
+						rearrangeVector(i + 1, vecSize);
 						--mSize;
 
 						return true;
@@ -142,8 +159,8 @@ namespace lab8
 	{
 		assert(index < mSize);
 
-		size_t bitOfN = 0;
-		size_t vecIndex = getVectorIndexFromTarget(index, bitOfN);
+		size_t vecIndex = index / 32;
+		size_t bitOfN = index % 32;
 
 		return (mFixedVector[vecIndex] >> bitOfN) & 1;
 	}
@@ -155,14 +172,14 @@ namespace lab8
 
 		assert(index < mSize);
 
-		size_t bitOfN = 0;
-		size_t vecIndex = getVectorIndexFromTarget(index, bitOfN);
+		size_t vecIndex = index / 32;
+		size_t bitOfN = index % 32;
 
 		return (mFixedVector[vecIndex] >> bitOfN) & 1;
 	}
 
 	template <size_t N>
-	int FixedVector<bool, N>::GetIndex(const bool t) const
+	int FixedVector<bool, N>::GetIndex(const bool bValue) const
 	{
 		if (mSize == 0)
 		{
@@ -170,24 +187,23 @@ namespace lab8
 		}
 
 		// 현재까지 저장된 데이터 범위내에서 탐색할 수 있도록 범위 값을 구합니다.
+		size_t vecSize = (mSize / 32) + 1;
+		size_t bitForLoof = (mSize % 32);
 
-		size_t lastBitOfLastIndex = 0; // 마지막 요소의 마지막 비트의 인덱스
-		size_t currentLastIndex = getVectorIndexFromTarget(mSize, lastBitOfLastIndex);
-
-		assert(lastBitOfLastIndex < 32);
-		assert(currentLastIndex < MAX);
+		assert(vecSize <= MAX);
+		assert(bitForLoof < 32);
 
 		// 배열에서 t와 일치하는 요소를 탐색합니다.
-		++currentLastIndex;
-		for (size_t i = 0; i != currentLastIndex; ++i)
+		++bitForLoof;
+		for (size_t i = 0; i != vecSize; ++i)
 		{
 			// 마지막 요소 전까지는 32bit 모두 확인합니다.
-			if (i < currentLastIndex - 1)
+			if (i < vecSize - 1)
 			{
 				// 배열의 각 원소마다 32bit를 확인합니다.
 				for (size_t j = 0; j != 32; ++j)
 				{
-					if (((mFixedVector[i] >> j) & 1) == t)
+					if (((mFixedVector[i] >> j) & 1) == bValue)
 					{
 						return 32 * i + j;
 					}
@@ -196,9 +212,9 @@ namespace lab8
 			else
 			{
 				// 마지막 요소는 저장된 비트 수만큼만 확인합니다.
-				for (size_t j = 0; j != lastBitOfLastIndex; ++j)
+				for (size_t j = 0; j != bitForLoof; ++j)
 				{
-					if (((mFixedVector[i] >> j) & 1) == t)
+					if (((mFixedVector[i] >> j) & 1) == bValue)
 					{
 						return 32 * i + j;
 					}
@@ -225,17 +241,6 @@ namespace lab8
 	// private method
 
 	template <size_t N>
-	size_t FixedVector<bool, N>::getVectorIndexFromTarget(size_t targetIndex, unsigned int& n) const
-	{
-		// targetIndex번째 bool 값이 실제로 저장되어 있는 배열의 인덱스를 반환하고
-		// 몇 번째 비트인지를 n에 저장합니다.
-		// ex) targetIndex가 34라면 1을 반환하고 n에 2를 저장합니다.
-
-		n = targetIndex % 32;
-		return targetIndex / 32;
-	}
-
-	template <size_t N>
 	void FixedVector<bool, N>::shiftForRemove(size_t vecIndex, size_t removedBit)
 	{
 		/*
@@ -254,6 +259,14 @@ namespace lab8
 
 			4. og와 tmp를 OR 연산
 			0110 1010
+			^
+
+			5. 4번에서 구한 값의 마지막 비트를 다음 요소의 첫 비트로 set
+
+			6. 그리고 1bit씩 right shift
+
+			7. 5번 6번 반복
+
 		*/
 
 		unsigned int tmp = 0;
@@ -261,8 +274,8 @@ namespace lab8
 		// remove하는 비트의 이전 비트들을 tmp에 저장합니다.
 		for (size_t i = 0; i != removedBit; ++i)
 		{
-			bool bitValue = (mFixedVector[vecIndex] >> i) & 1;
-			if (bitValue)
+			bool bBitValue = (mFixedVector[vecIndex] >> i) & 1;
+			if (bBitValue)
 			{
 				tmp |= (1 << i);
 			}
@@ -284,5 +297,37 @@ namespace lab8
 		// 4. mFixedVector[vecIndex]와 tmp를 OR 연산합니다.
 		mFixedVector[vecIndex] |= tmp;
 	}
+
+	template <size_t N>
+	void FixedVector<bool, N>::rearrangeVector(size_t begin, size_t end)
+	{
+		// begin부터 end-1까지 이전 요소의 마지막 비트를 현재 비트의 첫 비트로 set하고 
+		// 현재 요소는 1만큼 right shift
+
+		for (size_t i = begin; i != end; ++i)
+		{
+			// 이전 벡터 요소의 마지막 비트를 현재 벡터 요소의 첫 비트로 set
+			if (mFixedVector[i] & 1)
+			{
+				mFixedVector[i - 1] |= (1 << 31);
+			}
+			else
+			{
+				mFixedVector[i - 1] &= ~(1 << 31);
+			}
+			mFixedVector[i] >>= 1;
+		}
+
+		//	6. 그리고 1bit씩 right shift
+
+		//	7. 5번 6번 반복
+
+		// 현재 존재하는 마지막 인덱스와 비트 자리수를 구함.
+		//size_t currentLastIndex = mSize % 32;
+		//unsigned int lastBitOfLastIndex = mSize / 32;
+
+		//for(size_t i = 0; i != currentLastIndex; )
+	}
+
 
 } // namespace
