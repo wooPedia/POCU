@@ -29,13 +29,13 @@ namespace lab8
 		int GetIndex(const bool t) const;
 		size_t GetSize() const;
 		size_t GetCapacity() const;
-		enum { MAX = (N % 32 != 0) ? static_cast<size_t>((N / 32) + 1) : N / 32 };
-		unsigned int mFixedVector[MAX];
 
 	private:
 		void shiftForRemove(size_t vecIndex, size_t removedBit);
 		void rearrangeVector(size_t begin, size_t end);
 
+		enum { MAX = (N % 32 != 0) ? static_cast<size_t>((N / 32) + 1) : N / 32 };
+		unsigned int mFixedVector[MAX];
 		size_t mSize;
 	};
 
@@ -194,7 +194,6 @@ namespace lab8
 		assert(bitForLoof <= 32);
 
 		// 배열에서 t와 일치하는 요소를 탐색합니다.
-		++bitForLoof;
 		for (size_t i = 0; i != vecSize; ++i)
 		{
 			// 마지막 요소 전까지는 32bit 모두 확인합니다.
@@ -238,6 +237,7 @@ namespace lab8
 	}
 
 
+
 	// private method
 
 	template <size_t N>
@@ -258,15 +258,7 @@ namespace lab8
 			og: 0110 0000
 
 			4. og와 tmp를 OR 연산
-			0110 1010
-			^
-
-			5. 4번에서 구한 값의 마지막 비트를 다음 요소의 첫 비트로 set
-
-			6. 그리고 1bit씩 right shift
-
-			7. 5번 6번 반복
-
+			og: 0110 1010
 		*/
 
 		unsigned int tmp = 0;
@@ -317,16 +309,6 @@ namespace lab8
 			}
 			mFixedVector[i] >>= 1;
 		}
-
-		//	6. 그리고 1bit씩 right shift
-
-		//	7. 5번 6번 반복
-
-		// 현재 존재하는 마지막 인덱스와 비트 자리수를 구함.
-		//size_t currentLastIndex = mSize % 32;
-		//unsigned int lastBitOfLastIndex = mSize / 32;
-
-		//for(size_t i = 0; i != currentLastIndex; )
 	}
 
 
