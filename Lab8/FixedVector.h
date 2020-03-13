@@ -13,7 +13,7 @@ namespace lab8
 		FixedVector();
 		~FixedVector() = default;
 		FixedVector(const FixedVector& other) = default;
-		FixedVector& operator=(const FixedVector& rhs) = default;
+		FixedVector<T, N>& operator=(const FixedVector& rhs) = default;
 
 		bool Add(const T& t);
 		bool Remove(const T& t);
@@ -51,6 +51,7 @@ namespace lab8
 		}
 
 		mFixedVector[mSize++] = t;
+		assert(mSize <= N);
 
 		return true;
 	}

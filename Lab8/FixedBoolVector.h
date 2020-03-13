@@ -18,13 +18,13 @@ namespace lab8
 		FixedVector();
 		~FixedVector() = default;
 		FixedVector(const FixedVector& other) = default;
-		FixedVector& operator=(const FixedVector& rhs) = default;
+		FixedVector<bool, N>& operator=(const FixedVector& rhs) = default;
 
 		bool Add(const bool t);
 		bool Remove(const bool t);
 		bool Get(size_t index) const;
 
-		bool operator[](size_t index);
+		bool operator[](size_t index) const;
 
 		int GetIndex(const bool t) const;
 		size_t GetSize() const;
@@ -34,7 +34,10 @@ namespace lab8
 		void shiftForRemove(size_t vecIndex, size_t removedBit);
 		void rearrangeVector(size_t begin, size_t end);
 
-		enum { MAX = (N % 32 != 0) ? static_cast<size_t>((N / 32) + 1) : N / 32 };
+		enum 
+		{ 
+			MAX = (N % 32 != 0) ? static_cast<size_t>((N / 32) + 1) : (N / 32) 
+		};
 		unsigned int mFixedVector[MAX];
 		size_t mSize;
 	};
@@ -82,6 +85,7 @@ namespace lab8
 		}
 
 		++mSize;
+		assert(mSize <= N);
 
 		return true;
 	}
@@ -161,12 +165,14 @@ namespace lab8
 
 		size_t vecIndex = index / 32;
 		size_t bitOfN = index % 32;
+		assert(vecIndex < MAX);
+		assert(bitOfN < 32);
 
 		return (mFixedVector[vecIndex] >> bitOfN) & 1;
 	}
 
 	template <size_t N>
-	bool FixedVector<bool, N>::operator[](size_t index)
+	bool FixedVector<bool, N>::operator[](size_t index) const
 	{
 		// bool 타입은 배열 인덱스 접근을 통해 값을 변경할 수 없습니다.
 
@@ -174,6 +180,8 @@ namespace lab8
 
 		size_t vecIndex = index / 32;
 		size_t bitOfN = index % 32;
+		assert(vecIndex < MAX);
+		assert(bitOfN < 32);
 
 		return (mFixedVector[vecIndex] >> bitOfN) & 1;
 	}
