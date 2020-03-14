@@ -126,6 +126,7 @@ namespace lab8
 			return false;
 		}
 
+		// 0 1 2 3 4
 		// 배열에서 t와 일치하는 요소를 탐색합니다.
 		for (size_t i = 0; i != mSize; ++i)
 		{
@@ -137,6 +138,7 @@ namespace lab8
 					mFixedVector[i] = mFixedVector[i + 1];
 					++i;
 				}
+				mFixedVector[mSize - 1] = NULL;
 				--mSize;
 				return true;
 			}
