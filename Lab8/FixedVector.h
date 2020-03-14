@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cassert>
+#include <type_traits>
 
 namespace lab8
 {
@@ -12,8 +13,8 @@ namespace lab8
 	public:
 		FixedVector();
 		~FixedVector() = default;
-		FixedVector(const FixedVector& other) = default;
-		FixedVector<T, N>& operator=(const FixedVector& rhs) = default;
+		FixedVector(const FixedVector& other);
+		FixedVector<T, N>& operator=(const FixedVector& rhs);
 
 		bool Add(const T& t);
 		bool Remove(const T& t);
@@ -26,8 +27,8 @@ namespace lab8
 		size_t GetCapacity() const;
 
 	private:
-		T mFixedVector[N];
 		size_t mSize;
+		T mFixedVector[N];
 	};
 
 
@@ -38,6 +39,63 @@ namespace lab8
 		: mSize(0)
 		, mFixedVector{ 0, }
 	{
+	}
+
+
+	template <typename T, size_t N>
+	FixedVector<T, N>::FixedVector(const FixedVector& other)
+		: mSize(other.mSize)
+	{
+		if (std::is_pointer_v<T>)
+		{
+			for (size_t i = 0; i != mSize; ++i)
+			{
+				mFixedVector[i] = new auto(*(other.mFixedVector[i]));
+			}
+		}
+		else
+		{
+			for (size_t i = 0; i != mSize; ++i)
+			{
+				mFixedVector[i] = other.mFixedVector[i];
+			}
+		}
+	}
+
+	template <typename T, size_t N>
+	FixedVector<T, N>& FixedVector<T, N>::operator=(const FixedVector& rhs)
+	{
+		if (this == &rhs)
+		{
+			return *this;
+		}
+
+		if (std::is_pointer_v<T>)
+		{
+			for (auto& element : mFixedVector)
+			{
+				element = nullptr;
+			}
+
+			mSize = rhs.mSize;
+			for (size_t i = 0; i != mSize; ++i)
+			{
+				mFixedVector[i] = new auto(*(rhs.mFixedVector[i]));
+			}
+		}
+		else
+		{
+			for (auto& element : mFixedVector)
+			{
+				element = NULL;
+			}
+
+			mSize = rhs.mSize;
+			for (size_t i = 0; i != mSize; ++i)
+			{
+				mFixedVector[i] = rhs.mFixedVector[i];
+			}
+		}
 	}
 
 	template <typename T, size_t N>
