@@ -239,13 +239,13 @@ namespace assignment3
 	template <typename T>
 	inline T QueueStack<T>::GetSum() const
 	{
-		return static_cast<T>(mStatistics->Sum);
+		return mStatistics->Sum;
 	}
 
 	template <typename T>
 	inline double QueueStack<T>::GetAverage() const
 	{
-		double avg = mStatistics->Sum / GetCount();
+		double avg = (mStatistics->Sum + 0.0) / GetCount();
 		return roundHalfUp(avg);
 	}
 
