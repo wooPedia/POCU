@@ -3,7 +3,7 @@
 #include <queue>
 #include <stack>
 #include <cassert>
-#include <type_traits>
+//#include <type_traits>
 
 #include "ERounding.h"
 
@@ -48,7 +48,6 @@ namespace assignment3
 			T Sum;
 			double TmpSum;
 		};
-
 
 		queueStack mQueueStack;
 		size_t mMaxStackSize;
@@ -106,29 +105,29 @@ namespace assignment3
 	template <typename T>
 	void QueueStack<T>::Enqueue(T number)
 	{
-		// 각 스택의 최대 크기가 0일 경우 요소를 추가하지 않습니다.
+		// 각 스택의 최대 크기가 0일 경우 빈 스택만 추가 후 요소를 추가하지 않습니다.
 		if (mMaxStackSize == 0)
 		{
-			mQueueStack.emplace(std::stack<T>());
+			//mQueueStack.emplace(std::stack<T>());
 			return;
 		}
 
 		// 큐가 비었거나 첫 스택과 마지막 스택이 모두 꽉 찼을 경우 새 스택을 추가합니다.
-		if (mQueueStack.empty() ||
-			(mQueueStack.front().size() == mMaxStackSize && mQueueStack.back().size() == mMaxStackSize))
+		if (mQueueStack.empty() || mQueueStack.back().size() == mMaxStackSize)
 		{
 			mQueueStack.emplace(std::stack<T>());
 		}
 
-		// 첫 스택이 꽉 찼다면 마지막 스택에, 빈 공간이 있다면 첫 스택에 저장합니다.
-		if (mQueueStack.front().size() == mMaxStackSize)
-		{
-			mQueueStack.back().push(number);
-		}
-		else
-		{
-			mQueueStack.front().push(number);
-		}
+		//// 첫 스택이 꽉 찼다면 마지막 스택에, 빈 공간이 있다면 첫 스택에 저장합니다.
+		//if (mQueueStack.front().size() == mMaxStackSize)
+		//{
+		//	mQueueStack.back().push(number);
+		//}
+		//else
+		//{
+		//	mQueueStack.front().push(number);
+		//}
+		mQueueStack.back().push(number);
 
 		mStatistics->Sum += number;
 		mStatistics->TmpSum += number;
@@ -149,7 +148,6 @@ namespace assignment3
 		//assert(!mQueueStack.empty() && !mQueueStack.front().empty());
 		if (mMaxStackSize == 0 && !mQueueStack.empty())
 		{
-			mQueueStack.pop();
 			return NULL;
 		}
 
