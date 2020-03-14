@@ -96,7 +96,7 @@ namespace lab8
 	template <typename T, size_t N>
 	T& FixedVector<T, N>::operator[](size_t index)
 	{
-		assert(index < mSize);
+		assert(index >= 0);
 
 		return mFixedVector[index];
 	}
