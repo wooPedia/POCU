@@ -46,6 +46,7 @@ namespace lab8
 	FixedVector<T, N>::FixedVector(const FixedVector& other)
 		: mSize(other.mSize)
 	{
+		// 포인터 타입일 경우 각 요소를 동적할당합니다.
 		if (std::is_pointer_v<T>)
 		{
 			for (size_t i = 0; i != mSize; ++i)
@@ -72,6 +73,7 @@ namespace lab8
 
 		if (std::is_pointer_v<T>)
 		{
+			// 복사하기 전 이전 요소들을 모두 삭제합니다.
 			for (auto& element : mFixedVector)
 			{
 				element = nullptr;
@@ -126,7 +128,6 @@ namespace lab8
 			return false;
 		}
 
-		// 0 1 2 3 4
 		// 배열에서 t와 일치하는 요소를 탐색합니다.
 		for (size_t i = 0; i != mSize; ++i)
 		{
@@ -138,7 +139,7 @@ namespace lab8
 					mFixedVector[i] = mFixedVector[i + 1];
 					++i;
 				}
-				mFixedVector[mSize - 1] = NULL;
+				mFixedVector[mSize - 1] = NULL; // 이동된 마지막 요소를 NULL로 set합니다. 
 				--mSize;
 				return true;
 			}

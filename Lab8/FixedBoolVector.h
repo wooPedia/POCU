@@ -34,9 +34,9 @@ namespace lab8
 		void shiftForRemove(size_t vecIndex, size_t removedBit);
 		void rearrangeVector(size_t begin, size_t end);
 
-		enum 
-		{ 
-			MAX = (N % 32 != 0) ? static_cast<size_t>((N / 32) + 1) : (N / 32) 
+		enum
+		{
+			MAX = (N % 32 != 0) ? static_cast<size_t>((N / 32) + 1) : (N / 32)
 		};
 		unsigned int mFixedVector[MAX];
 		size_t mSize;
@@ -62,11 +62,6 @@ namespace lab8
 			return false;
 		}
 
-		// add를 수행할 위치의 배열 인덱스와 비트 자리 수를 구합니다.
-		// addIndex는 bValue가 추가될 위치의 vector index.
-		// addBit는 bValue가 추가될 위치의 인덱스이여야 함 
-		// (ex: 현재 size가 35일 경우 요소가 35개 이므로 vec[1]의 4번째 비트[index: 3] 위치에 add해야 함)
-		// 건드릴 필요 X
 		size_t addIndex = mSize / 32;
 		unsigned int addBit = mSize % 32;
 
@@ -107,19 +102,10 @@ namespace lab8
 		assert(vecSize <= MAX);
 		assert(bitForLoof <= 32);
 
-		// 0011 1100 [0]
-		// 1100 0011 [1]
-		// 10		 [2]
-		// remove(false)
-		// 1001 1110 [0]
-		// 1110 0001 [1]
-		// 0000 0000 [2]
-
-		// 현재 vector의 size만큼 탐색합니다. 
+		// 현재 벡터의 크기만큼 탐색합니다. 
 		for (size_t i = 0; i != vecSize; ++i)
 		{
-			// 마지막 요소 전까지는 32bit 모두 확인합니다.
-			// 삭제될 비트의 다음 비트부터 1bit 씩 right shift합니다.
+			// 벡터의 마지막 요소 전까지는 32bit 모두 확인합니다.
 			if (i < vecSize - 1)
 			{
 				for (size_t j = 0; j != 32; ++j)
@@ -127,11 +113,8 @@ namespace lab8
 					// 일치하는 value를 찾는다면 
 					if (((mFixedVector[i] >> j) & 1) == bValue)
 					{
-						// remove(false)
-						// 0101 1010 [0] -> 1010 010 
-						// 0101 1111 [1]
-						shiftForRemove(i, j);
-						rearrangeVector(i + 1, vecSize); // [i+1, vecSize) 범위를 재정렬합니다.
+						shiftForRemove(i, j); // 비트를 삭제하기 위해 다음 비트들을 한칸씩 당깁니다.
+						rearrangeVector(i + 1, vecSize); // [i+1, vecSize) 범위의 요소를 재정렬합니다.
 						--mSize;
 
 						return true;
@@ -165,6 +148,7 @@ namespace lab8
 
 		size_t vecIndex = index / 32;
 		size_t bitOfN = index % 32;
+
 		assert(vecIndex < MAX);
 		assert(bitOfN < 32);
 
@@ -179,6 +163,7 @@ namespace lab8
 
 		size_t vecIndex = index / 32;
 		size_t bitOfN = index % 32;
+
 		assert(vecIndex < MAX);
 		assert(bitOfN < 32);
 
@@ -193,20 +178,16 @@ namespace lab8
 			return -1;
 		}
 
-		// 현재까지 저장된 데이터 범위내에서 탐색할 수 있도록 범위 값을 구합니다.
 		size_t vecSize = (mSize % 32 != 0) ? (mSize / 32 + 1) : (mSize / 32);
 		size_t bitForLoof = (mSize % 32 != 0) ? (mSize % 32) : 32;
 
 		assert(vecSize <= MAX);
 		assert(bitForLoof <= 32);
 
-		// 배열에서 t와 일치하는 요소를 탐색합니다.
 		for (size_t i = 0; i != vecSize; ++i)
 		{
-			// 마지막 요소 전까지는 32bit 모두 확인합니다.
 			if (i < vecSize - 1)
 			{
-				// 배열의 각 원소마다 32bit를 확인합니다.
 				for (size_t j = 0; j != 32; ++j)
 				{
 					if (((mFixedVector[i] >> j) & 1) == bValue)
@@ -217,7 +198,6 @@ namespace lab8
 			}
 			else
 			{
-				// 마지막 요소는 저장된 비트 수만큼만 확인합니다.
 				for (size_t j = 0; j != bitForLoof; ++j)
 				{
 					if (((mFixedVector[i] >> j) & 1) == bValue)
@@ -300,9 +280,18 @@ namespace lab8
 	template <size_t N>
 	void FixedVector<bool, N>::rearrangeVector(size_t begin, size_t end)
 	{
-		// begin부터 end-1까지 이전 요소의 마지막 비트를 현재 비트의 첫 비트로 set하고 
-		// 현재 요소는 1만큼 right shift
+		// 벡터의 이전 요소의 마지막 비트를 현재 요소의 첫 비트로 set하고 
+		// 현재 요소를 1만큼 right shift 합니다.
+		// ex) 
+		// 0000 1111 [0]
+		// 0000 1111 [1]
+		// 0001 0001 [2]
+		//     ↓
+		// 1000 1111 [0]
+		// 1000 0111 [1]
+		// 0000 1000 [2]
 
+		// [begin, end) 범위를 모두 반복합니다.
 		for (size_t i = begin; i != end; ++i)
 		{
 			// 이전 벡터 요소의 마지막 비트를 현재 벡터 요소의 첫 비트로 set
