@@ -96,6 +96,8 @@ namespace lab8
 				mFixedVector[i] = rhs.mFixedVector[i];
 			}
 		}
+
+		return *this;
 	}
 
 	template <typename T, size_t N>
