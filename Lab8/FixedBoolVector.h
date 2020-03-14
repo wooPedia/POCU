@@ -175,8 +175,7 @@ namespace lab8
 	bool FixedVector<bool, N>::operator[](size_t index) const
 	{
 		// bool 타입은 배열 인덱스 접근을 통해 값을 변경할 수 없습니다.
-
-		assert(index < mSize);
+		assert(index >= 0);
 
 		size_t vecIndex = index / 32;
 		size_t bitOfN = index % 32;
