@@ -3,7 +3,7 @@
 #include <queue>
 #include <stack>
 #include <cassert>
-//#include <type_traits>
+#include <type_traits>
 
 #include "ERounding.h"
 
@@ -45,9 +45,18 @@ namespace assignment3
 
 		struct Statistic
 		{
-			T Sum;
-			double TmpSum;
+			T Sum{};
+			double TmpSum{};
+
+			T Max{};
+			T Min{};
+			bool bMaxChanged = true;
+			bool bMinChanged = true;
 		};
+
+		// Max와 Min을 갱신합니다.
+		void updateMax(queueStack qs);
+		void updateMin(queueStack qs);
 
 		queueStack mQueueStack;
 		size_t mMaxStackSize;
@@ -101,34 +110,45 @@ namespace assignment3
 		return *this;
 	}
 
-
+	 
 	template <typename T>
 	void QueueStack<T>::Enqueue(T number)
 	{
 		// 각 스택의 최대 크기가 0일 경우 빈 스택만 추가 후 요소를 추가하지 않습니다.
 		if (mMaxStackSize == 0)
 		{
-			//mQueueStack.emplace(std::stack<T>());
 			return;
 		}
 
-		// 큐가 비었거나 첫 스택과 마지막 스택이 모두 꽉 찼을 경우 새 스택을 추가합니다.
+		// 큐가 비었거나 마지막 스택이 모두 꽉 찼을 경우 새 스택을 추가합니다.
 		if (mQueueStack.empty() || mQueueStack.back().size() == mMaxStackSize)
 		{
 			mQueueStack.emplace(std::stack<T>());
 		}
 
-		//// 첫 스택이 꽉 찼다면 마지막 스택에, 빈 공간이 있다면 첫 스택에 저장합니다.
-		//if (mQueueStack.front().size() == mMaxStackSize)
-		//{
-		//	mQueueStack.back().push(number);
-		//}
-		//else
-		//{
-		//	mQueueStack.front().push(number);
-		//}
-		mQueueStack.back().push(number);
+		if (!mQueueStack.front().empty())
+		{
+			if (number > mStatistics->Max)
+			{
+				mStatistics->Max = number;
+				mStatistics->bMaxChanged = false;
+			}
+			if (number < mStatistics->Min)
+			{
+				mStatistics->Min = number;
+				mStatistics->bMinChanged = false;
+			}
+		}
+		else
+		{
+			mStatistics->Max = number;
+			mStatistics->Min = number;
+			mStatistics->bMaxChanged = false;
+			mStatistics->bMinChanged = false;
+		}
 
+
+		mQueueStack.back().push(number);
 		mStatistics->Sum += number;
 		mStatistics->TmpSum += number;
 	}
@@ -136,7 +156,7 @@ namespace assignment3
 	template <typename T>
 	inline const T& QueueStack<T>::Peek() const
 	{
-		//assert(!mQueueStack.empty() && !mQueueStack.front().empty());
+		assert(!mQueueStack.empty() && !mQueueStack.front().empty());
 
 		// 제일 첫 번째 스택의 top을 반환합니다.
 		return mQueueStack.front().top();
@@ -145,7 +165,7 @@ namespace assignment3
 	template <typename T>
 	T QueueStack<T>::Dequeue()
 	{
-		//assert(!mQueueStack.empty() && !mQueueStack.front().empty());
+		assert(!mQueueStack.empty() && !mQueueStack.front().empty());
 		if (mMaxStackSize == 0 && !mQueueStack.empty())
 		{
 			return NULL;
@@ -155,6 +175,17 @@ namespace assignment3
 		mQueueStack.front().pop();
 		mStatistics->Sum -= front;
 		mStatistics->TmpSum -= front;
+
+		// 삭제된 값이 Max 또는 Min이라면 GetMax 또는 GetMin 호출 시 
+		// Max/Min을 갱신하고 반환하도록 합니다.
+		if (front == mStatistics->Max)
+		{
+			mStatistics->bMaxChanged = true;
+		}
+		if (front == mStatistics->Min)
+		{
+			mStatistics->bMinChanged = true;
+		}
 
 		// 첫 스택이 비었다면 pop합니다.
 		if (mQueueStack.front().empty())
@@ -168,13 +199,42 @@ namespace assignment3
 	template <typename T>
 	T QueueStack<T>::GetMax()
 	{
-		return T();
+		if (mQueueStack.empty() || mQueueStack.front().empty())
+		{
+			if (std::is_floating_point<T>::value)
+			{
+				return std::numeric_limits<T>::lowest();
+			}
+			else
+			{
+				return std::numeric_limits<T>::min();
+			}
+		}
+
+		// Max가 변경되었을 경우 Max 값을 갱신합니다.
+		if (mStatistics->bMaxChanged)
+		{
+			updateMax(mQueueStack);
+		}
+
+		return mStatistics->Max;
 	}
 
 	template <typename T>
 	T QueueStack<T>::GetMin()
 	{
-		return T();
+		if (mQueueStack.empty() || mQueueStack.front().empty())
+		{
+			return std::numeric_limits<T>::max();
+		}
+
+		// Min이 변경되었을 경우 Min 값을 갱신합니다.
+		if (mStatistics->bMinChanged)
+		{
+			updateMin(mQueueStack);
+		}
+
+		return mStatistics->Min;
 	}
 
 	template <typename T>
@@ -223,5 +283,59 @@ namespace assignment3
 					  private 멤버 함수
 		===========================================
 	*/
+
+	template <typename T>
+	void QueueStack<T>::updateMax(queueStack qs)
+	{
+		assert(!qs.empty() && !qs.front().empty());
+
+		mStatistics->Max = qs.front().top();
+		qs.front().pop();
+		T tmp;
+
+		while (!qs.empty())
+		{
+			while (!qs.front().empty())
+			{
+				tmp = qs.front().top();
+				qs.front().pop();
+				if (tmp > mStatistics->Max)
+				{
+					mStatistics->Max = tmp;
+				}
+			}
+			qs.pop();
+		}
+
+		// 갱신했으므로 false로 변경합니다.
+		mStatistics->bMaxChanged = false;
+	}
+
+	template <typename T>
+	void QueueStack<T>::updateMin(queueStack qs)
+	{
+		assert(!qs.empty() && !qs.front().empty());
+
+		mStatistics->Min = qs.front().top();
+		qs.front().pop();
+		T tmp;
+
+		while (!qs.empty())
+		{
+			while (!qs.front().empty())
+			{
+				tmp = qs.front().top();
+				qs.front().pop();
+				if (tmp < mStatistics->Min)
+				{
+					mStatistics->Min = tmp;
+				}
+			}
+			qs.pop();
+		}
+
+		// 갱신했으므로 false로 변경합니다.
+		mStatistics->bMinChanged = false;
+	}
 
 } // namespace
