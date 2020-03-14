@@ -46,15 +46,17 @@ namespace assignment3
 		struct Statistic
 		{
 			T Sum{};
-			double TmpSum{};
-
 			T Max{};
 			T Min{};
+
+			// true라면 GetMax/GetMin 함수 호출 시 Max/Min 값을 갱신합니다.
+			// false라면 갱신하지 않고 반환합니다.
 			bool bMaxChanged = true;
 			bool bMinChanged = true;
 		};
 
 		// Max와 Min을 갱신합니다.
+		// 인자는 복사로 전달합니다.
 		void updateMax(queueStack qs);
 		void updateMin(queueStack qs);
 
@@ -83,7 +85,6 @@ namespace assignment3
 	{
 		mStatistics = new Statistic();
 		mStatistics->Sum = other.mStatistics->Sum;
-		mStatistics->TmpSum = other.mStatistics->TmpSum;
 	}
 
 	template <typename T>
@@ -105,12 +106,11 @@ namespace assignment3
 
 		mQueueStack = rhs.mQueueStack;
 		mStatistics->Sum = rhs.mStatistics->Sum;
-		mStatistics->TmpSum = rhs.mStatistics->TmpSum;
 
 		return *this;
 	}
 
-	 
+
 	template <typename T>
 	void QueueStack<T>::Enqueue(T number)
 	{
@@ -150,7 +150,6 @@ namespace assignment3
 
 		mQueueStack.back().push(number);
 		mStatistics->Sum += number;
-		mStatistics->TmpSum += number;
 	}
 
 	template <typename T>
@@ -166,6 +165,7 @@ namespace assignment3
 	T QueueStack<T>::Dequeue()
 	{
 		assert(!mQueueStack.empty() && !mQueueStack.front().empty());
+
 		if (mMaxStackSize == 0 && !mQueueStack.empty())
 		{
 			return NULL;
@@ -174,7 +174,6 @@ namespace assignment3
 		T front = mQueueStack.front().top();
 		mQueueStack.front().pop();
 		mStatistics->Sum -= front;
-		mStatistics->TmpSum -= front;
 
 		// 삭제된 값이 Max 또는 Min이라면 GetMax 또는 GetMin 호출 시 
 		// Max/Min을 갱신하고 반환하도록 합니다.
@@ -240,13 +239,13 @@ namespace assignment3
 	template <typename T>
 	inline T QueueStack<T>::GetSum() const
 	{
-		return static_cast<T>(mStatistics->TmpSum);
+		return static_cast<T>(mStatistics->Sum);
 	}
 
 	template <typename T>
 	inline double QueueStack<T>::GetAverage() const
 	{
-		double avg = mStatistics->TmpSum / GetCount();
+		double avg = mStatistics->Sum / GetCount();
 		return roundHalfUp(avg);
 	}
 

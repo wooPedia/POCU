@@ -356,7 +356,7 @@ namespace assignment3
 	template <typename T>
 	void SmartQueue<T>::copyToThis(const Statistic& source1, const TempStatistic& source2)
 	{
-		// source를 this 개체의 각 구조체 멤버에 복사합니다,.  
+		// source를 this 개체의 각 구조체 멤버에 복사합니다.
 		mStatistics->Sum = source1.Sum;
 		mStatistics->ExpSum = source1.ExpSum;
 		mStatistics->Max = source1.Max;
