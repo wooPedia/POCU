@@ -77,14 +77,14 @@ namespace lab9
 			return;
 		}
 
-		//assert(mPool.size() < mMaxPoolSize);
+		assert(mPool.size() < mMaxPoolSize);
 		mPool.push_back(instance);
 	}
 
 	template <class T>
 	inline size_t ObjectPool<T>::GetFreeObjectCount() const
 	{
-		//assert(mPool.size() <= mMaxPoolSize);
+		assert(mPool.size() <= mMaxPoolSize);
 		return mPool.size();
 	}
 
