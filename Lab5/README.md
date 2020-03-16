@@ -2,7 +2,6 @@
 
 <br>
 
-<b>
 '바니의 완벽한 잔디밭(Barney’s Perfect Lawn)'은 고객의 마당에 완벽한 잔디밭을 조성해 주는 스타트업 기업으로, 최근 고객의 수가 10배씩 늘며 사업이 번창하고 있습니다. 이 회사의 대표인 바니는 갑작스럽게 증가한 수요에 대응하기 위해서 수작업으로 처리하던 다음의 일들을 자동화하기로 결정했습니다.
 <br><br>
 
@@ -12,4 +11,3 @@
 
 <br>
 4개의 구체적인 클래스, RectangleLawn, SquareLawn, CircleLawn, EquilateralTriangleLawn을 구현하는 것이 본 실습입니다.
-</b>
