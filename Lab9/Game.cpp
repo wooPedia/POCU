@@ -3,8 +3,7 @@
 namespace lab9
 {
 	Game::Game(unsigned int seed, unsigned int poolSize)
-		: mPoolSize(poolSize)
-		, mIceCubePool(mPoolSize)
+		: mIceCubePool(poolSize)
 	{
 		srand(seed);
 	}
@@ -34,7 +33,8 @@ namespace lab9
 			IceCube* iceCube = *it;
 			iceCube->Animate();
 
-			// pool에 개체를 반환합니다.
+			// 사용되지 않는 개체를 mActiveGameObjects로부터 
+			// 삭제하고 pool에 반환합니다.
 			if (!iceCube->IsActive())
 			{
 				it = mActiveGameObjects.erase(it);

@@ -5,12 +5,10 @@ namespace lab9
 	IceCube::IceCube()
 		: mFrameCountToLive(0)
 	{
-
 	}
 
 	IceCube::~IceCube()
 	{
-
 	}
 
 	void IceCube::Initialize(unsigned int frameCountToLive)

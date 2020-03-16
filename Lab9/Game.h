@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+
 #include "IceCube.h"
 #include "ObjectPool.h"
 
@@ -19,10 +20,10 @@ namespace lab9
 		const std::vector<IceCube*>& GetActiveGameObjects() const;
 		ObjectPool<IceCube>& GetObjectPool();
 
+
 	private:
 		enum { MAX_FRAME_COUNT_TO_LIVE = 100 };
 		std::vector<IceCube*> mActiveGameObjects;
 		ObjectPool<IceCube> mIceCubePool;
-		unsigned int mPoolSize;
 	};
 }

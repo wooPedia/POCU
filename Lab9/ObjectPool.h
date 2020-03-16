@@ -21,10 +21,10 @@ namespace lab9
 
 
 	private:
-		using objPtrPool = std::list<T*>;
+		using objectPointerPool = std::list<T*>;
 
 		size_t mMaxPoolSize;
-		objPtrPool mPool;
+		objectPointerPool mPool;
 	};
 
 
@@ -51,7 +51,7 @@ namespace lab9
 	template <class T>
 	T* ObjectPool<T>::Get()
 	{
-		// Pool에서 가장 오래 저장된 T* 을 반환합니다.
+		// Pool에서 가장 먼저 저장된 T* 을 반환합니다.
 		// Pool이 비어있으면 새로운 T*을 생성하여 반환합니다.
 
 		if (!mPool.empty())
@@ -77,13 +77,14 @@ namespace lab9
 			return;
 		}
 
-		assert(mPool.size() < mMaxPoolSize);
+		//assert(mPool.size() < mMaxPoolSize);
 		mPool.push_back(instance);
 	}
 
 	template <class T>
 	inline size_t ObjectPool<T>::GetFreeObjectCount() const
 	{
+		//assert(mPool.size() <= mMaxPoolSize);
 		return mPool.size();
 	}
 
