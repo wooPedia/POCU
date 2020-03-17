@@ -12,7 +12,7 @@ namespace lab8
 	class FixedVector;
 
 	template <size_t N>
-	class FixedVector<bool, N>
+	class FixedVector<bool, N> final
 	{
 	public:
 		FixedVector();
@@ -55,7 +55,7 @@ namespace lab8
 	template <size_t N>
 	bool FixedVector<bool, N>::Add(const bool bValue)
 	{
-		// Add°¡ ¼º°øÇÏ¸é true, ½ÇÆĞÇÏ¸é false¸¦ ¹İÈ¯ÇÕ´Ï´Ù.
+		// Addê°€ ì„±ê³µí•˜ë©´ true, ì‹¤íŒ¨í•˜ë©´ falseë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.
 
 		if (mSize >= N)
 		{
@@ -68,14 +68,14 @@ namespace lab8
 		assert(addIndex < MAX);
 		assert(addBit < 32);
 
-		// trueÀÏ °æ¿ì addBit ¹øÂ° ºñÆ®¸¦ true·Î ¼³Á¤ÇÕ´Ï´Ù.
+		// trueì¼ ê²½ìš° addBit ë²ˆì§¸ ë¹„íŠ¸ë¥¼ trueë¡œ ì„¤ì •í•©ë‹ˆë‹¤.
 		if (bValue)
 		{
 			mFixedVector[addIndex] |= (1 << addBit);
 		}
 		else
 		{
-			// falseÀÏ °æ¿ì addBit ¹øÂ° ºñÆ®¸¦ false·Î ¼³Á¤ÇÕ´Ï´Ù.
+			// falseì¼ ê²½ìš° addBit ë²ˆì§¸ ë¹„íŠ¸ë¥¼ falseë¡œ ì„¤ì •í•©ë‹ˆë‹¤.
 			mFixedVector[addIndex] &= ~(1 << addBit);
 		}
 
@@ -88,33 +88,33 @@ namespace lab8
 	template <size_t N>
 	bool FixedVector<bool, N>::Remove(const bool bValue)
 	{
-		// Remove°¡ ¼º°øÇÏ¸é true, ½ÇÆĞÇÏ¸é false¸¦ ¹İÈ¯ÇÕ´Ï´Ù.
+		// Removeê°€ ì„±ê³µí•˜ë©´ true, ì‹¤íŒ¨í•˜ë©´ falseë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.
 
 		if (mSize == 0)
 		{
 			return false;
 		}
 
-		// ÇöÀç±îÁö ÀúÀåµÈ µ¥ÀÌÅÍ ¹üÀ§ ³»¿¡¼­ Å½»öÇÒ ¼ö ÀÖµµ·Ï ¹üÀ§ °ªÀ» ±¸ÇÕ´Ï´Ù.
+		// í˜„ì¬ê¹Œì§€ ì €ì¥ëœ ë°ì´í„° ë²”ìœ„ ë‚´ì—ì„œ íƒìƒ‰í•  ìˆ˜ ìˆë„ë¡ ë²”ìœ„ ê°’ì„ êµ¬í•©ë‹ˆë‹¤.
 		size_t vecSize = (mSize % 32 != 0) ? (mSize / 32) + 1 : (mSize / 32);
 		size_t bitForLoof = (mSize % 32 != 0) ? (mSize % 32) : 32;
 
 		assert(vecSize <= MAX);
 		assert(bitForLoof <= 32);
 
-		// ÇöÀç º¤ÅÍÀÇ Å©±â¸¸Å­ Å½»öÇÕ´Ï´Ù. 
+		// í˜„ì¬ ë²¡í„°ì˜ í¬ê¸°ë§Œí¼ íƒìƒ‰í•©ë‹ˆë‹¤. 
 		for (size_t i = 0; i != vecSize; ++i)
 		{
-			// º¤ÅÍÀÇ ¸¶Áö¸· ¿ä¼Ò Àü±îÁö´Â 32bit ¸ğµÎ È®ÀÎÇÕ´Ï´Ù.
+			// ë²¡í„°ì˜ ë§ˆì§€ë§‰ ìš”ì†Œ ì „ê¹Œì§€ëŠ” 32bit ëª¨ë‘ í™•ì¸í•©ë‹ˆë‹¤.
 			if (i < vecSize - 1)
 			{
 				for (size_t j = 0; j != 32; ++j)
 				{
-					// ÀÏÄ¡ÇÏ´Â value¸¦ Ã£´Â´Ù¸é 
+					// ì¼ì¹˜í•˜ëŠ” valueë¥¼ ì°¾ëŠ”ë‹¤ë©´ 
 					if (((mFixedVector[i] >> j) & 1) == bValue)
 					{
-						shiftForRemove(i, j); // ºñÆ®¸¦ »èÁ¦ÇÏ±â À§ÇØ ´ÙÀ½ ºñÆ®µéÀ» ÇÑÄ­¾¿ ´ç±é´Ï´Ù.
-						rearrangeVector(i + 1, vecSize); // [i+1, vecSize) ¹üÀ§ÀÇ ¿ä¼Ò¸¦ ÀçÁ¤·ÄÇÕ´Ï´Ù.
+						shiftForRemove(i, j); // ë¹„íŠ¸ë¥¼ ì‚­ì œí•˜ê¸° ìœ„í•´ ë‹¤ìŒ ë¹„íŠ¸ë“¤ì„ í•œì¹¸ì”© ë‹¹ê¹ë‹ˆë‹¤.
+						rearrangeVector(i + 1, vecSize); // [i+1, vecSize) ë²”ìœ„ì˜ ìš”ì†Œë¥¼ ì¬ì •ë ¬í•©ë‹ˆë‹¤.
 						--mSize;
 
 						return true;
@@ -123,7 +123,7 @@ namespace lab8
 			}
 			else
 			{
-				// ¸¶Áö¸· ¿ä¼Ò´Â ÀúÀåµÈ ºñÆ® ¼ö¸¸Å­¸¸ È®ÀÎÇÕ´Ï´Ù.
+				// ë§ˆì§€ë§‰ ìš”ì†ŒëŠ” ì €ì¥ëœ ë¹„íŠ¸ ìˆ˜ë§Œí¼ë§Œ í™•ì¸í•©ë‹ˆë‹¤.
 				for (size_t j = 0; j != bitForLoof; ++j)
 				{
 					if (((mFixedVector[i] >> j) & 1) == bValue)
@@ -158,7 +158,7 @@ namespace lab8
 	template <size_t N>
 	bool FixedVector<bool, N>::operator[](size_t index) const
 	{
-		// bool Å¸ÀÔÀº ¹è¿­ ÀÎµ¦½º Á¢±ÙÀ» ÅëÇØ °ªÀ» º¯°æÇÒ ¼ö ¾ø½À´Ï´Ù.
+		// bool íƒ€ì…ì€ ë°°ì—´ ì¸ë±ìŠ¤ ì ‘ê·¼ì„ í†µí•´ ê°’ì„ ë³€ê²½í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.
 		assert(index >= 0);
 
 		size_t vecIndex = index / 32;
@@ -231,26 +231,26 @@ namespace lab8
 	void FixedVector<bool, N>::shiftForRemove(size_t vecIndex, size_t removedBit)
 	{
 		/*
-			vectorÀÇ index¹øÂ° ¿ä¼Ò¿¡¼­ removedBit¹øÂ° ºñÆ®¸¦ »èÁ¦ÇÏ°í ÇÑÄ­¾¿ ´ç±é´Ï´Ù. (1 right shift)
+			vectorì˜ indexë²ˆì§¸ ìš”ì†Œì—ì„œ removedBitë²ˆì§¸ ë¹„íŠ¸ë¥¼ ì‚­ì œí•˜ê³  í•œì¹¸ì”© ë‹¹ê¹ë‹ˆë‹¤. (1 right shift)
 
-			ex) og: 1100 1010¿¡¼­ [4](= false)ÀÇ ºñÆ®¸¦ Á¦°Å (result: 0110 1010)
+			ex) og: 1100 1010ì—ì„œ [4](= false)ì˜ ë¹„íŠ¸ë¥¼ ì œê±° (result: 0110 1010)
 
-			1. 4¹øÂ° ºñÆ® ÀÌÀü ºñÆ®µéÀ» tmp¿¡ ÀúÀå
+			1. 4ë²ˆì§¸ ë¹„íŠ¸ ì´ì „ ë¹„íŠ¸ë“¤ì„ tmpì— ì €ì¥
 			tmp == 1010
 
-			2. og¸¦ 1¸¸Å­ right shift
+			2. ogë¥¼ 1ë§Œí¼ right shift
 			og: 0110 0101
 
-			3. ogÀÇ 4¹øÂ° ÀÌÀü ºñÆ®µéÀ» 0À¸·Î set
+			3. ogì˜ 4ë²ˆì§¸ ì´ì „ ë¹„íŠ¸ë“¤ì„ 0ìœ¼ë¡œ set
 			og: 0110 0000
 
-			4. og¿Í tmp¸¦ OR ¿¬»ê
+			4. ogì™€ tmpë¥¼ OR ì—°ì‚°
 			og: 0110 1010
 		*/
 
 		unsigned int tmp = 0;
 
-		// removeÇÏ´Â ºñÆ®ÀÇ ÀÌÀü ºñÆ®µéÀ» tmp¿¡ ÀúÀåÇÕ´Ï´Ù.
+		// removeí•˜ëŠ” ë¹„íŠ¸ì˜ ì´ì „ ë¹„íŠ¸ë“¤ì„ tmpì— ì €ì¥í•©ë‹ˆë‹¤.
 		for (size_t i = 0; i != removedBit; ++i)
 		{
 			bool bBitValue = (mFixedVector[vecIndex] >> i) & 1;
@@ -264,37 +264,37 @@ namespace lab8
 			}
 		}
 
-		// 2. 1¸¸Å­ right shift
+		// 2. 1ë§Œí¼ right shift
 		mFixedVector[vecIndex] >>= 1;
 
-		// 3. 0~j-1 ºñÆ®¸¦ ¸ğµÎ 0À¸·Î set
+		// 3. 0~j-1 ë¹„íŠ¸ë¥¼ ëª¨ë‘ 0ìœ¼ë¡œ set
 		for (size_t j = 0; j != removedBit; ++j)
 		{
 			mFixedVector[vecIndex] &= ~(1 << j);
 		}
 
-		// 4. mFixedVector[vecIndex]¿Í tmp¸¦ OR ¿¬»êÇÕ´Ï´Ù.
+		// 4. mFixedVector[vecIndex]ì™€ tmpë¥¼ OR ì—°ì‚°í•©ë‹ˆë‹¤.
 		mFixedVector[vecIndex] |= tmp;
 	}
 
 	template <size_t N>
 	void FixedVector<bool, N>::rearrangeVector(size_t begin, size_t end)
 	{
-		// º¤ÅÍÀÇ ÀÌÀü ¿ä¼ÒÀÇ ¸¶Áö¸· ºñÆ®¸¦ ÇöÀç ¿ä¼ÒÀÇ Ã¹ ºñÆ®·Î setÇÏ°í 
-		// ÇöÀç ¿ä¼Ò¸¦ 1¸¸Å­ right shift ÇÕ´Ï´Ù.
+		// ë²¡í„°ì˜ ì´ì „ ìš”ì†Œì˜ ë§ˆì§€ë§‰ ë¹„íŠ¸ë¥¼ í˜„ì¬ ìš”ì†Œì˜ ì²« ë¹„íŠ¸ë¡œ setí•˜ê³  
+		// í˜„ì¬ ìš”ì†Œë¥¼ 1ë§Œí¼ right shift í•©ë‹ˆë‹¤.
 		// ex) 
 		// 0000 1111 [0]
 		// 0000 1111 [1]
 		// 0001 0001 [2]
-		//     ¡é
+		//     â†“
 		// 1000 1111 [0]
 		// 1000 0111 [1]
 		// 0000 1000 [2]
 
-		// [begin, end) ¹üÀ§¸¦ ¸ğµÎ ¹İº¹ÇÕ´Ï´Ù.
+		// [begin, end) ë²”ìœ„ë¥¼ ëª¨ë‘ ë°˜ë³µí•©ë‹ˆë‹¤.
 		for (size_t i = begin; i != end; ++i)
 		{
-			// ÀÌÀü º¤ÅÍ ¿ä¼ÒÀÇ ¸¶Áö¸· ºñÆ®¸¦ ÇöÀç º¤ÅÍ ¿ä¼ÒÀÇ Ã¹ ºñÆ®·Î set
+			// ì´ì „ ë²¡í„° ìš”ì†Œì˜ ë§ˆì§€ë§‰ ë¹„íŠ¸ë¥¼ í˜„ì¬ ë²¡í„° ìš”ì†Œì˜ ì²« ë¹„íŠ¸ë¡œ set
 			if (mFixedVector[i] & 1)
 			{
 				mFixedVector[i - 1] |= (1 << 31);
