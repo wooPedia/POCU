@@ -8,7 +8,7 @@ namespace lab8
 	// FixedVector class
 
 	template <typename T, size_t N>
-	class FixedVector
+	class FixedVector final
 	{
 	public:
 		FixedVector();
@@ -46,7 +46,7 @@ namespace lab8
 	FixedVector<T, N>::FixedVector(const FixedVector& other)
 		: mSize(other.mSize)
 	{
-		// Æ÷ÀÎÅÍ Å¸ÀÔÀÏ °æ¿ì °¢ ¿ä¼Ò¸¦ µ¿ÀûÇÒ´çÇÕ´Ï´Ù.
+		// í¬ì¸í„° íƒ€ì…ì¼ ê²½ìš° ê° ìš”ì†Œë¥¼ ë™ì í• ë‹¹í•©ë‹ˆë‹¤.
 		if (std::is_pointer_v<T>)
 		{
 			for (size_t i = 0; i != mSize; ++i)
@@ -73,7 +73,7 @@ namespace lab8
 
 		if (std::is_pointer_v<T>)
 		{
-			// º¹»çÇÏ±â Àü ÀÌÀü ¿ä¼ÒµéÀ» ¸ğµÎ »èÁ¦ÇÕ´Ï´Ù.
+			// ë³µì‚¬í•˜ê¸° ì „ ì´ì „ ìš”ì†Œë“¤ì„ ëª¨ë‘ ì‚­ì œí•©ë‹ˆë‹¤.
 			for (auto& element : mFixedVector)
 			{
 				element = nullptr;
@@ -105,7 +105,7 @@ namespace lab8
 	template <typename T, size_t N>
 	bool FixedVector<T, N>::Add(const T& t)
 	{
-		// Add°¡ ¼º°øÇÏ¸é true, ½ÇÆĞÇÏ¸é false¸¦ ¹İÈ¯ÇÕ´Ï´Ù.
+		// Addê°€ ì„±ê³µí•˜ë©´ true, ì‹¤íŒ¨í•˜ë©´ falseë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.
 
 		if (mSize >= N)
 		{
@@ -121,17 +121,17 @@ namespace lab8
 	template <typename T, size_t N>
 	bool FixedVector<T, N>::Remove(const T& t)
 	{
-		// Remove°¡ ¼º°øÇÏ¸é true, ½ÇÆĞÇÏ¸é false¸¦ ¹İÈ¯ÇÕ´Ï´Ù.
+		// Removeê°€ ì„±ê³µí•˜ë©´ true, ì‹¤íŒ¨í•˜ë©´ falseë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.
 
 		if (mSize == 0)
 		{
 			return false;
 		}
 
-		// ¹è¿­¿¡¼­ t¿Í ÀÏÄ¡ÇÏ´Â ¿ä¼Ò¸¦ Å½»öÇÕ´Ï´Ù.
+		// ë°°ì—´ì—ì„œ tì™€ ì¼ì¹˜í•˜ëŠ” ìš”ì†Œë¥¼ íƒìƒ‰í•©ë‹ˆë‹¤.
 		for (size_t i = 0; i != mSize; ++i)
 		{
-			// ÀÏÄ¡ÇÏ´Â ¿ä¼Ò¸¦ ¹ß°ßÇß´Ù¸é µŞ ¿ä¼ÒµéÀ» ÇÑÄ­¾¿ ´ç°Ü ÀçÁ¤·ÄÇÕ´Ï´Ù. 
+			// ì¼ì¹˜í•˜ëŠ” ìš”ì†Œë¥¼ ë°œê²¬í–ˆë‹¤ë©´ ë’· ìš”ì†Œë“¤ì„ í•œì¹¸ì”© ë‹¹ê²¨ ì¬ì •ë ¬í•©ë‹ˆë‹¤. 
 			if (mFixedVector[i] == t)
 			{
 				while (i != mSize)
@@ -139,7 +139,7 @@ namespace lab8
 					mFixedVector[i] = mFixedVector[i + 1];
 					++i;
 				}
-				mFixedVector[mSize - 1] = NULL; // ÀÌµ¿µÈ ¸¶Áö¸· ¿ä¼Ò¸¦ NULL·Î setÇÕ´Ï´Ù. 
+				mFixedVector[mSize - 1] = NULL; // ì´ë™ëœ ë§ˆì§€ë§‰ ìš”ì†Œë¥¼ NULLë¡œ setí•©ë‹ˆë‹¤. 
 				--mSize;
 				return true;
 			}
@@ -172,10 +172,10 @@ namespace lab8
 			return -1;
 		}
 
-		// ¹è¿­¿¡¼­ t¿Í ÀÏÄ¡ÇÏ´Â ¿ä¼Ò¸¦ Å½»öÇÕ´Ï´Ù.
+		// ë°°ì—´ì—ì„œ tì™€ ì¼ì¹˜í•˜ëŠ” ìš”ì†Œë¥¼ íƒìƒ‰í•©ë‹ˆë‹¤.
 		for (size_t i = 0; i != mSize; ++i)
 		{
-			// t¿Í ÀÏÄ¡ÇÏ´Â ¿ä¼Ò¸¦ ¹ß°ßÇß´Ù¸é ÇØ´ç ÀÎµ¦½º¸¦ ¹İÈ¯ÇÕ´Ï´Ù.
+			// tì™€ ì¼ì¹˜í•˜ëŠ” ìš”ì†Œë¥¼ ë°œê²¬í–ˆë‹¤ë©´ í•´ë‹¹ ì¸ë±ìŠ¤ë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.
 			if (mFixedVector[i] == t)
 			{
 				return i;
