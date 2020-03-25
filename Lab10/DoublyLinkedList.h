@@ -85,7 +85,7 @@ namespace lab10
 			Insert(std::move(data));
 			return;
 		}
-		
+
 		// index가 tail보다 head에 가깝다면 head부터 순회합니다.
 		nodePointer traversingNode;
 		if (findNodeWithIndex(index, traversingNode) == eTraversing::HEAD_TO_TAIL)
