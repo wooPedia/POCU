@@ -1,7 +1,7 @@
 #pragma once
 
-#include <memory>
 #include <cassert>
+#include <memory>
 #include "Node.h"
 
 namespace lab10
@@ -32,17 +32,6 @@ namespace lab10
 		std::shared_ptr<Node<T>> operator[](unsigned int index) const;
 		inline unsigned int GetLength() const;
 
-		/*void Print() const
-		{
-			auto traversingNode = mHead->Next;
-			while (traversingNode != nullptr)
-			{
-				assert(traversingNode != mTail);
-				std::cout << *(traversingNode->Data) << "->";
-				traversingNode = traversingNode->Next;
-			}
-		}*/
-
 	private:
 		using nodePointer = std::shared_ptr<Node<T>>;
 
@@ -58,8 +47,8 @@ namespace lab10
 
 	template <typename T>
 	DoublyLinkedList<T>::DoublyLinkedList()
-		: mHead(std::make_shared<Node<T>>(std::make_unique<T>(NULL)))
-		, mTail(std::make_shared<Node<T>>(std::make_unique<T>(NULL), mHead))
+		: mHead(std::make_shared<Node<T>>(std::make_unique<T>()))
+		, mTail(std::make_shared<Node<T>>(std::make_unique<T>(), mHead))
 		, mLength(0)
 	{
 		mHead->Next = mTail;
@@ -102,34 +91,23 @@ namespace lab10
 			return;
 		}
 
+		// 리스트 크기가 1 이상이고 첫 노드로 삽입할 경우
 		if (index == 0)
 		{
 			insertFront(std::move(data));
 			return;
 		}
 
-		// index가 tail보다 head에 가깝다면 head부터 순회합니다.
+		// index 노드를 찾아 traversingNode에 저장합니다.
 		nodePointer traversingNode;
+		findNodeWithIndex(index, traversingNode);
 
-		if (findNodeWithIndex(index, traversingNode) == eTraversing::HEAD_TO_TAIL)
-		{
-			auto prev = traversingNode->Previous.lock();
-			auto newNode = std::make_shared<Node<T>>(std::move(data), prev);
-			linkPrevNewNext(prev, newNode, traversingNode);
+		auto prev = traversingNode->Previous.lock();
+		auto newNode = std::make_shared<Node<T>>(std::move(data), prev);
 
-			++mLength;
-			return;
-		}
-		else
-		{
-			// index가 head보다 tail에 가깝다면 tail부터 순회합니다.
-			auto prevOfNewNode = traversingNode->Previous.lock();
-			auto newNode = std::make_shared<Node<T>>(std::move(data), prevOfNewNode);
-			linkPrevNewNext(prevOfNewNode, newNode, traversingNode);
-
-			++mLength;
-			return;
-		}
+		// prev, new, next 노드를 서로 연결합니다.
+		linkPrevNewNext(prev, newNode, traversingNode);
+		++mLength;
 	}
 
 	template <typename T>
