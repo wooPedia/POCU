@@ -253,8 +253,8 @@ namespace assignment4
 		}
 
 		// target노드를 parent로부터 삭제합니다.
-		(target->Parent.lock()->Left == target) ?
-			(target->Parent.lock()->Left = nullptr) : (target->Parent.lock()->Right = nullptr);
+		target->Parent.lock()->Left == target ?
+			target->Parent.lock()->Left = nullptr : target->Parent.lock()->Right = nullptr;
 	}
 
 	template <typename T>
@@ -278,15 +278,15 @@ namespace assignment4
 		{
 			// target의 parent와 target의 서브트리를 연결합니다.
 			target->Left->Parent = target->Parent;
-			(target->Parent.lock()->Left == target) ?
-				(target->Parent.lock()->Left = target->Left) : (target->Parent.lock()->Right = target->Left);
+			target->Parent.lock()->Left == target ? 
+				target->Parent.lock()->Left = target->Left : target->Parent.lock()->Right = target->Left;
 		}
 		else
 		{
 			// target의 서브트리가 오른쪽일 경우
 			target->Right->Parent = target->Parent;
-			(target->Parent.lock()->Left == target) ?
-				(target->Parent.lock()->Left = target->Right) : (target->Parent.lock()->Right = target->Right);
+			target->Parent.lock()->Left == target ?
+				target->Parent.lock()->Left = target->Right : target->Parent.lock()->Right = target->Right;
 		}
 	}
 
