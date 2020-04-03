@@ -1,0 +1,1 @@
+<b>간단한 Lambda expression 예제입니다. </b>
