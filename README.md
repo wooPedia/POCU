@@ -97,5 +97,5 @@
 ```
 <br>
 
-## 수강후기
+## 나의 수강후기
 https://woo-dev.tistory.com/133
