@@ -95,3 +95,7 @@
 : 이동 생성자(move constructor)와 이동 대입 연산자(move assignment operator) 구현하기
 // #std::move, #RValue, #스마트 포인터
 ```
+<br>
+
+## 수강후기
+https://woo-dev.tistory.com/133
