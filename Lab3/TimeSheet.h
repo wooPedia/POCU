@@ -21,7 +21,6 @@ namespace lab3
 		const std::string& GetName() const;
 
 	private:
-		// 필요에 따라 private 변수와 메서드를 추가하세요.
 		unsigned int* createTimeLog(unsigned int maxEntries) const;
 		void deleteTimeLogMemory();
 		void myUnSignedIntegerCpy(unsigned int* destination, const unsigned int* source, size_t num);
