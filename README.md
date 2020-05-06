@@ -1,33 +1,97 @@
-# COMP3200 Starter Pack
-Standardized folder structure for COMP 3200: Unmanaged Programming in C++ class at POCU
+# COMP3200 | C++ Unmanaged programming
 
-## Mandatory Tools
-These tools are required to take this course
-1. Slack
-1. A Git client. (SourceTree recommended)
+## 과제(Assignment)와 실습(Lab) 목록
 
-## Recommended OS and Tools
-The following environment is recommended to take this course. If you do not want to use Windows, see Alternative Environment and Tools section below. However, all course instructions are made with Visual Studio in mind, so if you choose to use another environment and tools, you will need to Google how to setup your environment: it is not hard, just more work for you.
-1. Windows OS
-1. Visual Studio 2019 (NOT Visual Studio Code)
-	1. **IMPORTANT**: Select `Desktop development with C++` during installation
-	1. Any edition is fine.
+### - 과제
 
-## Alternative OS and Tools
-Alternatively, you can choose any environment and tools you want to develop and debug your labs and assignments locally. However, the grading will still be done via Visual Studio. If you stick to C++ standards covered in the class, there won't be any problem. If that's not the case, you are responsible to fix any warnings and errors reported by the grading system.
+```
+1. Assignment1   
+: ANSI C 스타일의 문자열을 이용하여 C++ 스타일의 string 클래스 작성하기
+#포인터 다루기
+```
 
-1. Any OS that has a C++ compiler
-1. A C++ compiler, such as g++.
+```
+2. Assignment2   
+: 상속과 RVO(Return Value Optimazation) 개념을 이용하여 여러 클래스 작성하기
+#상속, #RVO 
+```
 
-## How to Submit Your Work
-* Create your own repo as instructed in Lab 1
-* Copy this starter pack into your own repo
-* Add/Commit/Push to your own repo
-	* make sure .gitignore file from the start pack is included
-* Open the solution for the lab or assignment you want to work on in VS 2019
-	* if you are not using VS 2019, you can modify .cpp and .h in any editor
-* Add *.cpp and *.h files in the project freely
-* Make sure both `Debug` and `Release` build work fine
-	* both builds will be used for marking
-* Once you are happy with the result, Add/Commit/Push to your own repo and request a build on Slack
-* You will get the result and feedback right away on Slack
+```
+3. Assignment3   
+: 큐(queue)와 스택(stack)을 이용하여 유용한 통계 수치를 구할 수 있는 스마트 스택, 스마트 큐, 큐스택 클래스 구현하기
+#std::queue, #std::stack
+```
+
+
+```
+4. Assignment4   
+: 스마트 포인터를 이용하여 이진 탐색 트리(BST) 구현하기
+#스마트 포인터, #이진 탐색 트리
+```
+<br>
+
+### - 실습
+```
+1. Lab1   
+: 간단한 함수 작성 해보기
+```
+
+```
+2. Lab2   
+: 조정자(Manipulator)와 입출력 스트림 다루기
+#조정자, #입출력 스트림
+```
+
+```
+3. Lab3   
+: 간단한 근무 시간 기록 클래스 작성하기 
+#메모리 관리, #복사 생성자, #복사 대입 연산자
+```
+
+```
+4. Lab4   
+: 상속을 이용하여 간단한 두 개의 클래스 작성하기
+#상속, #메모리 관리, #연산자 오버로딩
+```
+
+```
+5. Lab5   
+: 인터페이스 및 일반 클래스들을 상속하여 여러 클래스 작성하기
+#인터페이스, #상속, #가상 함수, #static_cast
+```
+
+```
+6. Lab6   
+: std::vector 클래스로 여러 가지 연산을 수행하는 유틸리티 함수 작성하기
+#벡터, #반복자, #정렬
+```
+
+```
+7. Lab7   
+: std::vector와 std::map의 유틸리티 함수들 작성하기
+#템플릿, #벡터, #맵, #연산자 오버로딩, #반복자
+```
+
+```
+8. Lab8   
+: 고정된 크기의 FixedVector 클래스 작성하기
+#벡터, #템플릿 특수화, #비트마스크, #테스트 케이스 작성
+```
+
+```
+9. Lab9   
+: 개체 풀(Obeject Pool) 패턴을 구현하고 사용하기
+#풀 패턴(pool pattern) 
+```
+
+```
+10. Lab10   
+: 스마트 포인터를 이용하여 양방향 연결 리스트 작성하기
+#스마트 포인터, #Doubly Linked List
+```
+
+```
+11. Lab11   
+: 이동 생성자(move constructor)와 이동 대입 연산자(move assignment operator) 구현하기
+// #std::move, #RValue, #스마트 포인터
+```
