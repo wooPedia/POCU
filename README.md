@@ -105,5 +105,10 @@
 ```
 <br>
 
+## 성적
+![image](https://user-images.githubusercontent.com/46551002/81386533-1c834e80-9150-11ea-868f-75b6a315b574.png)
+
+<br>
+
 ## 나의 수강후기
 https://woo-dev.tistory.com/133
