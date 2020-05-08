@@ -34,7 +34,7 @@
 1. [Lab1](https://github.com/wooPedia/POCU/tree/master/Lab1)   
 : 간단한 함수 작성 해보기
 
-2. [Lab2](https://github.com/wooPedia/POCU/tree/master/Lab2)
+2. [Lab2](https://github.com/wooPedia/POCU/tree/master/Lab2)   
 : 조정자(Manipulator)와 입출력 스트림 다루기   
 **#조정자, #입출력 스트림**
 
