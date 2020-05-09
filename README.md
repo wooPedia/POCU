@@ -79,7 +79,7 @@
 
 
 
-11. [Lab11](https://github.com/wooPedia/POCU/tree/master/Lab1)   
+11. [Lab11](https://github.com/wooPedia/POCU/tree/master/Lab11)   
 : 이동 생성자(move constructor)와 이동 대입 연산자(move assignment operator) 구현하기    
 **#std::move, #RValue, #스마트 포인터**
 
