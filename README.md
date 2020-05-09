@@ -17,7 +17,7 @@
 
 2. [Assignment2](https://github.com/wooPedia/POCU/tree/master/Assignment2)   
 : 상속과 RVO(Return Value Optimazation) 개념을 이용하여 여러 클래스 작성하기   
-**#상속, #RVO**
+**#상속, #RVO, #싱글턴**
 
 3. [Assignment3](https://github.com/wooPedia/POCU/tree/master/Assignment3)   
 : 큐(queue)와 스택(stack)을 이용하여 유용한 통계 수치를 구할 수 있는 스마트 스택, 스마트 큐, 큐스택 클래스 구현하기   
