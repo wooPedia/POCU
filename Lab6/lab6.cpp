@@ -86,7 +86,7 @@ namespace lab6
 		}
 
 		int min = v[0];
-		for (const int& data : v)
+		for (const int data : v)
 		{
 			min = (min < data) ? min : data;
 		}
@@ -102,7 +102,7 @@ namespace lab6
 		}
 
 		int max = v[0];
-		for (const int& data : v)
+		for (const int data : v)
 		{
 			max = (max > data) ? max : data;
 		}
@@ -129,7 +129,7 @@ namespace lab6
 		}
 
 		Frequency f;
-		for (const auto& data : v)
+		for (const auto data : v)
 		{
 			f.CheckAndAddFrequency(data);
 		}
