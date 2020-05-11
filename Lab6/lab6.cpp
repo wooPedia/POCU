@@ -15,7 +15,7 @@ namespace lab6
 			, mFrequency(1) {}
 
 	private:
-		// uniqueÇÑ value¿Í ºóµµ¼ö 
+		// uniqueí•œ valueì™€ ë¹ˆë„ìˆ˜ 
 		int mValue;
 		size_t mFrequency;
 	};
@@ -24,8 +24,8 @@ namespace lab6
 	{
 	public:
 
-		// value°¡ Á¸ÀçÇÏ¸é ºóµµ¼ö¸¦ Áõ°¡½ÃÅ°°í,
-		// Á¸ÀçÇÏÁö ¾Ê´Â´Ù¸é value, 1(frequency)À» ½ÖÀ¸·Î Ãß°¡ÇÕ´Ï´Ù.
+		// valueê°€ ì¡´ì¬í•˜ë©´ ë¹ˆë„ìˆ˜ë¥¼ ì¦ê°€ì‹œí‚¤ê³ ,
+		// ì¡´ì¬í•˜ì§€ ì•ŠëŠ”ë‹¤ë©´ value, 1(frequency)ì„ ìŒìœ¼ë¡œ ì¶”ê°€í•©ë‹ˆë‹¤.
 		void CheckAndAddFrequency(int value)
 		{
 			for (Pair& pair : mPairList)
@@ -39,7 +39,7 @@ namespace lab6
 			mPairList.emplace_back(Pair(value));
 		}
 
-		// ºóµµ¼ö°¡ °¡Àå ³ôÀº °ªÀ» ¹İÈ¯ÇÕ´Ï´Ù.
+		// ë¹ˆë„ìˆ˜ê°€ ê°€ì¥ ë†’ì€ ê°’ì„ ë°˜í™˜í•©ë‹ˆë‹¤.
 		int GetTheHighestFrequency() const
 		{
 			assert(!mPairList.empty());
@@ -64,8 +64,13 @@ namespace lab6
 			return 0;
 		}
 
+		/* 
+		 **ìˆ˜ì •**
+		 intì™€ ê°™ì€ 4ë°”ì´íŠ¸ ì´í•˜ POD íƒ€ì…ì˜ ê²½ìš° 
+		 ì°¸ì¡°ë³´ë‹¤ pass by valueê°€ íš¨ìœ¨ì´ ë” ì¢‹ìŠµë‹ˆë‹¤.
+		*/
 		int sum = 0;
-		for (const int& data : v)
+		for (const int data : v)   
 		{
 			sum += data;
 		}
@@ -159,12 +164,12 @@ namespace lab6
 			-> 7 5 3 1 5
 			-> 7 5 3 1
 
-			2¹øÂ° ¿ø¼ÒºÎÅÍ ºñ±³
+			2ë²ˆì§¸ ì›ì†Œë¶€í„° ë¹„êµ
 
-			1. 3ÀÌ 1º¸´Ù Å©´Ù¸é 3À» 1 À§Ä¡¿¡ »ğÀÔ
-			2. 3 À§Ä¡¿¡ ¸¶Áö¸· ¿ø¼Ò(7)·Î µ¤¾î¾º¿ò
-			3. ¸¶Áö¸· ¿ø¼Ò¸¦ »èÁ¦
-			5. 5¿Í 1ºñ±³
+			1. 3ì´ 1ë³´ë‹¤ í¬ë‹¤ë©´ 3ì„ 1 ìœ„ì¹˜ì— ì‚½ì…
+			2. 3 ìœ„ì¹˜ì— ë§ˆì§€ë§‰ ì›ì†Œ(7)ë¡œ ë®ì–´ì”Œì›€
+			3. ë§ˆì§€ë§‰ ì›ì†Œë¥¼ ì‚­ì œ
+			5. 5ì™€ 1ë¹„êµ
 			...
 		*/
 
@@ -174,7 +179,7 @@ namespace lab6
 			{
 				if (v[i] > v[j])
 				{
-					v.insert(v.begin() + j, v[i]); // j À§Ä¡¿¡ v[i]¸¦ »ğÀÔÇÕ´Ï´Ù.
+					v.insert(v.begin() + j, v[i]); // j ìœ„ì¹˜ì— v[i]ë¥¼ ì‚½ì…í•©ë‹ˆë‹¤.
 					v[i + 1] = v.back();
 					v.pop_back();
 					break;
