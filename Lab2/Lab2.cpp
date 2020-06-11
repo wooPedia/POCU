@@ -9,9 +9,9 @@ namespace lab2
 {
 	void PrintIntegers(std::istream& in, std::ostream& out)
 	{
-		// ¾çÀÇ Á¤¼ö, °ø¹é, ¹®ÀÚ¿­¸¸ ÀÔ·Â¹ŞÀ½
-		// ÀÔ·ÂÀº ÃÖ¼ÒÇÑ ÇÏ³ªÀÇ Á¤¼ö°¡ Á¸ÀçÇÒ °Í
-		// ¹®ÀÚ¿­Àº ¹«½ÃÇØ¾ßÇÔ
+		// ì–‘ì˜ ì •ìˆ˜, ê³µë°±, ë¬¸ìì—´ë§Œ ì…ë ¥ë°›ìŒ
+		// ì…ë ¥ì€ ìµœì†Œí•œ í•˜ë‚˜ì˜ ì •ìˆ˜ê°€ ì¡´ì¬í•  ê²ƒ
+		// ë¬¸ìì—´ì€ ë¬´ì‹œí•´ì•¼í•¨
 
 		// 12 11 9
 		const string MY_OCT("oct");
@@ -27,15 +27,15 @@ namespace lab2
 		{
 			in >> temp;
 
-			// eof ÀÔ·Â ½Ã
+			// eof ì…ë ¥ ì‹œ
 			if (in.eof())
 			{
-				// failÀÏ °æ¿ì eofÀÌ¹Ç·Î Á¾·á 
+				// failì¼ ê²½ìš° eofì´ë¯€ë¡œ ì¢…ë£Œ 
 				if (in.fail())
 				{
 					break;
 				}
-				// failÀÌ ¾Æ´Ò °æ¿ì ´º¶óÀÎ ¾ø´Â ÀÔ·Â
+				// failì´ ì•„ë‹ ê²½ìš° ë‰´ë¼ì¸ ì—†ëŠ” ì…ë ¥
 				else
 				{
 					if (temp < 0)
@@ -44,11 +44,11 @@ namespace lab2
 					}
 					if (bIsFirst)
 					{
-						// Ã¹Â°, µÑÂ° ÁÙ Ãâ·Â
+						// ì²«ì§¸, ë‘˜ì§¸ ì¤„ ì¶œë ¥
 						out << setw(OCT_LENGTH) << MY_OCT << setw(DEC_LENGTH) << MY_DEC << setw(HEX_LENGTH) << MY_HEX << endl;
 						out << setfill('-') << setw(OCT_LENGTH) << "" << left << setw(DEC_LENGTH) << " " << setw(HEX_LENGTH) << " " << endl;
 
-						// ´ÙÀ½ Ãâ·Â¿¡ ¾Ë¸Â°Ô ¿É¼Ç ¼³Á¤
+						// ë‹¤ìŒ ì¶œë ¥ì— ì•Œë§ê²Œ ì˜µì…˜ ì„¤ì •
 						out << right << setfill(' ') << setw(0) << scientific << uppercase;
 						bIsFirst = false;
 					}
@@ -61,18 +61,18 @@ namespace lab2
 				}
 			}
 
-			// ¾Ë¸ÂÁö ¾Ê´Â Çü½Ä ÀÔ·Â ½Ã 
+			// ì•Œë§ì§€ ì•ŠëŠ” í˜•ì‹ ì…ë ¥ ì‹œ 
 			if (in.fail())
 			{
-				// ÀÔ·Â ½ºÆ®¸²À» ºñ¿ó´Ï´Ù.
+				// ì…ë ¥ ìŠ¤íŠ¸ë¦¼ì„ good stateë¡œ ë³€ê²½í•©ë‹ˆë‹¤.
 				in.clear();
 
-				// ¹®ÀÚ´Â ¸ğµÎ ¹«½ÃÇÕ´Ï´Ù.
+				// ë¬¸ìëŠ” ëª¨ë‘ ë¬´ì‹œí•©ë‹ˆë‹¤.
 				in.ignore(1, '\n');
 				continue;
 			}
 
-			// 0¹Ì¸¸ÀÏ °æ¿ì ¹«½ÃÇÕ´Ï´Ù.
+			// 0ë¯¸ë§Œì¼ ê²½ìš° ë¬´ì‹œí•©ë‹ˆë‹¤.
 			if (temp < 0)
 			{
 				continue;
@@ -80,11 +80,11 @@ namespace lab2
 
 			if (bIsFirst)
 			{
-				// Ã¹Â°, µÑÂ° ÁÙ Ãâ·Â
+				// ì²«ì§¸, ë‘˜ì§¸ ì¤„ ì¶œë ¥
 				out << setw(OCT_LENGTH) << MY_OCT << setw(DEC_LENGTH) << MY_DEC << setw(HEX_LENGTH) << MY_HEX << endl;
 				out << setfill('-') << setw(OCT_LENGTH) << "" << left << setw(DEC_LENGTH) << " " << setw(HEX_LENGTH) << " " << endl;
 
-				// ´ÙÀ½ Ãâ·Â¿¡ ¾Ë¸Â°Ô ¿É¼Ç ¼³Á¤
+				// ë‹¤ìŒ ì¶œë ¥ì— ì•Œë§ê²Œ ì˜µì…˜ ì„¤ì •
 				out << right << setfill(' ') << setw(0) << scientific << uppercase;
 				bIsFirst = false;
 			}
@@ -95,7 +95,7 @@ namespace lab2
 		} // while
 		in.clear();
 
-		// ¿É¼Ç ¸®¼Â
+		// ì˜µì…˜ ë¦¬ì…‹
 		out << setw(0) << fixed << nouppercase;
 	}
 
@@ -157,10 +157,10 @@ namespace lab2
 		}
 		in.clear();
 
-		// max Ãâ·Â
+		// max ì¶œë ¥
 		out << left << setw(FRONT_SPACES) << "max:" << internal << setw(SECOND_SPACES) << max << endl;
 
-		// Ãâ·Â ¿É¼Ç ¸®¼Â
+		// ì¶œë ¥ ì˜µì…˜ ë¦¬ì…‹
 		out << noshowpos << noshowpoint << setprecision(0) << right;
 	}
 }
